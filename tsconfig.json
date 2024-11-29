@@ -6,7 +6,14 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "target": "esnext", // Ensure the target is modern enough
+    "module": "esnext", // Use 'esnext' or another compatible option
+    "lib": ["dom", "esnext"], // Include required libraries
+    "jsx": "react-jsx", // For React projects
+    "moduleResolution": "node", // Node-style module resolution
+    "esModuleInterop": true, // Ensure compatibility with ES modules
+    "skipLibCheck": true // Skip library checks (optional)
   },
   "include": [
     "**/*.ts",
