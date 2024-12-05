@@ -43,7 +43,7 @@ const Screens = () => {
       </Swiper>
       <View className="bg-pry-fade h-[100vh] w-full absolute justify-end items-center z-[99]">
         <Logo />
-        <View className='mt-52 mb-24'>
+        <View className='mt-52 mb-36'>
           <View className="flex-row my-4 justify-center">
             {indicator.map((_, index) => (
               <View
@@ -54,8 +54,8 @@ const Screens = () => {
               />
             ))}
           </View>
-          <Button text='sign Up'/>
-          <Button text='sign In' />
+          <Button text='sign Up' onPress={()=> router.push('/Onboarding/Signup')}/>
+          <Button text='sign In' onPress={()=> router.push('/Onboarding/SignIn')}/>
         </View>
       </View>
     </View>
