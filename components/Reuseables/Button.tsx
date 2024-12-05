@@ -4,7 +4,7 @@ import React from 'react'
 interface welcome {
   className?: string,
   text: string
-  onPress: () => void
+  onPress: (() => void) | null
 }
 
 const Button = ({text, className, onPress}: welcome) => {
