@@ -5,16 +5,18 @@ interface textinput {
   id: InputField
   onFocus?: () => void
   onBlur?: () => void
-  onChangeText: (id: InputField, value: string) => void 
+  onChangeText: (value: string, id?: InputField) => void 
   className?: string
   setShift?: React.Dispatch<React.SetStateAction<string>>;
   secure?: boolean
+  placeholder: string
 }
 
-const AnimatedInput = ({className, id, secure, onChangeText, setShift}: textinput) => {
+const AnimatedInput = ({className, placeholder, id, secure, onChangeText, setShift}: textinput) => {
   const [focus, setFocus] = useState({
     [id]: false,
   });
+  
 
   const [inputValue, setInputValue] = useState('')
 
@@ -65,7 +67,7 @@ const AnimatedInput = ({className, id, secure, onChangeText, setShift}: textinpu
 
   const update = (value: string) => {
     setInputValue(value); 
-    onChangeText(id as InputField, value);
+    onChangeText(value, id as InputField);
   };
 
   return (
@@ -73,14 +75,14 @@ const AnimatedInput = ({className, id, secure, onChangeText, setShift}: textinpu
         <Animated.Text
           style={[styles.placeholder, getAnimatedStyle(id as InputField)]}
         >
-          {id}
+          {placeholder}
         </Animated.Text>
         <TextInput
           id={id}
           onBlur={() => handleBlur(id as InputField)}
           secureTextEntry={secure}
           onFocus={() => handleFocus(id as InputField)}
-          className=' w-full h-full bg-white  p-2'
+          className=' w-full h-full bg-white p-2'
           value={inputValue}
           onChangeText={update}
         />
