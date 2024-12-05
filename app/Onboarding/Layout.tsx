@@ -7,14 +7,14 @@ interface layout {
   children: React.ReactNode
   text: string,
   onPress: () => void
-  className?: string
+  shift?: string
 }
 
-const Layout = ({children, text, onPress, className}: layout) => {
+const Layout = ({children, text, onPress, shift}: layout) => {
   
   return (
-    <View className={`bg-pry min-h-screen justify-center`}>
-      <View className={`items-center ${className}`}>
+    <View className={`bg-pry h-screen justify-center`}>
+      <View className={` items-center ${shift}`}>
         <BigLogo />
         {children}
         <Button text={text} onPress={onPress}/>

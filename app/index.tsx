@@ -54,7 +54,7 @@ const Screens = () => {
               />
             ))}
           </View>
-          <Button text='sign Up' onPress={()=> router.push('/Onboarding/Signup')}/>
+          <Button text='sign Up' onPress={()=> router.push('/Onboarding/SignUp')}/>
           <Button text='sign In' onPress={()=> router.push('/Onboarding/SignIn')}/>
         </View>
       </View>
