@@ -24,6 +24,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
   const animatedValue = React.useRef<Record<InputField, Animated.Value>>({
     email: new Animated.Value(0),
     password: new Animated.Value(0),
+    confirm_password: new Animated.Value(0) 
   }).current;
 
   const handleFocus = (id: InputField) => {

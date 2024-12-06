@@ -30,7 +30,7 @@ const Screens = () => {
   const indicator = Array.from({ length: load.length });
 
   return (
-    <View className="h-full">
+    <View className="h-screen w-screen">
       <Swiper
         autoplay={true}
         autoplayTimeout={3}

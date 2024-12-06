@@ -5,9 +5,13 @@ import { router } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput';
 
+interface data {
+  email: string
+  password: string
+}
 
 const SignIn = () => {
-  const [data, setData] = useState<Record<InputField, string>>({
+  const [data, setData] = useState<data>({
     email: '',
     password: '',
   });

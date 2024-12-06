@@ -21,14 +21,15 @@ const Signup = () => {
       setRegisterData({ ...registerData, [id]: value });
     }
   };
-  const changeBox = (id: keyof register) => {
-    setRegisterData((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+  const changeBox = (id: keyof register | undefined) => {
+    if(id){
+      setRegisterData((prev) => ({
+        ...prev,
+        [id]: !prev[id],
+      }));
+    }
   };
   
-  console.log(registerData)
   return (
     <View className='h-screen bg-pry justify-center px-[8%]'>
        <View className='flex-row justify-center'>
@@ -38,7 +39,7 @@ const Signup = () => {
        <AnimatedInput 
          id='email'
          inputStyle='rounded-lg'
-         className='w-[100%] h-[50px]'
+         className='w-full h-[50px]'
          placeholder='Email address'
          onChangeText={onChange}
        />
@@ -49,8 +50,9 @@ const Signup = () => {
          <Text className='text-white text-[14px] leading-[20px]'>Sign me up to receive newsletters, offers and tips from 2Odds (you can opt out at any time) <Text className='text-sec'>OPTIONAL</Text> </Text> 
        </CheckBox>
 
-       <Button text='verify' onPress={ !registerData.email || !registerData.tc ? null : () => router.replace('/(tabs)')}
-         className={` m-auto mt-14 h-[45px] rounded-3xl ${ !registerData.email || !registerData.tc ? "bg-gray-400" : "bg-sec" }`}
+       <Button text='verify' onPress={ !registerData.email || !registerData.tc ? null : () => router.replace('/Onboarding/Verify')}
+         className={` m-auto mt-14 h-[45px] rounded-3xl `}
+         style={ !registerData.email || !registerData.tc ?  {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
        />
     </View>
   )
