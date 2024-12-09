@@ -1,6 +1,7 @@
 import LoadOne from "@/assets/SVGs/LoadOne"
 import LoadTwo from "@/assets/SVGs/LoadTwo"
 import LoadThree from "@/assets/SVGs/LoadThree"
+import { nft, phrase, wallet } from "@/assets/images";
 
 export const load = [
   {
@@ -14,6 +15,24 @@ export const load = [
   {
     name: "three",
     component: LoadThree,
+  },
+];
+
+export const createWallet = [
+  {
+    name: "wallet",
+    image: wallet,
+    text: "Wallets",
+  },
+  {
+    name: "nft",
+    image: nft,
+    text: "NFT"
+  },
+  {
+    name: "phrase",
+    image: phrase,
+    text: "Secured by us"
   },
 ];
 

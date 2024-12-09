@@ -108,7 +108,7 @@ const CreatePassword = () => {
         </Pressable>
       </View>
       
-      <Button text='continue' onPress={hasFalseValue ? null : () => router.replace('/(tabs)')}
+      <Button text='continue' onPress={hasFalseValue ? null : () => router.replace('/Onboarding/Wallet/Create')}
          className={` m-auto mt-14 h-[45px] rounded-3xl`}
          style={hasFalseValue ?  {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
        />
