@@ -11,7 +11,7 @@ const Screens = () => {
   let username = null;
 
   if (username) {
-    return <Redirect href={"/(tabs)"} />;
+    return <Redirect href={"/Onboarding/Welcome"} />;
   }
 
   // const currentIndexRef = useRef(0); 
@@ -54,7 +54,7 @@ const Screens = () => {
               />
             ))}
           </View>
-          <Button text='sign Up' onPress={()=> router.push('/Onboarding/Wallet/Create')}/>
+          <Button text='sign Up' onPress={()=> router.push('/Onboarding/SignUp')}/>
           <Button text='sign In' onPress={()=> router.push('/Onboarding/SignIn')}/>
         </View>
       </View>

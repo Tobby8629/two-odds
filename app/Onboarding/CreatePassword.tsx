@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import SmallLogo from '@/assets/SVGs/SmallLogo'
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
@@ -7,6 +7,7 @@ import { passwordverification } from '@/constants/data'
 import Button from '@/components/Reuseables/Button'
 import { router } from 'expo-router'
 import { FontAwesome5 } from '@expo/vector-icons'
+import useKeyboard from '@/hooks/useKeyboard'
 
 interface data {
   password: ""
@@ -51,8 +52,6 @@ const CreatePassword = () => {
   },[data])
 
   const hasFalseValue = Object.values(checkvalue).some(value => value === false);
-  
-  console.log(hasFalseValue)
 
   const onChange = (value: string, id: InputField | undefined) => {
     if(id){
@@ -60,9 +59,11 @@ const CreatePassword = () => {
     }
   };
 
-  return (
-    <View className='h-screen bg-pry px-[8%]'>
+  const{isKeyboardVisible}=useKeyboard()
 
+  return (
+    <ScrollView className={`h-full bg-pry px-[8%]`}>
+      <View className={`${isKeyboardVisible ? "min-h-[120vh]" : "min-h-screen"}`}>
       <View className='flex-row justify-center mt-[100px]'>
         <SmallLogo />
       </View>
@@ -77,7 +78,7 @@ const CreatePassword = () => {
           placeholder='password'
           secure={!show}
           className='w-[90%] h-full bg-transparent mb-[0px]'
-          inputStyle=' bg-gray-300'
+          inputStyle='bg-transparent'
         />
         <Pressable onPress={()=> setshow(!show)}>
           <FontAwesome5 name={show ? "eye" : "eye-slash"} color={"black"} size={15} />
@@ -101,7 +102,7 @@ const CreatePassword = () => {
           placeholder='confirm password'
           secure={!show}
           className='w-[90%] h-full bg-transparent mb-[0px]'
-          inputStyle=' bg-gray-300'
+          inputStyle='bg-transparent'
         />
         <Pressable onPress={()=> setshow(!show)}>
           <FontAwesome5 name={show ? "eye" : "eye-slash"} color={"black"} size={15} />
@@ -112,8 +113,8 @@ const CreatePassword = () => {
          className={` m-auto mt-14 h-[45px] rounded-3xl`}
          style={hasFalseValue ?  {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
        />
-
     </View>
+    </ScrollView>
   )
 }
 

@@ -3,6 +3,7 @@ import React, { useRef } from 'react'
 import Swiper from 'react-native-swiper'
 import { createWallet } from '@/constants/data'
 import Logo from '@/assets/SVGs/Logo'
+import { router } from 'expo-router'
 
 const Create = () => {
 //   const currentIndexRef = useRef(0); 
@@ -51,7 +52,7 @@ const Create = () => {
       </View>
 
       <View className='w-full mt-10 mb-5'>
-        <Pressable className='p-2 mb-5 bg-sec rounded-3xl'>
+        <Pressable className='p-2 mb-5 bg-sec rounded-3xl' onPress={()=> router.replace("/Onboarding/Wallet/Phrase")}>
             <Text className=' text-xl text-center'>Create a new Wallet</Text>
         </Pressable>
         <Pressable className='my-1'>

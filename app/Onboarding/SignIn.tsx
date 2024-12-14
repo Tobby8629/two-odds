@@ -29,13 +29,14 @@ const SignIn = () => {
   console.log(data)
 
   return (
-    <Layout text="sign up" onPress={() => router.replace('/(tabs)')} shift={shift}>
+    <Layout text="sign up" onPress={() => router.replace('/Onboarding/Welcome')} shift={shift}>
       <View className=' my-5'>
         <AnimatedInput
          id="email"
          onChangeText={onChange}
          setShift={setShift}
          placeholder="email"
+         inputStyle='bg-white'
         />
          
         <View className='flex bg-white w-[267px] h-[45px] flex-row items-center mb-5'> 
@@ -46,6 +47,7 @@ const SignIn = () => {
             className='w-[90%] h-full mb-[0px]'
             setShift={setShift}
             placeholder="password"
+            inputStyle='bg-white'
           />
           <Pressable onPress={()=> setshow(!show)}>
             <FontAwesome5 name={show ? "eye" : "eye-slash"} color={"black"} size={15} />

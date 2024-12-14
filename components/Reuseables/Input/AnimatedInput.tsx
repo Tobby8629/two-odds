@@ -10,7 +10,7 @@ interface textinput {
   setShift?: React.Dispatch<React.SetStateAction<string>>;
   secure?: boolean
   placeholder: string
-  inputStyle?: string
+  inputStyle: string
 }
 
 const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChangeText, setShift}: textinput) => {
@@ -84,7 +84,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
           onBlur={() => handleBlur(id as InputField)}
           secureTextEntry={secure}
           onFocus={() => handleFocus(id as InputField)}
-          className={`w-full h-full bg-white p-2 ${inputStyle}`}
+          className={`w-full h-full p-2 ${inputStyle}`}
           value={inputValue}
           onChangeText={update}
         />

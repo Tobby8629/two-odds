@@ -38,7 +38,7 @@ const Signup = () => {
        <Text className=' my-8 w-full text-left text-white text-[26px] font-bold'>Enter your email address</Text>
        <AnimatedInput 
          id='email'
-         inputStyle='rounded-lg'
+         inputStyle='rounded-lg bg-white'
          className='w-full h-[50px]'
          placeholder='Email address'
          onChangeText={onChange}
