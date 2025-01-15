@@ -1,6 +1,4 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import Verify from '@/assets/SVGs/VerifiedSvg'
 import { router } from 'expo-router'
 import { verified } from '@/assets/images'
 

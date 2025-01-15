@@ -1,4 +1,4 @@
-import { Animated, TextInput, NativeSyntheticEvent, StyleSheet, Text, TextInputFocusEventData, View } from 'react-native'
+import { Animated, TextInput, StyleSheet,  View } from 'react-native'
 import React, { useState } from 'react'
 
 interface textinput {
@@ -41,7 +41,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
   };  
 
   const handleBlur = (id: InputField) => {
-    if (inputValue === '') {
+    if (inputValue === null) {
       setFocus((prev) => ({ ...prev, [id]: false }));
       Animated.timing(animatedValue[id], {
         toValue: 0,
@@ -59,7 +59,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
       {
         translateY: animatedValue[id].interpolate({
           inputRange: [0, 1],
-          outputRange: [0, -23], 
+          outputRange: [0, -27], 
         }),
       },
     ],
@@ -67,9 +67,9 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
     color: focus[id] ? 'gold' : '#999',
   });
 
-  const update = (value: string) => {
+  const update = (value: string, id: InputField) => {
     setInputValue(value); 
-    onChangeText(value, id as InputField);
+    onChangeText(value, id);
   };
 
   return (
@@ -86,7 +86,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
           onFocus={() => handleFocus(id as InputField)}
           className={`w-full h-full rounded-xl p-2 ${inputStyle}`}
           value={inputValue}
-          onChangeText={update}
+          onChangeText={(value)=>update(value, id)}
         />
       </View>
       )

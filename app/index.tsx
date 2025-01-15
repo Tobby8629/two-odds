@@ -36,7 +36,7 @@ const Screens = () => {
         onIndexChanged={handleIndexChanged} // Callback to update index
       >
         {load.map((e) => (
-          <e.component key={e.name} />
+          <e.component key={e.name} width={"100%"} height={"100%"} />
         ))}
       </Swiper>
       <View className="bg-pry-fade h-[100vh] w-full absolute justify-end items-center z-[99]">

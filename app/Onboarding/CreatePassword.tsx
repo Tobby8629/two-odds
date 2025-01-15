@@ -28,7 +28,8 @@ const CreatePassword = () => {
     confirm_password: ""
   })
 
-  const [show, setshow] = useState(false)
+  const [passwordShow, setPasswordshow] = useState(false)
+  const [confirmPasswordShow, setConfirmPasswordshow] = useState(false)
 
   const verifying = (val: data) => {
     const hasLength = val.password.length >= 8;
@@ -76,12 +77,12 @@ const CreatePassword = () => {
           id='password'
           onChangeText={onChange}
           placeholder='password'
-          secure={!show}
+          secure={!passwordShow}
           className='w-[90%] h-full bg-transparent mb-[0px]'
           inputStyle='bg-transparent'
         />
-        <Pressable onPress={()=> setshow(!show)}>
-          <FontAwesome5 name={show ? "eye" : "eye-slash"} color={"black"} size={15} />
+        <Pressable onPress={()=> setPasswordshow(!passwordShow)}>
+          <FontAwesome5 name={passwordShow ? "eye" : "eye-slash"} color={"black"} size={15} />
         </Pressable>
       </View>
 
@@ -100,12 +101,12 @@ const CreatePassword = () => {
           id='confirm_password'
           onChangeText={onChange}
           placeholder='confirm password'
-          secure={!show}
+          secure={!confirmPasswordShow}
           className='w-[90%] h-full bg-transparent mb-[0px]'
           inputStyle='bg-transparent'
         />
-        <Pressable onPress={()=> setshow(!show)}>
-          <FontAwesome5 name={show ? "eye" : "eye-slash"} color={"black"} size={15} />
+        <Pressable onPress={()=> setConfirmPasswordshow(!confirmPasswordShow)}>
+          <FontAwesome5 name={confirmPasswordShow ? "eye" : "eye-slash"} color={"black"} size={15} />
         </Pressable>
       </View>
       

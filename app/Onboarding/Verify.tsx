@@ -26,7 +26,7 @@ const Verify = () => {
         resend</Link>
       </Text>
       
-      <Button text='verify' onPress={() => router.replace('/Onboarding/Otp')}
+      <Button text='verify' onPress={() => router.replace("/Onboarding/Verified")}
          className={` m-auto mt-14 h-[45px] rounded-3xl  bg-sec`}
        />
     </View>

@@ -1,4 +1,4 @@
-import { Animated, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import Layout from './Layout';
 import { router } from 'expo-router';
@@ -16,20 +16,28 @@ const SignIn = () => {
     password: '',
   });
 
-  const onChange = (value: string, id: InputField | undefined) => {
-    if(id){
-      setData({ ...data, [id]: value });
-    }
+  const onChange = (value: string, id?: InputField) => {
+    setData((prevData) => (id ? { ...prevData, [id]: value } : prevData));
   };
+  ;
 
   const [shift, setShift] = useState<string>("")
 
   const [show, setshow] = useState(false)
 
-  console.log(data)
+  const navigate = () => {
+    if(data.email && data.password){
+      router.replace("/Onboarding/Welcome")
+  }
+  else {
+    Alert.alert("Please fill in all fields")
+  }
+}
+
+console.log(data)
 
   return (
-    <Layout text="Sign In" onPress={() => router.replace('/Onboarding/Welcome')} shift={shift}
+    <Layout text="Sign In" onPress={navigate} shift={shift}
       redirect={true} redirectLink='/Onboarding/SignUp' redirectText='Create an account'
     >
       <View className=' my-5'>
