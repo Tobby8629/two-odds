@@ -1,7 +1,6 @@
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
-import React, { useRef } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { useRef } from 'react';
 import { Redirect, router } from 'expo-router';
-import { Text } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { load } from '@/constants/data';
 import Logo from '@/assets/SVGs/Logo';
@@ -14,10 +13,9 @@ const Screens = () => {
     return <Redirect href={"/Onboarding/Welcome"} />;
   }
 
-  // const currentIndexRef = useRef(0); 
+ 
   const indicatorRef = useRef<(View | null)[]>([]);
   const handleIndexChanged = (index: number) => {
-    // currentIndexRef.current = index;
     indicatorRef.current.forEach((indicator, i) => {
       if (indicator) {
         indicator.setNativeProps({

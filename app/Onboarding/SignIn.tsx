@@ -1,4 +1,4 @@
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import Layout from './Layout';
 import { router } from 'expo-router';
@@ -29,7 +29,9 @@ const SignIn = () => {
   console.log(data)
 
   return (
-    <Layout text="sign up" onPress={() => router.replace('/Onboarding/Welcome')} shift={shift}>
+    <Layout text="Sign In" onPress={() => router.replace('/Onboarding/Welcome')} shift={shift}
+      redirect={true} redirectLink='/Onboarding/SignUp' redirectText='Create an account'
+    >
       <View className=' my-5'>
         <AnimatedInput
          id="email"
@@ -39,7 +41,7 @@ const SignIn = () => {
          inputStyle='bg-white'
         />
          
-        <View className='flex bg-white w-[267px] h-[45px] flex-row items-center mb-5'> 
+        <View className='flex bg-white w-[267px] rounded-xl h-[45px] flex-row items-center mb-5'> 
           <AnimatedInput 
             id="password"
             onChangeText={onChange}
@@ -60,19 +62,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-// 
-//   container: {
-//     marginVertical: 16,
-//   },
-//   inputWrapper: {
-//     position: 'relative',
-//     width: 'auto',
-//   },
-//   placeholder: {
-//     position: 'absolute',
-//     zIndex: 99,
-//     top: '40%',
-//     left: '5%',
-//   },
-// });

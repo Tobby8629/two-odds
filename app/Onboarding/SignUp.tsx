@@ -44,7 +44,10 @@ const Signup = () => {
          onChangeText={onChange}
        />
        <CheckBox onPress={changeBox} id="tc" value={registerData.tc}>
-          <Text className='text-white text-[14px] leading-[20px]'>I have read and agree to 2Odds Terms of Service and Privacy Policy</Text>
+          <Text className='text-white text-[14px] font-light leading-[20px]'>I have read and agree to 2Odds 
+            <Text className="font-semibold"> Terms of Service</Text> and 
+            <Text className="font-semibold"> Privacy Policy</Text>
+          </Text>
        </CheckBox>
        <CheckBox onPress={changeBox} id="subscribe" value={registerData.subscribe}> 
          <Text className='text-white text-[14px] leading-[20px]'>Sign me up to receive newsletters, offers and tips from 2Odds (you can opt out at any time) <Text className='text-sec'>OPTIONAL</Text> </Text> 

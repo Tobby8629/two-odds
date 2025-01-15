@@ -84,7 +84,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
           onBlur={() => handleBlur(id as InputField)}
           secureTextEntry={secure}
           onFocus={() => handleFocus(id as InputField)}
-          className={`w-full h-full p-2 ${inputStyle}`}
+          className={`w-full h-full rounded-xl p-2 ${inputStyle}`}
           value={inputValue}
           onChangeText={update}
         />
