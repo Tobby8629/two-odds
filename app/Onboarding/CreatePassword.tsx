@@ -21,6 +21,7 @@ const CreatePassword = () => {
     lowercase: false,
     number: false, 
     confirmed: false,
+    specialChar: false
   })
 
   const [data, setData] = useState<data>({
@@ -36,7 +37,8 @@ const CreatePassword = () => {
     const hasUppercase = /[A-Z]/.test(val.password); 
     const hasLowercase = /[a-z]/.test(val.password); 
     const hasNumber = /[0-9]/.test(val.password);
-    const confirmCase = val.confirm_password === data.password 
+    const hasSpecialChar = /[@$!%*?&]/.test(val.password); // Special character check
+    const confirmCase = val.confirm_password === val.password; // Ensure passwords match
   
     setcheckvalue({
       ...checkvalue,
@@ -44,9 +46,11 @@ const CreatePassword = () => {
       uppercase: hasUppercase,
       lowercase: hasLowercase,
       number: hasNumber,
-      confirmed: confirmCase
+      specialChar: hasSpecialChar, // New key for special character validation
+      confirmed: confirmCase,
     });
   };
+  
 
   useEffect(()=>{
     verifying(data)
@@ -64,15 +68,15 @@ const CreatePassword = () => {
 
   return (
     <ScrollView className={`h-full bg-pry px-[8%]`}>
-      <View className={`${isKeyboardVisible ? "min-h-[120vh]" : "min-h-screen"}`}>
+      <View className={`${isKeyboardVisible ? "min-h-[120vh]" : "min-h-screen"} w-full`}>
       <View className='flex-row justify-center mt-[100px]'>
         <SmallLogo />
       </View>
       
-      <Text className=' font-bold text-2xl my-8 text-white'>Create Password</Text>
-      <Text className=' font-light text-white text-base mb-8'>Use a minimum of 8 characters, including uppercase letters, lowercase letters and numbers.</Text>
+      <Text className=' font-bold text-2xl my-3 text-white'>Create Password</Text>
+      <Text className=' font-semi-bold text-white text-lg mb-5'>Use a minimum of 8 characters, including uppercase letters, lowercase letters and numbers.</Text>
       
-      <View className='flex bg-gray-300 py-[5px] px-[2px] rounded-xl w-[270px] h-[45px] flex-row items-center mb-3'> 
+      <View className='flex bg-gray-300 py-[5px] pr-[10px] rounded-xl w-[90%] h-[55px] flex-row items-center mb-3'> 
         <AnimatedInput 
           id='password'
           onChangeText={onChange}
@@ -96,7 +100,7 @@ const CreatePassword = () => {
         </CheckBox>
       ))}
 
-      <View className='flex bg-gray-300 py-[5px] px-[2px] rounded-xl w-[270px] h-[45px] flex-row items-center mt-3'> 
+      <View className='flex bg-gray-300 py-[5px] pr-[10px] rounded-xl w-[90%] h-[55px] flex-row items-center mt-3'> 
         <AnimatedInput 
           id='confirm_password'
           onChangeText={onChange}

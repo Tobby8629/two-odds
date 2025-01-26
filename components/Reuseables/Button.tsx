@@ -11,8 +11,8 @@ interface welcome {
 
 const Button = ({text, style, className, onPress}: welcome) => {
   return (
-    <Pressable onPress={onPress} style={style} className={`bg-sec w-[161px] h-[35px] rounded-lg  items-center justify-center text-white my-1 ${className}`}>
-      <Text className='text-center capitalize text-white text-lg'>{text}</Text>
+    <Pressable onPress={onPress} style={style} className={`bg-sec w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1 ${className}`}>
+      <Text className='text-center capitalize text-white text-xl font-semibold'>{text}</Text>
     </Pressable>
   )
 }

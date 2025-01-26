@@ -41,7 +41,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
   };  
 
   const handleBlur = (id: InputField) => {
-    if (inputValue === null) {
+    if (inputValue === '') {
       setFocus((prev) => ({ ...prev, [id]: false }));
       Animated.timing(animatedValue[id], {
         toValue: 0,
@@ -59,12 +59,16 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
       {
         translateY: animatedValue[id].interpolate({
           inputRange: [0, 1],
-          outputRange: [0, -27], 
+          outputRange: [0, -25], 
         }),
       },
     ],
 
-    color: focus[id] ? 'gold' : '#999',
+    color: focus[id] ? '#111827fc' : '#999',
+    backgroundColor: focus[id] ? '#fbac0bf2' : 'transparent',
+    // padding: focus[id] ? "0px, 2px" : 0,
+    zIndex: 999,
+    
   });
 
   const update = (value: string, id: InputField) => {
@@ -73,8 +77,9 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
   };
 
   return (
-      <View className={`w-[267px] h-[45px] mb-5 ${className}`} style={styles.inputWrapper}>
+      <View className={`w-[85%] mx-auto h-[55px] ${className}`} style={styles.inputWrapper}>
         <Animated.Text
+          className="font-bold px-2 py-[1px] rounded-xl"
           style={[styles.placeholder, getAnimatedStyle(id as InputField)]}
         >
           {placeholder}
@@ -106,8 +111,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 99,
     top: '35%',
-    left: '5%',
+    left: '3%',
     fontSize: 16,
     textTransform: "capitalize",
   },
 });
+
+// #111827fc
+// #fbac0b

@@ -17,8 +17,8 @@ interface layout {
 const Layout = ({children, text, onPress, shift, redirect, redirectLink, redirectText}: layout) => {
   
   return (
-    <View className={`bg-pry h-screen justify-center items-center`}>
-      <View className={` items-center ${shift}`}>
+    <View className={`bg-pry h-screen w-full justify-center items-center`}>
+      <View className={` items-center ${shift} w-full`}>
         <BigLogo />
         {children}
         <Button text={text} onPress={onPress}/>

@@ -13,5 +13,6 @@ interface verifyInt {
     lowercase: boolean,
     number: boolean 
     confirmed: boolean
+    specialChar: boolean
   }
   
