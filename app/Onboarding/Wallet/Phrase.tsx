@@ -20,12 +20,12 @@ const Phrase = () => {
           </Text>
         </View>
        
-        <View className='my-16 flex-row flex-wrap justify-between'>
+        <View className='my-16 p-10 w-[90%] mx-auto rounded-3xl flex-row border-[.5px] border-white flex-wrap justify-between'>
           {length.map((e, index)=>(
-            <View key={index.toString()} className='w-[31%] mb-[22px]'>
+            <View key={index.toString()} className='w-[35%] mb-[22px]'>
               <View className='border-[1px] rounded-3xl border-white px-[5px] flex-row items-center'>
-                <Text className='border-r-[1px] h-[20px] border-white w-[17px] text-white font-medium leading-[26px]'>{index + 1}</Text>
-                <Text className='text-white ml-2 text-lg capitalize w-full'>lorem</Text>
+                {/* <Text className='border-r-[1px] h-[20px] border-white w-[17px] text-white font-medium leading-[26px]'>{index + 1}</Text> */}
+                <Text className='text-white text-center text-lg capitalize w-full'>lorem</Text>
               </View>
             </View>
           ))}

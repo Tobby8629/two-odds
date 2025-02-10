@@ -6,12 +6,13 @@ interface welcome {
   className?: string,
   text: string
   onPress: (() => void) | null
+  disable?: boolean,
   style?: StyleProps
 }
 
-const Button = ({text, style, className, onPress}: welcome) => {
+const Button = ({text, style, className, onPress, disable}: welcome) => {
   return (
-    <Pressable onPress={onPress} style={style} className={`bg-sec w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1 ${className}`}>
+    <Pressable disabled={disable} onPress={onPress} style={style} className={`${disable ? "bg-gray-500":"bg-sec"} w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1 ${className}`}>
       <Text className='text-center capitalize text-white text-xl font-semibold'>{text}</Text>
     </Pressable>
   )

@@ -6,6 +6,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput';
 import { validate} from '@/constants/data';
 import { validateOutput } from '@/interface';
+import Button from '@/components/Reuseables/Button';
 
 interface data {
   email: string
@@ -35,6 +36,8 @@ const SignIn = () => {
   const [shift, setShift] = useState<string>("")
 
   const [show, setshow] = useState(false)
+
+  const disable = data.email === '' || data.password === '';
 
 
 const navigate = () => {
@@ -76,9 +79,7 @@ const navigate = () => {
 
 
   return (
-    <Layout text="Sign In" onPress={navigate} shift={shift}
-      redirect={true} redirectLink='/Onboarding/SignUp' redirectText='Create an account'
-    >
+    <Layout shift={shift} redirect={true} redirectLink='/Onboarding/SignUp' redirectText='Create an account'>
       <View className='my-5 w-full'>
         <View className='w-full mb-7'>
           <AnimatedInput
@@ -111,11 +112,11 @@ const navigate = () => {
           {passwordError.password ? <Text className='text-red-700 text-lg font-semibold w-85% mr-auto pl-[8%]'>
           {passwordError.text}</Text> : null}
         </View>
-        
-      
 
         <Text className='text-white text-lg font-semibold w-85% ml-auto pr-[8%]'>Forgot password?</Text>
-      
+        <View className='w-85% mx-auto mt-5'>
+          <Button disable={disable} text="Sign In" onPress={navigate} />
+        </View>
       </View>
     </Layout>
   );

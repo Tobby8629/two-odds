@@ -87,7 +87,7 @@ const Signup = () => {
        <View className='absolute bottom-10 flex-row items-center justify-center w-full'>
         <Text className='text-white text-xl'>Already Have An Account? </Text>
         <TouchableOpacity onPress={()=>router.replace("/Onboarding/SignIn")}>
-          <Text className='text-blue-400 font-bold text-xl border-b-[1px] border-blue-400 py-[.3px]'>Login</Text>
+          <Text className='text-sec font-bold text-xl border-b-[1px] border-blue-400 py-[.3px]'>Login</Text>
         </TouchableOpacity> 
        </View>
         

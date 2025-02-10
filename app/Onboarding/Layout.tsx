@@ -6,22 +6,19 @@ import { Href, router } from 'expo-router'
 
 interface layout {
   children: React.ReactNode
-  text: string,
-  onPress: () => void
   shift?: string
   redirect?: boolean
   redirectText?: string,
   redirectLink?: Href,
 }
 
-const Layout = ({children, text, onPress, shift, redirect, redirectLink, redirectText}: layout) => {
+const Layout = ({children, shift, redirect, redirectLink, redirectText}: layout) => {
   
   return (
     <View className={`bg-pry h-screen w-full justify-center items-center`}>
       <View className={` items-center ${shift} w-full`}>
         <BigLogo />
         {children}
-        <Button text={text} onPress={onPress}/>
       </View>
       {redirect && redirectLink ? 
         <View className='absolute bottom-10'>
