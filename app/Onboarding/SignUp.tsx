@@ -22,16 +22,16 @@ const Signup = () => {
     text: "",
   })
   
-  const onChange = (value: string, id: InputField | undefined) => {
-    if(id){
-      setRegisterData({ ...registerData, [id]: value });
+  const onChange = (value: string, type: InputField | undefined) => {
+    if(type){
+      setRegisterData({ ...registerData, [type]: value });
     }
   };
-  const changeBox = (id: keyof register | undefined) => {
-    if(id){
+  const changeBox = (type: keyof register | undefined) => {
+    if(type){
       setRegisterData((prev) => ({
         ...prev,
-        [id]: !prev[id],
+        [type]: !prev[type],
       }));
     }
   };
@@ -48,7 +48,7 @@ const Signup = () => {
     }));
 
     if(!emailValid.state && registerData.tc){
-      router.replace('/Onboarding/Verify')
+      router.replace('/Onboarding/verify/Verify')
     }
   }
   
@@ -60,7 +60,7 @@ const Signup = () => {
        <View className='w-full  mb-5'>
         <Text className=' my-8 w-full text-left text-white text-[26px] font-bold'>Enter your email address</Text>
         <AnimatedInput 
-          id='email'
+          type='email'
           inputStyle='rounded-lg bg-white'
           className='w-full h-[50px]'
           placeholder='Email address'

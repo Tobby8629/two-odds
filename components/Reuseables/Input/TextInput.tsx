@@ -5,7 +5,7 @@ interface textinput {
   id: string
   onFocus?: () => void
   onBlur?: () => void
-  onChangeText: (id: InputField, value: string) => void 
+  onChangeText: (id: InputID, value: string) => void 
   className?: string
   secure?: boolean
 }
@@ -19,7 +19,7 @@ const Textinput = ({ onChangeText, id, onFocus, secure, onBlur, className}: text
         secureTextEntry={secure}
         onFocus={onFocus}
         className=' w-[267px] h-[39px] bg-white my-3 p-2'
-        onChangeText={(value)=> onChangeText(id as InputField, value)}
+        onChangeText={(value)=> onChangeText(id as InputID, value)}
        />
     </View>
   )

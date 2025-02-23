@@ -2,18 +2,19 @@ import { Animated, TextInput, StyleSheet,  View } from 'react-native'
 import React, { useState } from 'react'
 
 interface textinput {
-  id: InputField
+  type?: InputField
+  id: InputID
   onFocus?: () => void
   onBlur?: () => void
-  onChangeText: (value: string, id?: InputField) => void 
+  onChangeText: (value: string, id?: InputID) => void 
   className?: string
   setShift?: React.Dispatch<React.SetStateAction<string>>;
   secure?: boolean
   placeholder: string
-  inputStyle: string
+  inputStyle?: string
 }
 
-const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChangeText, setShift}: textinput) => {
+const AnimatedInput = ({inputStyle, id,  className, placeholder, type, secure, onChangeText, setShift}: textinput) => {
   const [focus, setFocus] = useState({
     [id]: false,
   });
@@ -21,13 +22,14 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
 
   const [inputValue, setInputValue] = useState('')
 
-  const animatedValue = React.useRef<Record<InputField, Animated.Value>>({
+  const animatedValue = React.useRef<Record<InputID, Animated.Value>>({
     email: new Animated.Value(0),
     password: new Animated.Value(0),
-    confirm_password: new Animated.Value(0) 
+    confirm_password: new Animated.Value(0),
+    reset_code: new Animated.Value(0), 
   }).current;
 
-  const handleFocus = (id: InputField) => {
+  const handleFocus = (id: InputID) => {
     setFocus((prev) => ({ ...prev, [id]: true }));
     Animated.timing(animatedValue[id], {
       toValue: 1,
@@ -40,7 +42,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
     }
   };  
 
-  const handleBlur = (id: InputField) => {
+  const handleBlur = (id: InputID) => {
     if (inputValue === '') {
       setFocus((prev) => ({ ...prev, [id]: false }));
       Animated.timing(animatedValue[id], {
@@ -54,7 +56,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
     }
   };
 
-  const getAnimatedStyle = (id: InputField) => ({
+  const getAnimatedStyle = (id: InputID) => ({
     transform: [
       {
         translateY: animatedValue[id].interpolate({
@@ -71,7 +73,7 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
     
   });
 
-  const update = (value: string, id: InputField) => {
+  const update = (value: string, id: InputID) => {
     setInputValue(value); 
     onChangeText(value, id);
   };
@@ -80,15 +82,15 @@ const AnimatedInput = ({inputStyle, className, placeholder, id, secure, onChange
       <View className={`w-[85%] mx-auto h-[55px] ${className}`} style={styles.inputWrapper}>
         <Animated.Text
           className="font-bold px-2 py-[1px] rounded-xl"
-          style={[styles.placeholder, getAnimatedStyle(id as InputField)]}
+          style={[styles.placeholder, getAnimatedStyle(id as InputID)]}
         >
           {placeholder}
         </Animated.Text>
         <TextInput
           id={id}
-          onBlur={() => handleBlur(id as InputField)}
+          onBlur={() => handleBlur(id as InputID)}
           secureTextEntry={secure}
-          onFocus={() => handleFocus(id as InputField)}
+          onFocus={() => handleFocus(id as InputID)}
           className={`w-full h-full rounded-xl p-2 ${inputStyle}`}
           value={inputValue}
           onChangeText={(value)=>update(value, id)}

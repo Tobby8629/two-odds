@@ -1,4 +1,6 @@
-type InputField = 'email' | 'password' | 'confirm_password';
+type InputField = 'email' | 'password' | 'text';
+
+type InputID = 'email' | 'password' | 'confirm_password' | 'reset_code';
 
 interface register {
     email: InputField,

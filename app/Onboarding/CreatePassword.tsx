@@ -58,7 +58,7 @@ const CreatePassword = () => {
 
   const hasFalseValue = Object.values(checkvalue).some(value => value === false);
 
-  const onChange = (value: string, id: InputField | undefined) => {
+  const onChange = (value: string, id: InputID | undefined) => {
     if(id){
       setData({ ...data, [id]: value });
     }

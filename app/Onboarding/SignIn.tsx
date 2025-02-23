@@ -1,4 +1,4 @@
-import { Alert, Animated, Pressable, Text, View } from 'react-native';
+import { Alert, Animated, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import Layout from './Layout';
 import { router } from 'expo-router';
@@ -29,7 +29,7 @@ const SignIn = () => {
     text: "",
   })
 
-  const onChange = (value: string, id?: InputField) => {
+  const onChange = (value: string, id?: InputID) => {
     setData((prevData) => (id ? { ...prevData, [id]: value } : prevData));
   };
 
@@ -83,6 +83,7 @@ const navigate = () => {
       <View className='my-5 w-full'>
         <View className='w-full mb-7'>
           <AnimatedInput
+          type="email"
           id="email"
           onChangeText={onChange}
           setShift={setShift}
@@ -97,6 +98,7 @@ const navigate = () => {
             className={`flex justify-between pr-2 w-[85%] mx-auto bg-white rounded-xl h-[55px] flex-row items-center ${passwordError.password ? 'border-red-500 border-2' : ''}`}
           > 
             <AnimatedInput 
+              type="password"
               id="password"
               onChangeText={onChange}
               secure={!show}
@@ -112,8 +114,9 @@ const navigate = () => {
           {passwordError.password ? <Text className='text-red-700 text-lg font-semibold w-85% mr-auto pl-[8%]'>
           {passwordError.text}</Text> : null}
         </View>
-
-        <Text className='text-white text-lg font-semibold w-85% ml-auto pr-[8%]'>Forgot password?</Text>
+        <TouchableOpacity onPress={()=> router.replace('/Onboarding/forgot_password/Forget')}>
+          <Text className='text-white text-lg font-semibold w-85% ml-auto pr-[8%]'>Forgot password?</Text>
+        </TouchableOpacity>
         <View className='w-85% mx-auto mt-5'>
           <Button disable={disable} text="Sign In" onPress={navigate} />
         </View>

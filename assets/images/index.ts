@@ -5,7 +5,7 @@ import verified from './Mask group.png'
 import wallet from './wallet.png'
 import nft from './nft.png'
 import phrase from './phrase.png'
-
+import forgot from './forgot.png' 
 export {
   loadOne,
   loadTwo,
@@ -13,5 +13,6 @@ export {
   verified,
   phrase,
   nft,
-  wallet
+  wallet,
+  forgot
 }
