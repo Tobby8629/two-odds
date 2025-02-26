@@ -18,9 +18,9 @@ const Layout = ({children}: layoutprop) => {
       <TouchableOpacity onPress={goBack} className='w-[35px] h-[35px] justify-center items-center border-[1px] border-white rounded-full'>
         <FontAwesome5 name="arrow-left" size={20} color="white" />
       </TouchableOpacity>
-      <TextB className='text-3xl font-bold my-8'>Forgot Password</TextB>
+      <TextB className='text-3xl font-bold mt-12'>Forgot Password</TextB>
       {children}
-      <View className='flex-row justify-center items-center'>
+      <View className='flex-row justify-center items-center mb-14'>
         <TextB className='text-white text-lg font-semibold'>Remember your password?</TextB>
         <Pressable onPress={goBack}>
           <TextB className='text-white text-lg font-semibold underline '> Sign In</TextB>

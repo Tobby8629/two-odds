@@ -28,10 +28,14 @@ const Forget = () => {
     <Layout>
       <View className=' flex-1 items-center'>
         {/* <Image source={forgot} alt={"forgot password"}/> */}
-        <ForgotImage />
+        <View className='my-7'>
+          <ForgotImage />
+        </View>
+        
         <View className='w-full mb-7'>
           <AnimatedInput id="email"  type="email" placeholder='Email-address' onChangeText={onChangeText}
           inputStyle={`bg-white w-full ${email.emailError ? 'border-red-500 border-2' : ''}`}
+          className='w-[95%]'
           />
         </View>
         <Button text="Send Reset Link" 
