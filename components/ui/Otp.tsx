@@ -22,7 +22,7 @@ const OTPInput = ({ length = 4, onSubmit }: { length?: number; onSubmit: (otp: s
     if (updatedOtp.every((digit) => digit !== "")) {
       Keyboard.dismiss();
       onSubmit(updatedOtp.join(""));
-      router.replace('/Onboarding/Verified')
+      router.replace('/Onboarding/verify/Verified')
     }
   };
 

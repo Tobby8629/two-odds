@@ -22,7 +22,7 @@ const Signup = () => {
     text: "",
   })
   
-  const onChange = (value: string, type: InputField | undefined) => {
+  const onChange = (value: string, type: InputID | undefined) => {
     if(type){
       setRegisterData({ ...registerData, [type]: value });
     }
@@ -48,7 +48,7 @@ const Signup = () => {
     }));
 
     if(!emailValid.state && registerData.tc){
-      router.replace('/Onboarding/verify/Verify')
+      router.replace("/Onboarding/verify/Verify")
     }
   }
   
@@ -61,6 +61,7 @@ const Signup = () => {
         <Text className=' my-8 w-full text-left text-white text-[26px] font-bold'>Enter your email address</Text>
         <AnimatedInput 
           type='email'
+          id="email"
           inputStyle='rounded-lg bg-white'
           className='w-full h-[50px]'
           placeholder='Email address'
