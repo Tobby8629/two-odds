@@ -4,9 +4,9 @@ import Layout from './Layout';
 import { router } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput';
-import { validate} from '@/constants/data';
 import { validateOutput } from '@/interface';
 import Button from '@/components/Reuseables/Button';
+import { validate } from '@/constants/functions';
 
 interface data {
   email: string

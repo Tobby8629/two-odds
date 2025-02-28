@@ -5,8 +5,8 @@ import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import Logo from '@/assets/SVGs/Logo'
 import CheckBox from '@/components/Reuseables/Input/CheckBox'
 import Button from '@/components/Reuseables/Button'
-import { validate } from '@/constants/data'
 import { validateOutput } from '@/interface'
+import { validate } from '@/constants/functions'
 
 
 const Signup = () => {

@@ -7,6 +7,7 @@ import { useState } from 'react'
 import Button from '@/components/Reuseables/Button'
 import { router } from 'expo-router'
 import Layout from './Layout'
+import { validate } from '@/constants/functions'
 
 
 const Forget = () => {
@@ -23,6 +24,20 @@ const Forget = () => {
     })
   }
 
+  const disable = email.email === '';
+  const navigate = () => {
+    const checkEmail = validate({email: email.email})
+    setEmail((prev)=>({
+      ...prev,
+      emailError: checkEmail.state,
+      emailText: checkEmail.text
+    }))
+
+    if(!checkEmail.state) {
+      router.replace("/Onboarding/forgot_password/Reset")
+    }
+  }
+
 
   return (
     <Layout>
@@ -32,15 +47,16 @@ const Forget = () => {
           <ForgotImage />
         </View>
         
-        <View className='w-full mb-7'>
-          <AnimatedInput id="email"  type="email" placeholder='Email-address' onChangeText={onChangeText}
-          inputStyle={`bg-white w-full ${email.emailError ? 'border-red-500 border-2' : ''}`}
+        <View className= {`bg-white rounded-lg w-full ${email.emailError ? 'border-red-500 border-2' : ''}`}>
+          <AnimatedInput id="email" type="email" placeholder='Email-address' onChangeText={onChangeText}
           className='w-[95%]'
           />
         </View>
+        {email.emailError ? <TextB className='!text-red-700 text-lg font-semibold w-85% my-3 mr-auto'>
+          {email.emailText}</TextB> : null}
         <Button text="Send Reset Link" 
-        disable={email.emailError || email.email.length < 1} 
-        onPress={()=> router.replace("/Onboarding/forgot_password/Reset")}
+        disable={disable} 
+        onPress={navigate}
         />
       </View>
     </Layout>

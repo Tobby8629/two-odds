@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useState, useRef } from "react";
+import  { useState, useRef } from "react";
 import { TextInput, View, StyleSheet, Keyboard } from "react-native";
 
 const OTPInput = ({ length = 4, onSubmit }: { length?: number; onSubmit: (otp: string) => void }) => {
