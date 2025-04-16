@@ -7,10 +7,12 @@ import 'react-native-reanimated';
 import '../global.css'
 import { useColorScheme } from '@/hooks/useColorScheme';
 import SplashScreen from './SplashScreen';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const queryclient = new QueryClient
   const [ splash, setsplash] = useState(true)
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -33,14 +35,16 @@ export default function RootLayout() {
     <>
       {splash ? <SplashScreen /> : 
       
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{headerShown: false}}>
-        <Stack.Screen name='index' /> 
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-      </ThemeProvider>
+      <QueryClientProvider client={queryclient}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack screenOptions={{headerShown: false}}>
+          <Stack.Screen name='index' /> 
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+        </ThemeProvider>
+      </QueryClientProvider>
       }
     </>
     
