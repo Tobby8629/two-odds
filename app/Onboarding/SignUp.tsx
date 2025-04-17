@@ -7,6 +7,9 @@ import CheckBox from '@/components/Reuseables/Input/CheckBox'
 import Button from '@/components/Reuseables/Button'
 import { validateOutput } from '@/interface'
 import { validate } from '@/constants/functions'
+import { useMutation } from '@tanstack/react-query'
+import { postQuery } from '@/components/api/QueryFn'
+
 
 
 const Signup = () => {
@@ -27,6 +30,22 @@ const Signup = () => {
       setRegisterData({ ...registerData, [type]: value });
     }
   };
+
+  const reg = useMutation({
+    mutationFn: async (data: string) => {
+      const response = await postQuery("/auth/register", {email: data});
+      return response;
+    },
+    onSuccess: (data) => {
+      console.log("Registration successful:", data);
+      router.push("/Onboarding/verify/Verify"); 
+    },
+    onError: (error) => {
+      console.error("Registration failed:", error.message);
+    },
+  });
+  
+
   const changeBox = (type: keyof register | undefined) => {
     if(type){
       setRegisterData((prev) => ({
@@ -48,7 +67,7 @@ const Signup = () => {
     }));
 
     if(!emailValid.state && registerData.tc){
-      router.replace("/Onboarding/verify/Verify")
+      reg.mutate(registerData.email);
     }
   }
   
@@ -80,7 +99,8 @@ const Signup = () => {
          <Text className='text-white text-[14px] leading-[20px]'>Sign me up to receive newsletters, offers and tips from 2Odds (you can opt out at any time) <Text className='text-sec'>OPTIONAL</Text> </Text> 
        </CheckBox>
 
-       <Button text='verify' onPress={submit}
+       <Button text='verify' 
+         onPress={submit}
          className={` m-auto mt-14 h-[45px] rounded-3xl `}
          style={ !registerData.email || !registerData.tc ? {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
        />

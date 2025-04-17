@@ -1,18 +1,18 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://api.example.com', // Replace with your base URL
+  baseURL: 'https://two-odds-backend.onrender.com/api/',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 // Optional auth token setup
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+// axiosInstance.interceptors.request.use((config) => {
+//   const token = localStorage.getItem('token');
+//   if (token) config.headers.Authorization = `Bearer ${token}`;
+//   return config;
+// });
 
 // Define reusable CRUD methods
 const getRequest = <T = any>(
