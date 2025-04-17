@@ -4,7 +4,7 @@ import { postRequest } from "./Axois";
 export const postQuery = async (url: string, data: any) => {
   try {
     const response = await postRequest(url, data)
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 201) {
         return response.data;
       }
       throw new Error(`Request failed with status ${response.status}`);
