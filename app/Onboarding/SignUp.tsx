@@ -1,14 +1,13 @@
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useState } from 'react'
-import { router } from 'expo-router'
+import { RelativePathString, router } from 'expo-router'
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import Logo from '@/assets/SVGs/Logo'
 import CheckBox from '@/components/Reuseables/Input/CheckBox'
 import Button from '@/components/Reuseables/Button'
 import { validateOutput } from '@/interface'
 import { validate } from '@/constants/functions'
-import { useMutation } from '@tanstack/react-query'
-import { postQuery } from '@/components/api/QueryFn'
+import useMutate from '@/hooks/useMutate'
 
 
 
@@ -31,20 +30,7 @@ const Signup = () => {
     }
   };
 
-  const reg = useMutation({
-    mutationFn: async (data: string) => {
-      const response = await postQuery("/auth/register", {email: data});
-      return response;
-    },
-    onSuccess: (data) => {
-      console.log("Registration successful:", data);
-      router.push("/Onboarding/verify/Verify"); 
-    },
-    onError: (error) => {
-      console.error("Registration failed:", error.message);
-    },
-  });
-  
+  const {mutate, isPending} = useMutate("/Onboarding/verify/Verify" as RelativePathString);
 
   const changeBox = (type: keyof register | undefined) => {
     if(type){
@@ -67,7 +53,10 @@ const Signup = () => {
     }));
 
     if(!emailValid.state && registerData.tc){
-      reg.mutate(registerData.email);
+      mutate({
+        url: "/auth/register",
+        data: {email: registerData.email},
+      })
     }
   }
   
@@ -99,7 +88,8 @@ const Signup = () => {
          <Text className='text-white text-[14px] leading-[20px]'>Sign me up to receive newsletters, offers and tips from 2Odds (you can opt out at any time) <Text className='text-sec'>OPTIONAL</Text> </Text> 
        </CheckBox>
 
-       <Button text='verify' 
+       <Button 
+         text={isPending ? "loading" : 'verify' }
          onPress={submit}
          className={` m-auto mt-14 h-[45px] rounded-3xl `}
          style={ !registerData.email || !registerData.tc ? {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
@@ -117,3 +107,22 @@ const Signup = () => {
 }
 
 export default Signup
+
+
+
+
+
+
+ // const reg = useMutation({
+  //   mutationFn: async (data: string) => {
+  //     const response = await postQuery("/auth/register", {email: data});
+  //     return response;
+  //   },
+  //   onSuccess: (data) => {
+  //     console.log("Registration successful:", data);
+  //     router.push("/Onboarding/verify/Verify"); 
+  //   },
+  //   onError: (error) => {
+  //     console.error("Registration failed:", error.message);
+  //   },
+  // });

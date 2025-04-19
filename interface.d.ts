@@ -6,6 +6,11 @@ interface validateInput {
   password?: string
 }
 
+interface data {
+  password: ""
+  confirm_password: ""
+}
+
 interface validateOutput {
     state: boolean
     text: string

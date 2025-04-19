@@ -5,14 +5,13 @@ import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import CheckBox from '@/components/Reuseables/Input/CheckBox'
 import { passwordverification } from '@/constants/data'
 import Button from '@/components/Reuseables/Button'
-import { router } from 'expo-router'
+import { RelativePathString, router } from 'expo-router'
 import { FontAwesome5 } from '@expo/vector-icons'
 import useKeyboard from '@/hooks/useKeyboard'
+import { data } from '@/interface'
+import { hasFalseValue, verifying } from '@/constants/functions'
+import useMutate from '@/hooks/useMutate'
 
-interface data {
-  password: ""
-  confirm_password: ""
-}
 
 const CreatePassword = () => {
   const [checkvalue, setcheckvalue] = useState<verifyInt>({
@@ -32,37 +31,19 @@ const CreatePassword = () => {
   const [passwordShow, setPasswordshow] = useState(false)
   const [confirmPasswordShow, setConfirmPasswordshow] = useState(false)
 
-  const verifying = (val: data) => {
-    const hasLength = val.password.length >= 8;
-    const hasUppercase = /[A-Z]/.test(val.password); 
-    const hasLowercase = /[a-z]/.test(val.password); 
-    const hasNumber = /[0-9]/.test(val.password);
-    const hasSpecialChar = /[@$!%*?&]/.test(val.password); // Special character check
-    const confirmCase = val.confirm_password === val.password; // Ensure passwords match
-  
-    setcheckvalue({
-      ...checkvalue,
-      length: hasLength,
-      uppercase: hasUppercase,
-      lowercase: hasLowercase,
-      number: hasNumber,
-      specialChar: hasSpecialChar, // New key for special character validation
-      confirmed: confirmCase,
-    });
-  };
-  
-
   useEffect(()=>{
-    verifying(data)
+    verifying(data, checkvalue, setcheckvalue);
   },[data])
 
-  const hasFalseValue = Object.values(checkvalue).some(value => value === false);
+ const check = hasFalseValue(checkvalue)
 
   const onChange = (value: string, id: InputID | undefined) => {
     if(id){
       setData({ ...data, [id]: value });
     }
   };
+
+  const {mutate} = useMutate("/" as RelativePathString);
 
   const{isKeyboardVisible}=useKeyboard()
 
@@ -114,9 +95,13 @@ const CreatePassword = () => {
         </Pressable>
       </View>
       
-      <Button text='continue' onPress={hasFalseValue ? null : () => router.replace("/")}
+      <Button text='continue' onPress={check ? null : () => mutate({
+         url: "/auth/createPassword",
+        data: {
+          password: data.password
+        }})}
          className={` m-auto mt-14 h-[45px] rounded-3xl`}
-         style={hasFalseValue ?  {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
+         style={check ?  {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
        />
     </View>
     </ScrollView>

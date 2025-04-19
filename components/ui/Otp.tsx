@@ -1,11 +1,14 @@
 import { router } from "expo-router";
 import  { useState, useRef } from "react";
 import { TextInput, View, StyleSheet, Keyboard } from "react-native";
-
-const OTPInput = ({ length = 4, onSubmit }: { length?: number; onSubmit: (otp: string) => void }) => {
-  const [otp, setOtp] = useState<string[]>(Array(length).fill(""));
+interface otpInt { 
+  length: number;
+  onSubmit: (otp: string) => void
+  otp: string[];
+  setOtp: React.Dispatch<React.SetStateAction<string[]>>;
+ }
+const OTPInput = ({ length, onSubmit, otp, setOtp }: otpInt) => {
   const inputs = useRef<Array<TextInput | null>>([]);
-
   const handleChangeText = (text: string, index: number) => {
     if (!/^\d*$/.test(text)) return; // Allow only numbers
 
@@ -22,7 +25,6 @@ const OTPInput = ({ length = 4, onSubmit }: { length?: number; onSubmit: (otp: s
     if (updatedOtp.every((digit) => digit !== "")) {
       Keyboard.dismiss();
       onSubmit(updatedOtp.join(""));
-      router.replace('/Onboarding/verify/Verified')
     }
   };
 

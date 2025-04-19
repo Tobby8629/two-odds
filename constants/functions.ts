@@ -1,4 +1,4 @@
-import { validateInput, validateOutput } from "@/interface";
+import { data, validateInput, validateOutput } from "@/interface";
 import { router } from "expo-router";
 
 interface resetProps {
@@ -112,4 +112,30 @@ export const navigateResetPassword = ({reset, passwordError, setPasswordError, s
       router.replace("/Onboarding/SignIn")
     }
 }
+
+export const verifying = (
+  val: data, 
+  checkvalue: verifyInt, 
+  setcheckvalue:React.Dispatch<React.SetStateAction<verifyInt>>) => 
+  {
+  const hasLength = val.password.length >= 8;
+  const hasUppercase = /[A-Z]/.test(val.password); 
+  const hasLowercase = /[a-z]/.test(val.password); 
+  const hasNumber = /[0-9]/.test(val.password);
+  const hasSpecialChar = /[@$!%*?&]/.test(val.password); // Special character check
+  const confirmCase = val.confirm_password === val.password; // Ensure passwords match
+
+  setcheckvalue({
+    ...checkvalue,
+    length: hasLength,
+    uppercase: hasUppercase,
+    lowercase: hasLowercase,
+    number: hasNumber,
+    specialChar: hasSpecialChar, // New key for special character validation
+    confirmed: confirmCase,
+  });
+};
+
+export const hasFalseValue = (checkvalue: verifyInt) =>  Object.values(checkvalue).some(value => value === false);
+
 
