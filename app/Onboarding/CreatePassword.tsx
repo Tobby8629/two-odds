@@ -43,7 +43,9 @@ const CreatePassword = () => {
     }
   };
 
-  const {mutate} = useMutate("/" as RelativePathString);
+  const {mutate} = useMutate({
+    link: "/" as RelativePathString
+  });
 
   const{isKeyboardVisible}=useKeyboard()
 

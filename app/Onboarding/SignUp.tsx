@@ -8,6 +8,7 @@ import Button from '@/components/Reuseables/Button'
 import { validateOutput } from '@/interface'
 import { validate } from '@/constants/functions'
 import useMutate from '@/hooks/useMutate'
+import { useUser } from './OnboardContext'
 
 
 
@@ -30,7 +31,12 @@ const Signup = () => {
     }
   };
 
-  const {mutate, isPending} = useMutate("/Onboarding/verify/Verify" as RelativePathString);
+  const {mutate, isPending, data} = useMutate({
+    link: "/Onboarding/verify/Verify" as RelativePathString, 
+    params: {email: registerData.email}
+  });
+
+  const {setUserId} = useUser()
 
   const changeBox = (type: keyof register | undefined) => {
     if(type){
@@ -41,7 +47,7 @@ const Signup = () => {
     }
   };
 
-  const submit = () => {
+  const submit = async () => {
     const emailValid  = validate({
       email: registerData.email,
     }) as validateOutput;
@@ -90,9 +96,10 @@ const Signup = () => {
 
        <Button 
          text={isPending ? "loading" : 'verify' }
+         disable={isPending || !registerData.email || !registerData.tc}
          onPress={submit}
          className={` m-auto mt-14 h-[45px] rounded-3xl `}
-         style={ !registerData.email || !registerData.tc ? {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
+         style={ isPending || !registerData.email || !registerData.tc ? {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
        />
 
        <View className='absolute bottom-10 flex-row items-center justify-center w-full'>
@@ -107,22 +114,3 @@ const Signup = () => {
 }
 
 export default Signup
-
-
-
-
-
-
- // const reg = useMutation({
-  //   mutationFn: async (data: string) => {
-  //     const response = await postQuery("/auth/register", {email: data});
-  //     return response;
-  //   },
-  //   onSuccess: (data) => {
-  //     console.log("Registration successful:", data);
-  //     router.push("/Onboarding/verify/Verify"); 
-  //   },
-  //   onError: (error) => {
-  //     console.error("Registration failed:", error.message);
-  //   },
-  // });

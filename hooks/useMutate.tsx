@@ -7,15 +7,23 @@ interface MutateInput {
   data: any;
 }
 
-const useMutate = (redirect?: RelativePathString) => {
+interface redirect {
+  link?: RelativePathString;
+  params?: any;
+}
+
+const useMutate = ({link, params}: redirect) => {
   const mutation = useMutation({
     mutationFn: async ({ url, data }: MutateInput) => {
       const response = await postQuery(url, data);
       return response;
     },
     onSuccess: (data) => {
-      if (redirect) {
-        router.push(redirect);
+      if (link) {
+        router.push({
+         pathname: link,
+         params: params
+        });
       }
     },
     onError: (error: any) => {

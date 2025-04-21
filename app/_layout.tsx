@@ -8,6 +8,7 @@ import '../global.css'
 import { useColorScheme } from '@/hooks/useColorScheme';
 import SplashScreen from './SplashScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { UserProvider } from './Onboarding/OnboardContext';
 
 
 export default function RootLayout() {
@@ -36,6 +37,7 @@ export default function RootLayout() {
       {splash ? <SplashScreen /> : 
       
       <QueryClientProvider client={queryclient}>
+        <UserProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack screenOptions={{headerShown: false}}>
           <Stack.Screen name='index' /> 
@@ -44,6 +46,7 @@ export default function RootLayout() {
         </Stack>
         <StatusBar style="auto" />
         </ThemeProvider>
+        </UserProvider>
       </QueryClientProvider>
       }
     </>
