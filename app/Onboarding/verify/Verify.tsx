@@ -6,18 +6,19 @@ import { Link, RelativePathString, router, useLocalSearchParams } from 'expo-rou
 import OTPInput from '@/components/ui/Otp'
 import useKeyboard from '@/hooks/useKeyboard'
 import useMutate from '@/hooks/useMutate'
+import { useUser } from '../OnboardContext'
 
 const Verify = () => {
   const {isKeyboardVisible} = useKeyboard()
   const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
   const { email} = useLocalSearchParams();
-
+  const { userId } = useUser()
   const { mutate } = useMutate({
     link: "/onboarding/createPassword" as RelativePathString
   });
   const handleOtpSubmit = (otp: string) => {
     mutate({
-      url: "/auth/verify/",
+      url: `/auth/verify/${userId}`,
       data: { 
          otp: otp
        },

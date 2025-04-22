@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from 'react-native'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { RelativePathString, router } from 'expo-router'
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import Logo from '@/assets/SVGs/Logo'
@@ -31,7 +31,7 @@ const Signup = () => {
     }
   };
 
-  const {mutate, isPending, data} = useMutate({
+  const {mutate, isPending, data, isSuccess} = useMutate({
     link: "/Onboarding/verify/Verify" as RelativePathString, 
     params: {email: registerData.email}
   });
@@ -61,10 +61,16 @@ const Signup = () => {
     if(!emailValid.state && registerData.tc){
       mutate({
         url: "/auth/register",
-        data: {email: registerData.email},
-      })
+        data: {email: registerData.email}
+    })
     }
   }
+
+  useEffect(() => {
+    if (isSuccess && data?.user?._id) {
+      setUserId(data.user._id);
+    }
+  }, [isSuccess, data]);
   
   return (
     <View className='h-screen w-full bg-pry justify-center items-center px-[8%]'>

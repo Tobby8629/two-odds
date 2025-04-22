@@ -11,6 +11,7 @@ import useKeyboard from '@/hooks/useKeyboard'
 import { data } from '@/interface'
 import { hasFalseValue, verifying } from '@/constants/functions'
 import useMutate from '@/hooks/useMutate'
+import { useUser } from './OnboardContext'
 
 
 const CreatePassword = () => {
@@ -42,6 +43,7 @@ const CreatePassword = () => {
       setData({ ...data, [id]: value });
     }
   };
+  const { userId } = useUser()
 
   const {mutate} = useMutate({
     link: "/" as RelativePathString
@@ -98,7 +100,7 @@ const CreatePassword = () => {
       </View>
       
       <Button text='continue' onPress={check ? null : () => mutate({
-         url: "/auth/createPassword",
+         url:   `/auth/createPassword/${userId}`,
         data: {
           password: data.password
         }})}
