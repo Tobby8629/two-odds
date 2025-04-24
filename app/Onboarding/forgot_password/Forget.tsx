@@ -1,7 +1,6 @@
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import TextB from '@/components/Text/BasicText'
 import ForgotImage from '@/assets/SVGs/Forgot'
-import { FontAwesome5 } from '@expo/vector-icons'
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import { useState } from 'react'
 import Button from '@/components/Reuseables/Button'

@@ -1,7 +1,6 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { Link, router } from 'expo-router'
-import Cancel from '@/assets/SVGs/Cancel'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { router } from 'expo-router'
+
 
 const Phrase = () => {
   const length = Array.from({length: 12})

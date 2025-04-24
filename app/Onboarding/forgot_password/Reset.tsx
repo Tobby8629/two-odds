@@ -1,9 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Layout from './Layout'
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import { FontAwesome5 } from '@expo/vector-icons'
-import { router } from 'expo-router'
 import Button from '@/components/Reuseables/Button'
 import { navigateResetPassword } from '@/constants/functions'
 

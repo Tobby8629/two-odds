@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import Swiper from 'react-native-swiper'
 import { createWallet } from '@/constants/data'
 import Logo from '@/assets/SVGs/Logo'
