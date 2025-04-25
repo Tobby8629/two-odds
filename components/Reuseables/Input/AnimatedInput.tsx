@@ -1,5 +1,5 @@
-import { Animated, TextInput, StyleSheet,  View } from 'react-native'
-import React, { useState } from 'react'
+import { Animated, TextInput, StyleSheet,  View, Pressable } from 'react-native'
+import React, { useRef, useState } from 'react'
 
 interface textinput {
   type?: InputField
@@ -21,7 +21,7 @@ const AnimatedInput = ({inputStyle, id,  className, placeholder, type, secure, o
   
 
   const [inputValue, setInputValue] = useState('')
-
+  const inputRef = useRef<TextInput | null>(null);
   const animatedValue = React.useRef<Record<InputID, Animated.Value>>({
     email: new Animated.Value(0),
     password: new Animated.Value(0),
@@ -79,7 +79,7 @@ const AnimatedInput = ({inputStyle, id,  className, placeholder, type, secure, o
   };
 
   return (
-      <View className={`w-[85%] mx-auto h-[55px] ${className}`} style={styles.inputWrapper}>
+      <Pressable onPress={()=>inputRef.current?.focus() } className={`w-[85%] mx-auto h-[55px] ${className}`} style={styles.inputWrapper}>
         <Animated.Text
           className="font-bold px-2 py-[1px] rounded-xl"
           style={[styles.placeholder, getAnimatedStyle(id as InputID)]}
@@ -88,6 +88,9 @@ const AnimatedInput = ({inputStyle, id,  className, placeholder, type, secure, o
         </Animated.Text>
         <TextInput
           id={id}
+          ref={(el) => {
+            inputRef.current = el as TextInput;
+          }}
           onBlur={() => handleBlur(id as InputID)}
           secureTextEntry={secure}
           onFocus={() => handleFocus(id as InputID)}
@@ -95,7 +98,7 @@ const AnimatedInput = ({inputStyle, id,  className, placeholder, type, secure, o
           value={inputValue}
           onChangeText={(value)=>update(value, id)}
         />
-      </View>
+      </Pressable>
       )
 }
 

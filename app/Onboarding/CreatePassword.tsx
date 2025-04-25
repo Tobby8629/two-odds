@@ -100,7 +100,7 @@ const CreatePassword = () => {
       </View>
       
       <Button text='continue' onPress={check ? null : () => mutate({
-         url:   `/auth/createPassword/${userId}`,
+         url:   `/auth/password/${userId}`,
         data: {
           password: data.password
         }})}

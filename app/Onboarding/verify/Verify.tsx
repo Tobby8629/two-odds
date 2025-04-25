@@ -14,13 +14,15 @@ const Verify = () => {
   const { email} = useLocalSearchParams();
   const { userId } = useUser()
   const { mutate } = useMutate({
-    link: "/onboarding/createPassword" as RelativePathString
+    link: "/Onboarding/CreatePassword" as RelativePathString,
+    params: {userId}
   });
   const handleOtpSubmit = (otp: string) => {
+    console.log(userId, otp)
     mutate({
       url: `/auth/verify/${userId}`,
       data: { 
-         otp: otp
+         otp: `${otp}`
        },
     })
   }

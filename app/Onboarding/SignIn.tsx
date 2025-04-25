@@ -1,12 +1,13 @@
 import { Alert, Animated, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import Layout from './Layout';
-import { router } from 'expo-router';
+import { RelativePathString, router } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput';
 import { validateOutput } from '@/interface';
 import Button from '@/components/Reuseables/Button';
 import { validate } from '@/constants/functions';
+import useMutate from '@/hooks/useMutate';
 
 interface data {
   email: string
@@ -27,6 +28,10 @@ const SignIn = () => {
   const [passwordError, setPasswordError] = useState({
     password: false,
     text: "",
+  })
+
+  const { mutate } = useMutate({
+    link: "/" as RelativePathString,
   })
 
   const onChange = (value: string, id?: InputID) => {
@@ -66,7 +71,13 @@ const navigate = () => {
 
   // Navigate or show errors
   if (!emailValid.state && !passwordValid.state) {
-    router.replace('/Onboarding/Welcome');
+    mutate({
+      url:'/auth/login',
+      data: {
+        email: data.email,
+        password: data.password,
+      }
+    })
   } 
   // else {
   //   const errorMessage =

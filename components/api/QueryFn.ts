@@ -5,6 +5,7 @@ export const postQuery = async (url: string, data: any) => {
   try {
     const response = await postRequest(url, data)
     if (response.status === 200 || response.status === 201) {
+        console.log("Response data:", response.data);
         return response.data;
       }
       throw new Error(`Request failed with status ${response.status}`);
