@@ -13,12 +13,11 @@ const Verify = () => {
   const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
   const { email} = useLocalSearchParams();
   const { userId } = useUser()
-  const { mutate } = useMutate({
-    link: "/Onboarding/CreatePassword" as RelativePathString,
+  const { mutate, isPending } = useMutate({
+    link: "/Onboarding/verify/Verified" as RelativePathString,
     params: {userId}
   });
   const handleOtpSubmit = (otp: string) => {
-    console.log(userId, otp)
     mutate({
       url: `/auth/verify/${userId}`,
       data: { 
@@ -41,12 +40,12 @@ const Verify = () => {
       </View>
 
       <Text className='w-8/12 text-center text-white font-light text-base'>
-        Didn’t receive your verification code? <Link className='text-sec' href={"/"}>Click here to 
+        Didn’t receive your verification code? <Link className='t"xt-sec"' href={"/"}>Click here to 
         resend</Link>
       </Text>
       
-      <Button text='verify' onPress={()=>handleOtpSubmit(otp.join(""))}
-         className={` m-auto mt-14 h-[45px] rounded-3xl  bg-sec`}
+      <Button disable={isPending} text={isPending ? 'verifying' :'verify'} onPress={()=>handleOtpSubmit(otp.join(""))}
+         className={` m-auto mt-14 h-[45px] rounded-3xl ${isPending ? "bg-gray-400" : "bg-sec"} `}
        />
     </View>
   )

@@ -12,6 +12,7 @@ import { data } from '@/interface'
 import { hasFalseValue, verifying } from '@/constants/functions'
 import useMutate from '@/hooks/useMutate'
 import { useUser } from './OnboardContext'
+import Loading from '@/components/Reuseables/Loading'
 
 
 const CreatePassword = () => {
@@ -45,70 +46,73 @@ const CreatePassword = () => {
   };
   const { userId } = useUser()
 
-  const {mutate} = useMutate({
+  const {mutate, isPending} = useMutate({
     link: "/" as RelativePathString
   });
 
   const{isKeyboardVisible}=useKeyboard()
 
   return (
-    <ScrollView className={`h-full bg-pry px-[8%]`}>
-      <View className={`${isKeyboardVisible ? "min-h-[120vh]" : "min-h-screen"} w-full`}>
-      <View className='flex-row justify-center mt-[100px]'>
-        <SmallLogo />
-      </View>
-      
-      <Text className=' font-bold text-2xl my-3 text-white'>Create Password</Text>
-      <Text className=' font-semi-bold text-white text-lg mb-5'>Use a minimum of 8 characters, including uppercase letters, lowercase letters and numbers.</Text>
-      
-      <View className='flex bg-gray-300 py-[5px] pr-[10px] rounded-xl w-[90%] h-[55px] flex-row items-center mb-3'> 
-        <AnimatedInput 
-          id='password'
-          onChangeText={onChange}
-          placeholder='password'
-          secure={!passwordShow}
-          className='w-[90%] h-full bg-transparent mb-[0px]'
-          inputStyle='bg-transparent'
-        />
-        <Pressable onPress={()=> setPasswordshow(!passwordShow)}>
-          <FontAwesome5 name={passwordShow ? "eye" : "eye-slash"} color={"black"} size={15} />
-        </Pressable>
-      </View>
+    <View>
+      {isPending && <Loading />}
+      <ScrollView className={`h-full bg-pry px-[8%]`}>
+        <View className={`${isKeyboardVisible ? "min-h-[120vh]" : "min-h-screen"} w-full`}>
+        <View className='flex-row justify-center mt-[100px]'>
+          <SmallLogo />
+        </View>
+        
+        <Text className=' font-bold text-2xl my-3 text-white'>Create Password</Text>
+        <Text className=' font-semi-bold text-white text-lg mb-5'>Use a minimum of 8 characters, including uppercase letters, lowercase letters and numbers.</Text>
+        
+        <View className='flex bg-gray-300 py-[5px] pr-[10px] rounded-xl w-[90%] h-[55px] flex-row items-center mb-3'> 
+          <AnimatedInput 
+            id='password'
+            onChangeText={onChange}
+            placeholder='password'
+            secure={!passwordShow}
+            className='w-[90%] h-full bg-transparent mb-[0px]'
+            inputStyle='bg-transparent'
+          />
+          <Pressable onPress={()=> setPasswordshow(!passwordShow)}>
+            <FontAwesome5 name={passwordShow ? "eye" : "eye-slash"} color={"black"} size={15} />
+          </Pressable>
+        </View>
 
-      {passwordverification.map((verify)=>(
-        <CheckBox 
-          onPress={null}
-          value={checkvalue[verify.val]}
-          key={verify.id}
-         >
-         <Text className='text-white mt-[3px]'>{verify.text}</Text>
-        </CheckBox>
-      ))}
+        {passwordverification.map((verify)=>(
+          <CheckBox 
+            onPress={null}
+            value={checkvalue[verify.val]}
+            key={verify.id}
+          >
+          <Text className='text-white mt-[3px]'>{verify.text}</Text>
+          </CheckBox>
+        ))}
 
-      <View className='flex bg-gray-300 py-[5px] pr-[10px] rounded-xl w-[90%] h-[55px] flex-row items-center mt-3'> 
-        <AnimatedInput 
-          id='confirm_password'
-          onChangeText={onChange}
-          placeholder='confirm password'
-          secure={!confirmPasswordShow}
-          className='w-[90%] h-full bg-transparent mb-[0px]'
-          inputStyle='bg-transparent'
+        <View className='flex bg-gray-300 py-[5px] pr-[10px] rounded-xl w-[90%] h-[55px] flex-row items-center mt-3'> 
+          <AnimatedInput 
+            id='confirm_password'
+            onChangeText={onChange}
+            placeholder='confirm password'
+            secure={!confirmPasswordShow}
+            className='w-[90%] h-full bg-transparent mb-[0px]'
+            inputStyle='bg-transparent'
+          />
+          <Pressable onPress={()=> setConfirmPasswordshow(!confirmPasswordShow)}>
+            <FontAwesome5 name={confirmPasswordShow ? "eye" : "eye-slash"} color={"black"} size={15} />
+          </Pressable>
+        </View>
+        
+        <Button text={isPending ? 'creating...' :'continue'} onPress={check ? null : () => mutate({
+          url:   `/auth/password/${userId}`,
+          data: {
+            password: data.password
+          }})}
+          className={` m-auto mt-14 h-[45px] rounded-3xl`}
+          style={check || isPending ?  {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
         />
-        <Pressable onPress={()=> setConfirmPasswordshow(!confirmPasswordShow)}>
-          <FontAwesome5 name={confirmPasswordShow ? "eye" : "eye-slash"} color={"black"} size={15} />
-        </Pressable>
       </View>
-      
-      <Button text='continue' onPress={check ? null : () => mutate({
-         url:   `/auth/password/${userId}`,
-        data: {
-          password: data.password
-        }})}
-         className={` m-auto mt-14 h-[45px] rounded-3xl`}
-         style={check ?  {backgroundColor: "gray"} : {backgroundColor: "#FFC107"}}
-       />
+      </ScrollView>
     </View>
-    </ScrollView>
   )
 }
 

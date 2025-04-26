@@ -6,6 +6,8 @@ import wallet from './wallet.png'
 import nft from './nft.png'
 import phrase from './phrase.png'
 import forgot from './forgot.png' 
+import loading from './loading.gif'
+
 export {
   loadOne,
   loadTwo,
@@ -14,5 +16,6 @@ export {
   phrase,
   nft,
   wallet,
-  forgot
+  forgot,
+  loading,
 }

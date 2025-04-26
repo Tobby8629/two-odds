@@ -35,7 +35,6 @@ export default function RootLayout() {
   return (
     <>
       {splash ? <SplashScreen /> : 
-      
       <QueryClientProvider client={queryclient}>
         <UserProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
