@@ -6,8 +6,13 @@ interface register {
     email: InputField,
     tc: boolean,
     subscribe: boolean
-
 }
+
+interface Err {
+    message: string
+    status: boolean
+}
+
 
 interface verifyInt {
     length: boolean,

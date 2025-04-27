@@ -1,5 +1,5 @@
 import { Alert, Animated, Pressable, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from './Layout';
 import { RelativePathString, router } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -8,6 +8,8 @@ import { validateOutput } from '@/interface';
 import Button from '@/components/Reuseables/Button';
 import { validate } from '@/constants/functions';
 import useMutate from '@/hooks/useMutate';
+import Loading from '@/components/Reuseables/Loading';
+import Error from '@/components/Reuseables/Error';
 
 interface data {
   email: string
@@ -25,12 +27,17 @@ const SignIn = () => {
     text: "",
   })
 
+  const [err, setErr] = useState<Err>({
+    message:"" ,
+    status: false
+  })
+
   const [passwordError, setPasswordError] = useState({
     password: false,
     text: "",
   })
 
-  const { mutate } = useMutate({
+  const {mutate, isPending, data: user, isSuccess, error} = useMutate({
     link: "/" as RelativePathString,
   })
 
@@ -79,17 +86,26 @@ const navigate = () => {
       }
     })
   } 
-  // else {
-  //   const errorMessage =
-  //     (emailValid.state ? emailValid.text : '') +
-  //     (passwordValid.state ? passwordValid.text : '');
-  //   Alert.alert(errorMessage.trim());
-  // }
 };
+
+  useEffect(() => {
+    if (isSuccess && user?.user?._id) {
+      // setUserId(user.user._id);
+    }
+    if (error) {
+      setErr({
+        message: error?.response?.data.message,
+        status: true
+      })
+    }
+  }, [isSuccess, error, user]);
 
 
 
   return (
+    <View className='h-screen'>
+    {isPending && <Loading />}
+    {err.status && <Error error={err.message} setError={setErr} />}
     <Layout shift={shift} redirect={true} redirectLink='/Onboarding/SignUp' redirectText='Create an account'>
       <View className='my-5 w-full'>
         <View className='w-full mb-7'>
@@ -133,6 +149,7 @@ const navigate = () => {
         </View>
       </View>
     </Layout>
+    </View>
   );
 };
 

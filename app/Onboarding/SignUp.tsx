@@ -10,6 +10,7 @@ import { validate } from '@/constants/functions'
 import useMutate from '@/hooks/useMutate'
 import { useUser } from './OnboardContext'
 import Loading from '@/components/Reuseables/Loading'
+import Error from '@/components/Reuseables/Error'
 
 const Signup = () => {
 
@@ -23,6 +24,11 @@ const Signup = () => {
     email: false,
     text: "",
   })
+
+  const [err, setErr] = useState<Err>({
+    message:"" ,
+    status: false
+  })
   
   const onChange = (value: string, type: InputID | undefined) => {
     if(type){
@@ -30,7 +36,7 @@ const Signup = () => {
     }
   };
 
-  const {mutate, isPending, data, isSuccess} = useMutate({
+  const {mutate, isPending, data, isSuccess, error} = useMutate({
     link: "/Onboarding/verify/Verify" as RelativePathString, 
     params: {email: registerData.email}
   });
@@ -69,11 +75,20 @@ const Signup = () => {
     if (isSuccess && data?.user?._id) {
       setUserId(data.user._id);
     }
-  }, [isSuccess, data]);
+    if (error) {
+      setErr({
+        message: error?.response?.data.message,
+        status: true
+      })
+    }
+  }, [isSuccess, error, data]);
+
+  
   
   return (
     <View className='h-screen w-full bg-pry justify-center items-center'>
       {isPending && <Loading />}
+      {err.status && <Error setError={setErr} error={err.message}/>}
       <View className='w-full px-[8%]'>
         <View className='flex-row justify-center'>
           <Logo />
