@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { useEffect, useState } from 'react'
 import { RelativePathString, router } from 'expo-router'
 import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
@@ -80,6 +80,10 @@ const Signup = () => {
         message: error?.response?.data.message,
         status: true
       })
+      setEmailError({
+        text: " ", 
+        email: true
+      })
     }
   }, [isSuccess, error, data]);
 
@@ -99,7 +103,7 @@ const Signup = () => {
             type='email'
             id="email"
             inputStyle='rounded-lg bg-white'
-            className='w-full h-[50px]'
+            className={`w-full h-[50px] ${emailError.email ? "border-red-500 border-2 rounded-xl" : ""} ` }
             placeholder='Email address'
             onChangeText={onChange}
           />
@@ -135,3 +139,5 @@ const Signup = () => {
 }
 
 export default Signup
+
+
