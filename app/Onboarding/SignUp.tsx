@@ -31,6 +31,8 @@ const Signup = () => {
   })
   
   const onChange = (value: string, type: InputID | undefined) => {
+    setErr({message: "", status: false})
+    setEmailError({...emailError, email: false})
     if(type){
       setRegisterData({ ...registerData, [type]: value });
     }
@@ -93,6 +95,7 @@ const Signup = () => {
     <View className='h-screen w-full bg-pry justify-center items-center'>
       {isPending && <Loading />}
       {err.status && <Error setError={setErr} error={err.message}/>}
+      {/* <Error setError={setErr} error={err.message}/> */}
       <View className='w-full px-[8%]'>
         <View className='flex-row justify-center'>
           <Logo />

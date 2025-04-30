@@ -26,9 +26,8 @@ const SignIn = () => {
     email: false,
     text: "",
   })
-
   const [err, setErr] = useState<Err>({
-    message:"" ,
+    message:"",
     status: false
   })
 
@@ -42,6 +41,8 @@ const SignIn = () => {
   })
 
   const onChange = (value: string, id?: InputID) => {
+    setErr({message: "", status: false})
+    setEmailError({...emailError, email: false})
     setData((prevData) => (id ? { ...prevData, [id]: value } : prevData));
   };
 
@@ -100,12 +101,16 @@ const navigate = () => {
     }
   }, [isSuccess, error, user]);
 
+  console.log(err)
+
 
 
   return (
     <View className='h-screen'>
-    {isPending && <Loading />}
-    {err.status && <Error error={err.message} setError={setErr} />}
+    {isPending && <Loading />} 
+    <View className='z-[99]'>
+      {err.status && <Error error={err.message} setError={setErr} />}
+    </View> 
     <Layout shift={shift} redirect={true} redirectLink='/Onboarding/SignUp' redirectText='Create an account'>
       <View className='my-5 w-full'>
         <View className='w-full mb-7'>
