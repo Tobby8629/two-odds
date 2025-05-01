@@ -61,18 +61,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    height: 120,
+    height: 100,
     backgroundColor: '#e53935',
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    paddingHorizontal: 20,
+    paddingTop: 25,
     zIndex: 999,
   },
   text: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: "500",
   },
 });
 
