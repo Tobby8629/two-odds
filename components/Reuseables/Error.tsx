@@ -8,6 +8,7 @@ import Animated, { ZoomIn, ZoomInDown, ZoomInUp } from 'react-native-reanimated'
 import { PanResponder, Animated as RNAnimated } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
+import { Err } from '@/interface';
 
 const Error = ({ error, setError }: errorInt) => {
   const positionY = useRef(new RNAnimated.Value(0)).current; // starts visible

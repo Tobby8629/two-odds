@@ -10,7 +10,7 @@ const Screens = () => {
   let username = null;
 
   if (username) {
-    return <Redirect href={"/Onboarding/Welcome"} />;
+    return <Redirect href={"/(tabs)"} />;
   }
 
  

@@ -1,5 +1,6 @@
 import { Alert, Animated, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { InputID, Err } from '@/interface';
 import Layout from './Layout';
 import { RelativePathString, router } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -37,7 +38,7 @@ const SignIn = () => {
   })
 
   const {mutate, isPending, data: user, isSuccess, error} = useMutate({
-    link: "/" as RelativePathString,
+    link: "/(tabs)" as RelativePathString,
   })
 
   const onChange = (value: string, id?: InputID) => {
