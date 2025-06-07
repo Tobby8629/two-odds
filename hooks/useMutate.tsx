@@ -20,7 +20,7 @@ const useMutate = ({link, params}: redirect) => {
     },
     onSuccess: (data) => {
       if (link) {
-        router.push({
+        router.replace({
          pathname: link,
          params: params
         });

@@ -39,4 +39,10 @@ interface verifyInt {
     number: boolean 
     confirmed: boolean
     specialChar: boolean
-  }
+}
+
+interface Nav {
+  name: string,
+  link: RelativePathString,
+  icon: React.ComponentType<any>,
+}

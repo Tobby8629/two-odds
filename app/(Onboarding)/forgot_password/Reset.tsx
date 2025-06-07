@@ -5,6 +5,7 @@ import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Button from '@/components/Reuseables/Button'
 import { navigateResetPassword } from '@/constants/functions'
+import { InputID } from '@/interface'
 
 const Reset = () => {
   const [reset, setReset] = useState({
@@ -37,7 +38,7 @@ const Reset = () => {
     })
   }
 
-  console.log(resetError.reset_code, passwordError.password, reset)
+  // console.log(resetError.reset_code, passwordError.password, reset)
         
   return (
     <Layout>

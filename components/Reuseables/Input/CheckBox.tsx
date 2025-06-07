@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { Children, ReactNode } from 'react'
+import { register } from '@/interface'
 
 interface checkbox {
  children: ReactNode,

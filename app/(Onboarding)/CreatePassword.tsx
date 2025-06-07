@@ -8,10 +8,10 @@ import Button from '@/components/Reuseables/Button'
 import { RelativePathString } from 'expo-router'
 import { FontAwesome5 } from '@expo/vector-icons'
 import useKeyboard from '@/hooks/useKeyboard'
-import { data } from '@/interface'
+import { data, InputID, verifyInt } from '@/interface'
 import { hasFalseValue, verifying } from '@/constants/functions'
 import useMutate from '@/hooks/useMutate'
-import { useUser } from './OnboardContext'
+import { useAuth } from './OnboardContext'
 import Loading from '@/components/Reuseables/Loading'
 
 
@@ -44,7 +44,7 @@ const CreatePassword = () => {
       setData({ ...data, [id]: value });
     }
   };
-  const { userId } = useUser()
+  const { userId } = useAuth()
 
   const {mutate, isPending} = useMutate({
     link: "/" as RelativePathString
@@ -81,7 +81,7 @@ const CreatePassword = () => {
         {passwordverification.map((verify)=>(
           <CheckBox 
             onPress={null}
-            value={checkvalue[verify.val]}
+            value={checkvalue[verify.val as keyof verifyInt]}
             key={verify.id}
           >
           <Text className='text-white mt-[3px]'>{verify.text}</Text>

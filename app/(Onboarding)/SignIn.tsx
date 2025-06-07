@@ -1,4 +1,4 @@
-import { Alert, Animated, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Keyboard, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { InputID, Err } from '@/interface';
 import Layout from './Layout';
@@ -11,6 +11,7 @@ import { validate } from '@/constants/functions';
 import useMutate from '@/hooks/useMutate';
 import Loading from '@/components/Reuseables/Loading';
 import Error from '@/components/Reuseables/Error';
+import { useAuth } from './OnboardContext';
 
 interface data {
   email: string
@@ -22,6 +23,8 @@ const SignIn = () => {
     email: '',
     password: '',
   });
+
+  const { userId, setUserId } = useAuth()
 
   const [emailError, setEmailError] = useState({
     email: false,
@@ -37,9 +40,7 @@ const SignIn = () => {
     text: "",
   })
 
-  const {mutate, isPending, data: user, isSuccess, error} = useMutate({
-    link: "/(tabs)" as RelativePathString,
-  })
+  const {mutate, isPending, data: user, isSuccess, error} = useMutate({});
 
   const onChange = (value: string, id?: InputID) => {
     setErr({message: "", status: false})
@@ -55,6 +56,9 @@ const SignIn = () => {
 
 
 const navigate = () => {
+  //close keyboard
+  Keyboard.dismiss();
+
   // Validate email
   const emailValid  = validate({
     email: data.email,
@@ -80,7 +84,7 @@ const navigate = () => {
 
   // Navigate or show errors
   if (!emailValid.state && !passwordValid.state) {
-    mutate({
+     mutate({
       url:'/auth/login',
       data: {
         email: data.email,
@@ -92,7 +96,7 @@ const navigate = () => {
 
   useEffect(() => {
     if (isSuccess && user?.user?._id) {
-      // setUserId(user.user._id);
+      setUserId(user.user._id);
     }
     if (error) {
       setErr({
@@ -102,9 +106,11 @@ const navigate = () => {
     }
   }, [isSuccess, error, user]);
 
-  console.log(err)
-
-
+  useEffect(() => {
+    if (userId) {
+      router.replace('/(tabs)' as RelativePathString); // Navigate only after context is set
+    }
+  }, [userId]);
 
   return (
     <View className='h-screen'>
@@ -112,7 +118,7 @@ const navigate = () => {
     <View className='z-[99]'>
       {err.status && <Error error={err.message} setError={setErr} />}
     </View> 
-    <Layout shift={shift} redirect={true} redirectLink='/Onboarding/SignUp' redirectText='Create an account'>
+    <Layout shift={shift} redirect={true} redirectLink='/(Onboarding)/SignUp' redirectText='Create an account'>
       <View className='my-5 w-full'>
         <View className='w-full mb-7'>
           <AnimatedInput
@@ -147,7 +153,7 @@ const navigate = () => {
           {passwordError.password ? <Text className='text-red-700 text-lg font-semibold w-85% mr-auto pl-[8%]'>
           {passwordError.text}</Text> : null}
         </View>
-        <TouchableOpacity onPress={()=> router.replace('/Onboarding/forgot_password/Forget')}>
+        <TouchableOpacity onPress={()=> router.replace('/(Onboarding)/forgot_password/Forget')}>
           <Text className='text-white text-lg font-semibold w-85% ml-auto pr-[8%]'>Forgot password?</Text>
         </TouchableOpacity>
         <View className='w-85% mx-auto mt-5'>

@@ -2,7 +2,12 @@ import LoadOne from "@/assets/SVGs/LoadOne"
 import LoadTwo from "@/assets/SVGs/LoadTwo"
 import LoadThree from "@/assets/SVGs/LoadThree"
 import { nft, phrase, wallet } from "@/assets/images";
-import { validateInput, validateOutput } from "@/interface";
+import { Nav, validateInput, validateOutput, verifyInt } from "@/interface";
+import Home from "@/assets/SVGs/Home";
+import Menu from "@/assets/SVGs/Menu";
+import Betslip from "@/assets/SVGs/Betslip";
+import Bets from "@/assets/SVGs/Bets";
+import Profile from "@/assets/SVGs/profile";
 
 export const load = [
   {
@@ -67,6 +72,35 @@ export const passwordverification:  Array<{ id: number; val: keyof verifyInt; te
     val: "specialChar",
     text: "Contains at least one special character"
   },
+]
+
+export const nav:Nav[] = [
+  {
+    name: "index",
+    link: "/(tabs)",
+    icon: Home,
+  },
+  {
+    name: "menu",
+    link: "/(tabs)/menu",
+    icon: Menu
+  },
+  {
+    name: "betslip",
+    link: "/(tabs)/betslip",
+    icon: Betslip,
+  },
+
+  {
+    name: "bets",
+    link: "/(tabs)/bets",
+    icon: Bets,
+  },
+  {
+    name: "profile",
+    link: "/(tabs)/profile",
+    icon: Profile,
+  }
 ]
 
 

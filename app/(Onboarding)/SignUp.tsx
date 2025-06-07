@@ -5,10 +5,10 @@ import AnimatedInput from '@/components/Reuseables/Input/AnimatedInput'
 import Logo from '@/assets/SVGs/Logo'
 import CheckBox from '@/components/Reuseables/Input/CheckBox'
 import Button from '@/components/Reuseables/Button'
-import { validateOutput } from '@/interface'
+import { Err, InputField, InputID, register, validateOutput } from '@/interface'
 import { validate } from '@/constants/functions'
 import useMutate from '@/hooks/useMutate'
-import { useUser } from './OnboardContext'
+import { useAuth } from './OnboardContext'
 import Loading from '@/components/Reuseables/Loading'
 import Error from '@/components/Reuseables/Error'
 
@@ -43,7 +43,7 @@ const Signup = () => {
     params: {email: registerData.email}
   });
 
-  const {setUserId} = useUser()
+  const {setUserId} = useAuth()
 
   const changeBox = (type: keyof register | undefined) => {
     if(type){
