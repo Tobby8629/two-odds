@@ -1,9 +1,13 @@
 import * as React from "react";
 import Svg, { SvgProps, Path } from "react-native-svg";
-const SmallLogo = (props: SvgProps) => (
+interface SmallLogoProps extends SvgProps {
+  width?: number;
+  height?: number;
+}
+const SmallLogo = ({ width=67, height=64, ...props}: SmallLogoProps) => (
   <Svg
-    width={67}
-    height={64}
+    width={width}
+    height={height}
     viewBox="0 0 67 64"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

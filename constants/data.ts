@@ -8,6 +8,11 @@ import Menu from "@/assets/SVGs/Menu";
 import Betslip from "@/assets/SVGs/Betslip";
 import Bets from "@/assets/SVGs/Bets";
 import Profile from "@/assets/SVGs/profile";
+import Football from "@/assets/SVGs/sport/football";
+import Basketball from "@/assets/SVGs/sport/Basketball";
+import AmericanFootball from "@/assets/SVGs/sport/AF";
+import Tennis from "@/assets/SVGs/sport/Tennis";
+import Volleyball from "@/assets/SVGs/sport/Volleyball";
 
 export const load = [
   {
@@ -74,6 +79,53 @@ export const passwordverification:  Array<{ id: number; val: keyof verifyInt; te
   },
 ]
 
+export const sports:Nav[] = [
+  {
+    name: "index",
+    link: "/(tabs)",
+    icon: Football,
+  },
+  {
+    name: "menu",
+    link: "/(tabs)/menu",
+    icon: Basketball
+  },
+  {
+    name: "betslip",
+    link: "/(tabs)/betslip",
+    icon: AmericanFootball,
+  },
+
+  {
+    name: "bets",
+    link: "/(tabs)/bets",
+    icon: Tennis,
+  },
+  {
+    name: "profile",
+    link: "/(tabs)/profile",
+    icon: Volleyball,
+  }
+,
+  {
+    name: "betslip1",
+    link: "/(tabs)/betslip",
+    icon: AmericanFootball,
+  },
+
+  {
+    name: "bets1",
+    link: "/(tabs)/bets",
+    icon: Tennis,
+  },
+  {
+    name: "profile1",
+    link: "/(tabs)/profile",
+    icon: Volleyball,
+  }
+]
+
+
 export const nav:Nav[] = [
   {
     name: "index",
@@ -102,7 +154,3 @@ export const nav:Nav[] = [
     icon: Profile,
   }
 ]
-
-
-
-
