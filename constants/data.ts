@@ -154,3 +154,10 @@ export const nav:Nav[] = [
     icon: Profile,
   }
 ]
+
+export const paymentSteps = [
+  "Enter the amount you want to deposit and click the “Top Up now” button.",
+  "You will be given a temporary account(expires after 30 mins).",
+  "Transfer money to the account via your online banking.",
+  "Check your transaction history in app, Bank transfers generally credit within 10 minutes. if the deposit doesn’t credit within 24 hours, please contact your bank."
+]

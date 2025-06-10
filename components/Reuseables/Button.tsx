@@ -4,16 +4,17 @@ import { StyleProps } from 'react-native-reanimated'
 
 interface welcome {
   className?: string,
+  textStyle?: string,
   text: string
   onPress: (() => void) | null
   disable?: boolean,
   style?: StyleProps
 }
 
-const Button = ({text, style, className, onPress, disable}: welcome) => {
+const Button = ({text, style, className, onPress, textStyle, disable}: welcome) => {
   return (
     <Pressable disabled={disable} onPress={onPress} style={style} className={`${disable ? "bg-gray-500":"bg-sec"} w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1 ${className}`}>
-      <Text className='text-center capitalize text-white text-xl font-semibold'>{text}</Text>
+      <Text className={`text-center capitalize text-white text-xl font-semibold ${textStyle}`}>{text}</Text>
     </Pressable>
   )
 }

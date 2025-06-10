@@ -5,7 +5,7 @@ import { Link } from 'expo-router'
 
 const Quickpick = () => {
   return (
-    <View className='px-3 pb-5 border-y-2 border-white'>
+    <View className='px-3 py-5 border-b-2 border-white'>
      <ScrollView 
        horizontal={true} 
        showsHorizontalScrollIndicator={false} 
@@ -13,7 +13,7 @@ const Quickpick = () => {
        {sports.map((sport, index) => (
         <Link 
           href={sport.link} key={index} 
-          className='bg-white w-[110px] relative h-[50px] mr-6'
+          className='bg-white w-[110px] relative h-[56px] mr-6'
         >
           <View className='bg-yellow-300 absolute p-0 m-0s -top-0 w-full h-[10px] left-0' />
           <View className="p-1 px-2">
@@ -30,4 +30,5 @@ const Quickpick = () => {
 
 export default Quickpick
 
-const styles = StyleSheet.create({})
+// const styles = StyleSheet.create({})
+

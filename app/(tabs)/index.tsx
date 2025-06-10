@@ -8,6 +8,9 @@ import { useAuth } from '../(Onboarding)/OnboardContext';
 import Head from '@/components/Home/Head';
 import Sport from '@/components/Home/Sport';
 import Quickpick from '@/components/Home/Quickpick';
+import LiveBets from '@/components/Home/LiveBets';
+import Popular from '@/components/Home/Popular';
+import { Link } from 'expo-router';
 
 export default function HomeScreen() {
   // const {userId} = useAuth()
@@ -57,10 +60,16 @@ export default function HomeScreen() {
     //     </ThemedText>
     //   </ThemedView>
     // </ParallaxScrollView>
-    <ScrollView className='bg-pry py-14'>
+    <ScrollView className='bg-pry py-14 pb-52'>
       <Head />
       <Sport />
       <Quickpick />
+      <LiveBets />
+      <Link href={"/(transactions)/deposit"} className='bg-white rounded-full p-4'>
+        transaction history
+      </Link>
+      <Popular />
+      
     </ScrollView>
     
   );
