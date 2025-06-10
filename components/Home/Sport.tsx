@@ -5,7 +5,7 @@ import { sports } from '@/constants/data';
 
 const Sport = () => {
   return (
-    <View className="px-6 py-5">
+    <View className="px-6 pb-5">
       <Text className="text-white mb-5 text-2xl uppercase font-semibold">
         Sports
       </Text>

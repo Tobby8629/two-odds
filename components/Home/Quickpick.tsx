@@ -5,7 +5,7 @@ import { Link } from 'expo-router'
 
 const Quickpick = () => {
   return (
-    <View className='px-3 py-5 border-y-2 border-white'>
+    <View className='px-3 pb-5 border-y-2 border-white'>
      <ScrollView 
        horizontal={true} 
        showsHorizontalScrollIndicator={false} 
