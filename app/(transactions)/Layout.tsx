@@ -5,16 +5,16 @@ import { goBack } from 'expo-router/build/global-state/routing';
 
 interface TransacLayoutProps {
   children: React.ReactNode;
-  hanldeClick?: () => void;
+  handleClick?: () => void;
   title: string
   otherLinks?: React.ReactNode; 
 }
 
-const Layout = ({children, title, otherLinks, hanldeClick= () => {goBack()} }: TransacLayoutProps) => {
+const Layout = ({children, title, otherLinks, handleClick= () => {goBack()} }: TransacLayoutProps) => {
   return (
     <View className='bg-pry flex-1'>
       <View className={`flex-row ${otherLinks && "justify-between items-center"} pb-5 pt-20 bg-[#1F5079] px-6`}>
-        <Pressable onPress={hanldeClick}>
+        <Pressable onPress={handleClick}>
             <FontAwesome6 name="angle-left" size={24} color="white" />
         </Pressable>
         <Text className={`text-white ${otherLinks ? "w-fit" : "w-[90%]"} text-2xl text-center`}>{title}</Text>

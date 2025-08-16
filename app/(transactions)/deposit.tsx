@@ -24,7 +24,7 @@ const Deposits = () => {
       }
     >
       <View className='px-6 py-10'>
-        <Text>
+        <Text className='text-white'>
           Balance(USD) $20.00
         </Text>
         <Textinput 
@@ -43,12 +43,12 @@ const Deposits = () => {
       </View>
 
       <View className='px-6'>
-        <Text className='text-center '>Payment Steps</Text>
+        <Text className='text-center text-white '>Payment Steps</Text>
         <View>
           {paymentSteps.map((step, index) => (
             <View key={index} className="flex-row items-baseline gap-2 mb-2">
-              <Text>{index + 1}.</Text>
-              <Text className="text-lg">{step}</Text>
+              <Text className='text-white'>{index + 1}.</Text>
+              <Text className="text-lg text-white">{step}</Text>
             </View>
           ))}
         </View>

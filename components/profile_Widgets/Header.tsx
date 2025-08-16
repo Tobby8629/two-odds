@@ -8,6 +8,7 @@ import Wallet from '@/assets/SVGs/profile/Wallet'
 import Withdraw from '@/assets/SVGs/profile/Withdraw'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { EntryExitTransition } from 'react-native-reanimated'
+import { router } from 'expo-router'
 
 const Header = () => {
   const [visible, setVisible] = React.useState(false);
@@ -39,7 +40,7 @@ const Header = () => {
       </Text>
       </View>
       <View className={`${flexCenter} mt-5 gap-5`}>
-      <Pressable onPress={()=>console.log("click")} className={`${flexNoJustify} gap-2 bg-gray-300 w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1`}>
+      <Pressable onPress={()=>router.push("/(transactions)/deposit")} className={`${flexNoJustify} gap-2 bg-gray-300 w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1`}>
           <Wallet />
           <Text className={`text-center capitalize text-white text-xl font-semibold`}>Deposit</Text>
       </Pressable>
