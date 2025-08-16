@@ -21,8 +21,29 @@ export default LiveBets
 
 export const LiveCard = () => {
     return (
-      <View className='bg-[#E3F2FD] p-2 mr-5 rounded-lg w-[201px] h-[107px]'>
-        <Text>Live Match</Text>
+      <View className='bg-[#E3F2FD] justify-between p-3 mr-5 rounded-lg w-[201px] h-[107px]'>
+        <View className='gap-[10px] pt-3'>
+          <View className='flex-row justify-between items-center mb-2'>
+            <View className='flex-row gap-2 items-center'>
+              <Text>Logo</Text>
+              <Text>name</Text>
+            </View>
+            <Text>Score</Text>
+          </View>
+          <View className='flex-row justify-between items-center mb-2'>
+            <View className='flex-row gap-2 items-center'>
+              <Text>Logo</Text>
+              <Text>name</Text>
+            </View>
+            <Text>Score</Text>
+          </View>
+        </View>
+        <View className='flex-row justify-between items-center'>
+          <View>
+            <Text>league</Text>
+          </View>
+          <Text>Time</Text>
+        </View>
       </View>
     )
   }

@@ -39,7 +39,7 @@ const Signup = () => {
   };
 
   const {mutate, isPending, data, isSuccess, error} = useMutate({
-    link: "/Onboarding/verify/Verify" as RelativePathString, 
+    link: "/(Onboarding)/verify/Verify" as RelativePathString, 
     params: {email: registerData.email}
   });
 
@@ -133,7 +133,7 @@ const Signup = () => {
       </View>
       <View className='absolute bottom-10 flex-row items-center justify-center w-full'>
         <Text className='text-white text-xl'>Already Have An Account? </Text>
-        <TouchableOpacity onPress={()=>router.replace("/Onboarding/SignIn")}>
+        <TouchableOpacity onPress={()=>router.replace("/(Onboarding)/SignIn")}>
           <Text className='text-sec font-bold text-xl border-b-[1px] border-blue-400 py-[.3px]'>Login</Text>
         </TouchableOpacity> 
       </View>

@@ -54,6 +54,7 @@ import { useAuth } from './(Onboarding)/OnboardContext';
 const Screens = () => {
   // const { userId } = useAuth();
   const userId = "tobby"
+  // console.log("userId", userId);
 
   useEffect(() => {
     if (userId) {

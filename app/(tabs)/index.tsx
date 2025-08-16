@@ -65,9 +65,9 @@ export default function HomeScreen() {
       <Sport />
       <Quickpick />
       <LiveBets />
-      <Link href={"/(transactions)/deposit"} className='bg-white rounded-full p-4'>
+      {/* <Link href={"/(transactions)/deposit"} className='bg-white rounded-full p-4'>
         transaction history
-      </Link>
+      </Link> */}
       <Popular />
       
     </ScrollView>

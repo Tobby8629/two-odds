@@ -125,6 +125,52 @@ export const sports:Nav[] = [
   }
 ]
 
+export const quickpick:Nav[] = [
+  {
+    name: "Today's Football",
+    link: "/(tabs)",
+    icon: Football,
+  },
+  {
+    name: "Football In Next 3 Hours ",
+    link: "/(tabs)/menu",
+    icon: Basketball
+  },
+  {
+    name: "Euro League",
+    link: "/(tabs)/betslip",
+    icon: AmericanFootball,
+  },
+
+  {
+    name: "bets",
+    link: "/(tabs)/bets",
+    icon: Tennis,
+  },
+  {
+    name: "profile",
+    link: "/(tabs)/profile",
+    icon: Volleyball,
+  }
+,
+  {
+    name: "betslip1",
+    link: "/(tabs)/betslip",
+    icon: AmericanFootball,
+  },
+
+  {
+    name: "bets1",
+    link: "/(tabs)/bets",
+    icon: Tennis,
+  },
+  {
+    name: "profile1",
+    link: "/(tabs)/profile",
+    icon: Volleyball,
+  }
+]
+
 
 export const nav:Nav[] = [
   {
