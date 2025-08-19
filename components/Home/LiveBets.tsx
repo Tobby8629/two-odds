@@ -7,7 +7,7 @@ const LiveBets = () => {
     <View className='pl-3 py-5 pt-10 border-b-2 border-white'>
       <Text className='text-3xl text-white mb-5' >Live Match</Text>
       <FlatList 
-        data={[1, 2, 3, 4, 5]}
+        data={[1, 2, 3, 4, 5, 6, 7, 8]}
         renderItem={({ item }) => <LiveCard />}
         keyExtractor={(item) => item.toString()}
         horizontal

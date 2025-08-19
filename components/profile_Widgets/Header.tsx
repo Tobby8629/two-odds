@@ -7,7 +7,7 @@ import OpenEye from '@/assets/SVGs/OpenEye'
 import Wallet from '@/assets/SVGs/profile/Wallet'
 import Withdraw from '@/assets/SVGs/profile/Withdraw'
 import { FontAwesome5 } from '@expo/vector-icons'
-import { EntryExitTransition } from 'react-native-reanimated'
+
 import { router } from 'expo-router'
 
 const Header = () => {

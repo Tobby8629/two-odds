@@ -41,9 +41,9 @@ export const MatchCard = () => {
             </View>
           </View>
           <View className='flex-row items-center justify-between gap-2 w-6/12'>
-            <Text className='text-2xl text-black bg-purple-500 p-2 text-center rounded-[5px] w-[31%]'>1</Text>
-            <Text className='text-2xl text-black bg-purple-500 p-2 text-center rounded-[5px] w-[31%]'>x</Text>
-            <Text className='text-2xl text-black bg-purple-500 p-2 text-center rounded-[5px] w-[31%]'>2</Text>
+            <Text className='text-2xl text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-[31%]'>1</Text>
+            <Text className='text-2xl text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-[31%]'>x</Text>
+            <Text className='text-2xl text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-[31%]'>2</Text>
           </View> 
         </View>
     )
