@@ -9,19 +9,23 @@ interface textinput {
   onChangeText: (id: InputID, value: string) => void 
   className?: string
   secure?: boolean
+  placeholder?: string
   inputStyle?: string
+  value?: string | number
   keyboardType?: "default" | "numeric" | "email-address" | "phone-pad" | "number-pad"
 }
 
-const Textinput = ({ onChangeText, id, keyboardType, onFocus, secure, inputStyle, onBlur, className}: textinput) => {
+const Textinput = ({ onChangeText, placeholder, id, value, keyboardType, onFocus, secure, inputStyle, onBlur, className}: textinput) => {
   return (
     <View className={`w-full ${className}`}>
        <TextInput
         id={id}
+        placeholder={placeholder}
         keyboardType={keyboardType}
         onBlur={onBlur}
         secureTextEntry={secure}
         onFocus={onFocus}
+        value={value?.toString() || ""}
         className={`w-[267px] h-[39px] bg-white my-3 p-2 ${inputStyle}`}
         onChangeText={(value)=> onChangeText(id as InputID, value)}
        />

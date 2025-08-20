@@ -1,110 +1,153 @@
-import { StyleSheet, Image, Platform, FlatList, ScrollView, View, Text } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Dimensions, Animated, Keyboard } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { flex } from '@/constants/style';
+import { flex, flexNoJustify } from '@/constants/style';
 import { FontAwesome5 } from '@expo/vector-icons';
+import Dropdown from '@/components/Reuseables/dropdown';
+import React, { useEffect, useRef, useState } from 'react';
+import Ball from '@/assets/SVGs/sport/ball';
+import GoldX from '@/assets/SVGs/icons/GoldX';
+import StakeBox from '@/components/Betslip/StakeBox';
+import useKeyboardTranslation from '@/components/Reuseables/KeyboardTrans';
+import Button from '@/components/Reuseables/Button';
+
+// import StakeBox from '@/components/Betslip/StakeBox';
 
 export default function TabTwoScreen() {
+  const options = [
+    {title:"Bet Accumulator", value: "bet_Accumulator"}, 
+    {title:"Single Bet", value: "single"}, 
+    {title:"System Bet", value: "system"}
+  ]
+  const match = [
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    {
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+  ]
+  const [selected, setSelected] = useState(options[0]) 
+  const [baseStake, setBaseStake] = useState(100)
+   const [stake, setStake] = useState<number | null>(baseStake)
+
+  const { height } = Dimensions.get("window");
+  const { translateY } = useKeyboardTranslation(80)
   return (
-    // <ParallaxScrollView
-    //   headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-    //   headerImage={
-    //     <IconSymbol
-    //       size={310}
-    //       color="#808080"
-    //       name="chevron.left.forwardslash.chevron.right"
-    //       style={styles.headerImage}
-    //     />
-    //   }>
-    //   <ThemedView style={styles.titleContainer}>
-    //     <ThemedText type="title">Explore</ThemedText>
-    //   </ThemedView>
-    //   <ThemedText>This app includes example code to help you get started.</ThemedText>
-    //   <Collapsible title="File-based routing">
-    //     <ThemedText>
-    //       This app has two screens:{' '}
-    //       <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-    //       <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-    //     </ThemedText>
-    //     <ThemedText>
-    //       The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-    //       sets up the tab navigator.
-    //     </ThemedText>
-    //     <ExternalLink href="https://docs.expo.dev/router/introduction">
-    //       <ThemedText type="link">Learn more</ThemedText>
-    //     </ExternalLink>
-    //   </Collapsible>
-    //   <Collapsible title="Android, iOS, and web support">
-    //     <ThemedText>
-    //       You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-    //       <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-    //     </ThemedText>
-    //   </Collapsible>
-    //   <Collapsible title="Images">
-    //     <ThemedText>
-    //       For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-    //       <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-    //       different screen densities
-    //     </ThemedText>
-    //     <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-    //     <ExternalLink href="https://reactnative.dev/docs/images">
-    //       <ThemedText type="link">Learn more</ThemedText>
-    //     </ExternalLink>
-    //   </Collapsible>
-    //   <Collapsible title="Custom fonts">
-    //     <ThemedText>
-    //       Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-    //       <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-    //         custom fonts such as this one.
-    //       </ThemedText>
-    //     </ThemedText>
-    //     <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-    //       <ThemedText type="link">Learn more</ThemedText>
-    //     </ExternalLink>
-    //   </Collapsible>
-    //   <Collapsible title="Light and dark mode components">
-    //     <ThemedText>
-    //       This template has light and dark mode support. The{' '}
-    //       <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-    //       what the user's current color scheme is, and so you can adjust UI colors accordingly.
-    //     </ThemedText>
-    //     <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-    //       <ThemedText type="link">Learn more</ThemedText>
-    //     </ExternalLink>
-    //   </Collapsible>
-    //   <Collapsible title="Animations">
-    //     <ThemedText>
-    //       This template includes an example of an animated component. The{' '}
-    //       <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-    //       the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-    //       library to create a waving hand animation.
-    //     </ThemedText>
-    //     {Platform.select({
-    //       ios: (
-    //         <ThemedText>
-    //           The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-    //           component provides a parallax effect for the header image.
-    //         </ThemedText>
-    //       ),
-    //     })}
-    //   </Collapsible>
-    // </ParallaxScrollView>
-    <ScrollView className='min-h-screen bg-[#003c6f]'>
+    <View  
+        style={{
+        height: height - 70,
+        backgroundColor: "#003c6f",
+      }} className=' bg-[#003c6f]'
+    >
       <View className={`${flex} fixed top-0 pt-14 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`}>
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
           <Text className='text-xl font-bold text-white '>2</Text>
         </View>
-        <View>
-          <ThemedText className='text'>Bet Accumulator</ThemedText>
-          <FontAwesome5 name="chevron-down" size={24} color="white" />
+        <Dropdown title={selected?.title} items={options} setSelect={setSelected}/>
+        <View className={`${flexNoJustify} gap-3`}>
+          <ThemedText className={`!text-[#cbc9c9]`}>$20.00</ThemedText>
+          <FontAwesome5 name={"trash"} color={"#cbc9c9"} ize={16}/>
         </View>
       </View>
-    </ScrollView>
+      {/************* Match Selected Card******************/}
+      <ScrollView className='p-7'>
+        {match.map((e, index)=>(
+          <View key={index} className={`${flex} mb-5`}>
+            <View className={`${flexNoJustify} gap-3 min-w-[80%]`}>
+              <GoldX />
+              <View className='gap-2'>
+                <View className={`${flexNoJustify} gap-2`}>
+                  <Ball />
+                  <ThemedText className=' font-semibold text-2xl capitalize'>{e.selected}</ThemedText>
+                </View>
+                <ThemedText className=' font-medium text-lg'>{e.match}</ThemedText>
+                <ThemedText className='capitalize pr-3'>{e.time}</ThemedText>
+              </View>
+            </View>
+            <ThemedText>{e.odds}</ThemedText>
+          </View>
+        ))}
+      </ScrollView>
+
+       {/************* Bottom Card******************/}
+      <Animated.View style={{ transform: [{ translateY }] }} className='fixed bottom-0 bg-[#003c6f] p-7'>
+        <View className={flex}>
+          <ThemedText className='text-xl capitalize'>Total odds: </ThemedText>
+          <ThemedText className='text-xl font-semibold'>32.5</ThemedText>
+        </View>
+        <ThemedText className='my-3'>Radio</ThemedText>
+        <View className={flex}>
+          <ThemedText>Total Stakes: </ThemedText>
+          <StakeBox setStake={setStake} stake={stake} baseStake={baseStake}/>
+        </View>
+        <View className={flex}>
+          <ThemedText>total stakes: ${stake}</ThemedText> 
+          <ThemedText>Potential winning: ${stake ? stake*3 : 0*3}</ThemedText>
+        </View>
+        <View className={`${flex} my-3`}>
+          <Button
+            text='Book A Bet'
+            onPress={()=> console.log("saved")}
+          />
+          <Button   
+            text='Place A Bet'
+            onPress={()=> console.log("saved")}
+          />
+        </View>
+      </Animated.View> 
+    </View>
   );
 }
 
