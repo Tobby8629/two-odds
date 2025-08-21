@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, View, Text, Dimensions, Animated, Keyboard } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Dimensions, Animated, Keyboard, Pressable } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
@@ -13,8 +13,12 @@ import GoldX from '@/assets/SVGs/icons/GoldX';
 import StakeBox from '@/components/Betslip/StakeBox';
 import useKeyboardTranslation from '@/components/Reuseables/KeyboardTrans';
 import Button from '@/components/Reuseables/Button';
-
-// import StakeBox from '@/components/Betslip/StakeBox';
+import useBetslip from '@/store/useStore';
+import EmptyState from '@/components/Reuseables/EmptyState';
+import AnimatedPopup from '@/components/Reuseables/Animations/Popup';
+import MatchCard from '@/components/Betslip/MatchCard';
+import Footer from '@/components/Betslip/Footer';
+import PopupD from '@/components/Betslip/PopupD';
 
 export default function TabTwoScreen() {
   const options = [
@@ -22,68 +26,15 @@ export default function TabTwoScreen() {
     {title:"Single Bet", value: "single"}, 
     {title:"System Bet", value: "system"}
   ]
-  const match = [
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-    {
-      match: "Man utd - Man City",
-      selected: "Home",
-      odds: "3.12",
-      time: "20 june 2025 (12:30)"
-    },
-  ]
+  const [visible, setVisible] = useState(false)
+  const onClose = () => setVisible(false)
+  const onOpen = () => {
+    setVisible(true)
+  }
   const [selected, setSelected] = useState(options[0]) 
-  const [baseStake, setBaseStake] = useState(100)
-   const [stake, setStake] = useState<number | null>(baseStake)
-
+  const { match, clearBetslip} = useBetslip()
   const { height } = Dimensions.get("window");
-  const { translateY } = useKeyboardTranslation(80)
+
   return (
     <View  
         style={{
@@ -93,60 +44,28 @@ export default function TabTwoScreen() {
     >
       <View className={`${flex} fixed top-0 pt-14 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`}>
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
-          <Text className='text-xl font-bold text-white '>2</Text>
+          <Text className='text-xl font-bold text-white '>{match.length}</Text>
         </View>
         <Dropdown title={selected?.title} items={options} setSelect={setSelected}/>
-        <View className={`${flexNoJustify} gap-3`}>
-          <ThemedText className={`!text-[#cbc9c9]`}>$20.00</ThemedText>
-          <FontAwesome5 name={"trash"} color={"#cbc9c9"} ize={16}/>
+        <View className={`${flexNoJustify} gap-4`}>
+          <ThemedText className={`!text-[#cbc9c9] text-lg`}>$20.00</ThemedText>
+          <Pressable onPress={onOpen}>
+            <FontAwesome5 name={"trash"} color={"#cbc9c9"} size={20}/>
+          </Pressable>
         </View>
       </View>
-      {/************* Match Selected Card******************/}
-      <ScrollView className='p-7'>
-        {match.map((e, index)=>(
-          <View key={index} className={`${flex} mb-5`}>
-            <View className={`${flexNoJustify} gap-3 min-w-[80%]`}>
-              <GoldX />
-              <View className='gap-2'>
-                <View className={`${flexNoJustify} gap-2`}>
-                  <Ball />
-                  <ThemedText className=' font-semibold text-2xl capitalize'>{e.selected}</ThemedText>
-                </View>
-                <ThemedText className=' font-medium text-lg'>{e.match}</ThemedText>
-                <ThemedText className='capitalize pr-3'>{e.time}</ThemedText>
-              </View>
-            </View>
-            <ThemedText>{e.odds}</ThemedText>
-          </View>
-        ))}
-      </ScrollView>
-
-       {/************* Bottom Card******************/}
-      <Animated.View style={{ transform: [{ translateY }] }} className='fixed bottom-0 bg-[#003c6f] p-7'>
-        <View className={flex}>
-          <ThemedText className='text-xl capitalize'>Total odds: </ThemedText>
-          <ThemedText className='text-xl font-semibold'>32.5</ThemedText>
-        </View>
-        <ThemedText className='my-3'>Radio</ThemedText>
-        <View className={flex}>
-          <ThemedText>Total Stakes: </ThemedText>
-          <StakeBox setStake={setStake} stake={stake} baseStake={baseStake}/>
-        </View>
-        <View className={flex}>
-          <ThemedText>total stakes: ${stake}</ThemedText> 
-          <ThemedText>Potential winning: ${stake ? stake*3 : 0*3}</ThemedText>
-        </View>
-        <View className={`${flex} my-3`}>
-          <Button
-            text='Book A Bet'
-            onPress={()=> console.log("saved")}
+      {match.length <= 0 ? <EmptyState className='!mt-[50%] ' text='Your betslip is empty'/> : 
+        <>
+          <MatchCard />
+          <Footer />
+          <AnimatedPopup
+            visible={visible}
+            onClose={onClose}
+            className='!bg-[#E3F2FD]'
+            children = {<PopupD onClose={onClose}/> }
           />
-          <Button   
-            text='Place A Bet'
-            onPress={()=> console.log("saved")}
-          />
-        </View>
-      </Animated.View> 
+        </>
+      }
     </View>
   );
 }

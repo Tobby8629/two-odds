@@ -2,7 +2,7 @@ import LoadOne from "@/assets/SVGs/LoadOne"
 import LoadTwo from "@/assets/SVGs/LoadTwo"
 import LoadThree from "@/assets/SVGs/LoadThree"
 import { nft, phrase, wallet } from "@/assets/images";
-import { Nav, validateInput, validateOutput, verifyInt } from "@/interface";
+import { MatchProps, Nav, validateInput, validateOutput, verifyInt } from "@/interface";
 import Home from "@/assets/SVGs/Home";
 import Menu from "@/assets/SVGs/Menu";
 import Betslip from "@/assets/SVGs/Betslip";
@@ -207,3 +207,70 @@ export const paymentSteps = [
   "Transfer money to the account via your online banking.",
   "Check your transaction history in app, Bank transfers generally credit within 10 minutes. if the deposit doesn’t credit within 24 hours, please contact your bank."
 ]
+
+
+export  const match: MatchProps[]  = [
+    { 
+      id:1,
+      match: "Man utd - Man Cit",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:2,
+      match: "Man utd - Man Ci",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:3,
+      match: "Man utd - Man C",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:4,
+      match: "Man utd - Man",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:5,
+      match: "Man utd - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:6,
+      match: "Man utd - MaCity",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:7,
+      match: "Man utd - MCity",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:8,
+      match: "Man utd - MCity",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+    { 
+      id:9,
+      match: "Man ut - Man City",
+      selected: "Home",
+      odds: "3.12",
+      time: "20 june 2025 (12:30)"
+    },
+  ]

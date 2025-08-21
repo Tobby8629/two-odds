@@ -6,6 +6,14 @@ interface validateInput {
   password?: string
 }
 
+interface MatchProps { 
+      id:number,
+      match: string,
+      selected: string,
+      odds: string,
+      time: string,
+  }
+
 interface data {
   password: ""
   confirm_password: ""
