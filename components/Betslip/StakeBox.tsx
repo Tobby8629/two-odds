@@ -12,7 +12,6 @@ interface stakeboxProps {
 }
 
   const StakeBox = ({stake, baseStake, setStake}: stakeboxProps) => {
-  
     const [stakeErr, setStakeErr] = useState("")
     const handleChange = (id: string,value: string) => {
     console.log(value)
@@ -58,7 +57,7 @@ interface stakeboxProps {
           value={stake || ""}
           onChangeText={handleChange}
           placeholder='Enter Stake'
-          className='w-[120px] !rounded-md ' inputStyle='!w-full placeholder:text-sec placeholder:text-base'
+          className='!w-[120px] !rounded-md ' inputStyle='!w-full placeholder:text-sec placeholder:text-base'
           />
           {stakeErr ? <ThemedText className='!text-red-500'>{stakeErr}</ThemedText> : null}
         </View>

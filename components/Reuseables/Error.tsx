@@ -1,5 +1,6 @@
 interface errorInt {
   error: string | []
+  className?: string,
   setError: React.Dispatch<React.SetStateAction<Err>>
 }
 
@@ -10,7 +11,7 @@ import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
 import { Err } from '@/interface';
 
-const Error = ({ error, setError }: errorInt) => {
+const Error = ({ error, setError, className }: errorInt) => {
   const positionY = useRef(new RNAnimated.Value(0)).current; // starts visible
 
   const panResponder = useRef(
@@ -41,10 +42,10 @@ const Error = ({ error, setError }: errorInt) => {
     })
   ).current;
 
-  if (!error) return null; // no banner if no error
+  if (!error) return null;
 
   return (
-    <Animated.View className="absolute top-0 w-full h-fit" entering={ZoomInUp.duration(10000).springify()}>
+    <Animated.View className={`absolute top-0 w-full h-fit ${className}`} entering={ZoomInUp.duration(10000).springify()}>
         <RNAnimated.View
         style={[styles.banner, { transform: [{ translateY: positionY }] }]}
         {...panResponder.panHandlers}

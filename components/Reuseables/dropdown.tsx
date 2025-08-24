@@ -22,6 +22,9 @@ interface DropdownProps {
   items: ItemProp[];
   setSelect: React.Dispatch<React.SetStateAction<ItemProp>>;
   maxHeight?: number;
+  eachStyle?: string;
+  eachText?: (item?: ItemProp) => string;
+  extra?:(item: ItemProp) => React.ReactNode
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -29,6 +32,9 @@ const Dropdown: React.FC<DropdownProps> = ({
   items,
   setSelect,
   maxHeight = 260,
+  eachStyle,
+  eachText,
+  extra
 }) => {
   const [open, setOpen] = useState(false);
   const [anchor, setAnchor] = useState({ x: 0, y: 0, w: 0, h: 0 });
@@ -145,8 +151,10 @@ const Dropdown: React.FC<DropdownProps> = ({
                   key={item.value}
                   style={styles.item}
                   onPress={() => handleSelect(item)}
+                  className = {eachStyle}
                 >
-                  <ThemedText className="text-white">{item.title}</ThemedText>
+                  <ThemedText className={`text-white ${eachText ? eachText(item) : ""}`}>{item.title}</ThemedText>
+                  {extra && extra(item)}
                 </Pressable>
               ))}
             </ScrollView>
