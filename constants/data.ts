@@ -274,3 +274,42 @@ export  const match: MatchProps[]  = [
       time: "20 june 2025 (12:30)"
     },
   ]
+
+   export const bets = [
+      {
+        id: 1,
+        betType: "accumulator",
+        games: match,
+        potentialWin: 2000,
+        stake: 300,
+        cashout: 200,
+        date: "01 Dec 2025 6:30",
+      },
+      {
+        id: 2,
+        betType: "accumulator",
+        games: match,
+        potentialWin: 3000,
+        stake: 300,
+        cashout: 200,
+        date: "01 Dec 2025 6:30",
+      },
+      {
+        id: 3,
+        betType: "accumulator",
+        games: match,
+        potentialWin: 4000,
+        stake: 300,
+        cashout: 200,
+        date: "01 Dec 2025 6:30",
+      },
+      {
+        id: 4,
+        betType: "accumulator",
+        games: match,
+        potentialWin: 5000,
+        stake: 300,
+        cashout: 200,
+        date: "01 Dec 2025 6:30",
+      },
+    ];

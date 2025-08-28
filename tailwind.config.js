@@ -9,7 +9,8 @@ module.exports = {
        pry: "#003C6F",
        "pry-light": "#1F5079",
        "pry-fade": '#03345dcc',
-       sec: "#FFC107"
+       sec: "#FFC107",
+       'light-blue': "#E3F2FD"
       }
     },
   },

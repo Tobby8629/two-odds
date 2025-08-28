@@ -1,4 +1,4 @@
-import { data, validateInput, validateOutput } from "@/interface";
+import { data, validateInput, validateOutput, verifyInt } from "@/interface";
 import { router } from "expo-router";
 
 interface resetProps {
@@ -109,7 +109,7 @@ export const navigateResetPassword = ({reset, passwordError, setPasswordError, s
   }
 
   if(!passwordError.password && reset.reset_code.length > 0 && reset.password === reset.confirm_password) {
-      router.replace("/Onboarding/SignIn")
+      router.replace("/(Onboarding)/SignIn")
     }
 }
 
