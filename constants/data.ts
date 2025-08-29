@@ -212,63 +212,63 @@ export const paymentSteps = [
 export  const match: MatchProps[]  = [
     { 
       id:1,
-      match: "Man utd - Man Cit",
+      match: "Man utd vs Man Cit",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:2,
-      match: "Man utd - Man Ci",
+      match: "Man utd vs Man Ci",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:3,
-      match: "Man utd - Man C",
+      match: "Man utd vs Man C",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:4,
-      match: "Man utd - Man",
+      match: "Man utd vs Man",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:5,
-      match: "Man utd - Man City",
+      match: "Man utd vs Man City",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:6,
-      match: "Man utd - MaCity",
+      match: "Man utd vs MaCity",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:7,
-      match: "Man utd - MCity",
+      match: "Man utd vs MCity",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:8,
-      match: "Man utd - MCity",
+      match: "Man utd vs MCity",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
     },
     { 
       id:9,
-      match: "Man ut - Man City",
+      match: "Man ut vs Man City",
       selected: "Home",
       odds: "3.12",
       time: "20 june 2025 (12:30)"
