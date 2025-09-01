@@ -215,6 +215,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs Man Cit",
       selected: "Home",
       odds: "3.12",
+      result: "Home",
+      status: "lost",
+      live: false,
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -222,6 +225,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs Man Ci",
       selected: "Home",
       odds: "3.12",
+      result: "Home",
+      live: false,
+      status: "pending",
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -229,6 +235,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs Man C",
       selected: "Home",
       odds: "3.12",
+      status: "won",
+      result: "Home",
+      live: false,
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -236,6 +245,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs Man",
       selected: "Home",
       odds: "3.12",
+      status: "won",
+      result: "Home",
+      live: false,
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -243,6 +255,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs Man City",
       selected: "Home",
       odds: "3.12",
+      status: "won",
+      result: "Home",
+      live: false,
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -250,6 +265,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs MaCity",
       selected: "Home",
       odds: "3.12",
+      status: "won",
+      result: "Home",
+      live: false,
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -257,6 +275,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs MCity",
       selected: "Home",
       odds: "3.12",
+      status: "won",
+      result: "Home",
+      live: false,
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -264,6 +285,9 @@ export  const match: MatchProps[]  = [
       match: "Man utd vs MCity",
       selected: "Home",
       odds: "3.12",
+      status: "won",
+      result: "Home",
+      live: false,
       time: "20 june 2025 (12:30)"
     },
     { 
@@ -271,6 +295,9 @@ export  const match: MatchProps[]  = [
       match: "Man ut vs Man City",
       selected: "Home",
       odds: "3.12",
+      status: "won",
+      result: "Home",
+      live: true,
       time: "20 june 2025 (12:30)"
     },
   ]

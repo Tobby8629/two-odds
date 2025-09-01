@@ -7,7 +7,6 @@ import EachBet from '@/components/Bets/EachBet'
 import {bets as matchBets} from '@/constants/data'
 
 const bets = () => {
-  
   const {height} = Dimensions.get("window")
   return (
     <View  
@@ -18,7 +17,7 @@ const bets = () => {
     >
     <View className={`${flex} fixed top-0 pt-14 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`}>
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
-          <Text className='text-xl font-bold text-white '>{bets.length}</Text>
+          <Text className='text-xl font-bold text-white '>{matchBets.length}</Text>
         </View>
         <ThemedText>Open Bets</ThemedText>
         <View className={`${flexNoJustify} gap-2 `}>
@@ -27,10 +26,9 @@ const bets = () => {
         </View>
       </View>
     <ScrollView>
-      {matchBets.length <= 0 ? <EmptyState className='!mt-[50%] ' text='No Open Bets' /> : 
-      <>
-        <EachBet />
-      </>
+      {matchBets.length <= 0 ? 
+      <EmptyState className='!mt-[50%] ' text='No Open Bets' /> : 
+      <EachBet />
       }
     </ScrollView>
     </View>

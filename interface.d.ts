@@ -7,11 +7,24 @@ interface validateInput {
 }
 
 interface MatchProps { 
-      id:number,
-      match: string,
-      selected: string,
-      odds: string,
-      time: string,
+    id:number,
+    status: "won" | "lost" | "pending"
+    match: string,
+    selected: string,
+    odds: string,
+    time: string,
+    live: boolean,
+    result: string
+  }
+
+  interface betProps {
+    id: number,
+    betType: string,
+    games: match[],
+    potentialWin:number,
+    stake: number,
+    cashout: number,
+    date: string,
   }
 
 interface data {
