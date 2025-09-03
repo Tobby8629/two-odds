@@ -11,7 +11,7 @@ const SubHeader = () => {
     {
       name: "Bet History",
       icon: BetHistory,
-      link: "/(tabs)/bet-history" as RelativePathString
+      link: "/bet-history" as RelativePathString
     },
     {
       name: "Transactions",

@@ -47,7 +47,8 @@ const EachBet = () => {
             <ThemedText className='!text-black my-1 !text-xl'>Stake: <ThemedText className='font-medium !text-black'>${bet.stake} </ThemedText></ThemedText> 
           </View>
           <Button 
-            text='Cashout'
+            text={`Cashout $${bet.cashout}`}
+            disable={bet.cashout <= 0}
             className='w-full mt-2'
             onPress={()=>console.log("cashout loading")}
           />
