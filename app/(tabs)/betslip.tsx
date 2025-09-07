@@ -25,7 +25,6 @@ export default function TabTwoScreen() {
     setVisible(true)
   }
   const [selected, setSelected] = useState(options[0]) 
-  const selectIndex = options.findIndex((e) => e.title === selected?.title);
   const { match, clearBetslip} = useBetslip()
   const { height } = Dimensions.get("window");
   const handleSubmit = (stake: number | null, baseStake: number) => {
@@ -33,6 +32,7 @@ export default function TabTwoScreen() {
       setErr({status: true, message: "insufficient Balance"})
     }
   }
+
 
   return (
     <View  
@@ -68,7 +68,12 @@ export default function TabTwoScreen() {
             visible={visible}
             onClose={onClose}
             className='!bg-[#E3F2FD]'
-            children = {<PopupD onClose={onClose}/> }
+            children = {<PopupD 
+              onClose={onClose}
+              func={clearBetslip}
+              headerText='Delete Betslip'
+              text={"Are you sure you want to clear your list"}
+            /> }
           />
         </>
       }

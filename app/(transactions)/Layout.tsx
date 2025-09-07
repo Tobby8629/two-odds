@@ -15,7 +15,7 @@ const Layout = ({children, title, otherLinks, handleClick= () => {goBack()} }: T
     <View className='bg-pry flex-1'>
       <View className={`flex-row ${otherLinks && "justify-between items-center"} pb-5 pt-20 bg-[#1F5079] px-6`}>
         <Pressable onPress={handleClick}>
-            <FontAwesome6 name="angle-left" size={24} color="white" />
+          <FontAwesome6 name="angle-left" size={24} color="white" />
         </Pressable>
         <Text className={`text-white ${otherLinks ? "w-fit" : "w-[90%]"} text-2xl text-center`}>{title}</Text>
         {otherLinks}
