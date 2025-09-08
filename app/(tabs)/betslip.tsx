@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, Dimensions, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { flex, flexNoJustify } from '@/constants/style';
 import { FontAwesome5 } from '@expo/vector-icons';
-import Dropdown from '@/components/Reuseables/dropdown';
+import Dropdown, { ItemProp } from '@/components/Reuseables/dropdown';
 import  { useState } from 'react';
 import useBetslip from '@/store/useStore';
 import EmptyState from '@/components/Reuseables/EmptyState';
@@ -24,7 +24,7 @@ export default function TabTwoScreen() {
   const onOpen = () => {
     setVisible(true)
   }
-  const [selected, setSelected] = useState(options[0]) 
+  const [selected, setSelected] = useState<ItemProp>(options[0]) 
   const { match, clearBetslip} = useBetslip()
   const { height } = Dimensions.get("window");
   const handleSubmit = (stake: number | null, baseStake: number) => {

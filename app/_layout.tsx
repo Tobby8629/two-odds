@@ -19,6 +19,7 @@ export default function RootLayout() {
   const [ splash, setsplash] = useState(true)
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SansitaOneBoldItalic: require('../assets/fonts/Sansita/Sansita-BoldItalic.ttf')
   });
 
   useEffect(() => {

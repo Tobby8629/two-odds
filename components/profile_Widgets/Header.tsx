@@ -44,7 +44,7 @@ const Header = () => {
           <Wallet />
           <Text className={`text-center capitalize text-white text-xl font-semibold`}>Deposit</Text>
       </Pressable>
-      <Pressable onPress={()=>console.log("click")} className={`${flexNoJustify} gap-2 bg-gray-300 w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1`}>
+      <Pressable onPress={()=>router.push("/(transactions)/withdraw")} className={`${flexNoJustify} gap-2 bg-gray-300 w-[161px] h-[45px] rounded-lg  items-center justify-center text-white my-1`}>
           <Withdraw />
           <Text className={`text-center capitalize text-white text-xl font-semibold`}>Withdrawal</Text>
       </Pressable>

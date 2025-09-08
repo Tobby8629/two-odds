@@ -11,6 +11,9 @@ module.exports = {
        "pry-fade": '#03345dcc',
        sec: "#FFC107",
        'light-blue': "#E3F2FD"
+      },
+      fontFamily: {
+        sansitaBoldItalic: ["SansitaOneBoldItalic"],
       }
     },
   },

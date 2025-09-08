@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -15,6 +15,7 @@ import { ThemedText } from "../ThemedText";
 export interface ItemProp {
   title: string;
   value: string;
+  icon?: ReactNode | string
 }
 
 interface DropdownProps {
@@ -23,6 +24,8 @@ interface DropdownProps {
   setSelect: React.Dispatch<React.SetStateAction<ItemProp>>;
   maxHeight?: number;
   eachStyle?: string;
+  listWrapper?:string;
+  wrapper?:string;
   eachText?: (item?: ItemProp) => string;
   extra?:(item: ItemProp) => React.ReactNode
 }
@@ -33,6 +36,8 @@ const Dropdown: React.FC<DropdownProps> = ({
   setSelect,
   maxHeight = 260,
   eachStyle,
+  listWrapper,
+  wrapper,
   eachText,
   extra
 }) => {
@@ -116,6 +121,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         ref={headerRef}
         onPress={handleToggle}
         style={styles.header}
+        className={wrapper}
         activeOpacity={0.8}
       >
         <ThemedText className="text-lg font-semibold">{title}</ThemedText>
@@ -144,6 +150,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 maxHeight,
               },
             ]}
+            className={listWrapper}
           >
             <ScrollView bounces={false}>
               {items.map((item) => (
