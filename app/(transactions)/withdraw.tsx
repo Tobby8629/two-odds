@@ -3,30 +3,46 @@ import React, { useState } from 'react'
 import BetHeader from '@/components/Reuseables/BetHeader'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemedText } from '@/components/ThemedText'
-import { flexNoJustify } from '@/constants/style'
+import { flex, flexNoJustify } from '@/constants/style'
 import { router } from 'expo-router'
 import Dropdown, { ItemProp } from '@/components/Reuseables/dropdown'
+import USDT from '@/assets/SVGs/icons/Usdt'
+import Textinput from '@/components/Reuseables/Input/TextInput'
+import Button from '@/components/Reuseables/Button'
 
 const withdraw = () => {
   const dropdown = [
     {
       title: "USDT",
       value: "usdt",
-      icon:""
+      icon: <USDT />
     },
     {
       title: "Naira",
       value: "naira",
-      icon:""
+      icon: <USDT />
     },
     {
       title: "Solana",
       value: "sol",
-      icon:""
+      icon: <USDT />
     }
 
   ]
   const [select, setSelect] = useState<ItemProp>(dropdown[0])
+  const [detail, setdetail] = useState({amount: "", address: ""})
+  const handleChange = (id: string, value: string) => {
+    if(id=="amount"){
+      const numeric = value.replace(/[^0-9.]/g, "");
+      setdetail((prev)=>({...prev, [id]: numeric}))
+    }
+    else {
+      setdetail((prev)=>({...prev, [id]: value}))
+    }
+  }
+  const valid = Object.values(detail).every((val) => val !== "");
+
+
   return (
     <View className=' bg-[#003c6f] h-screen'>
       <BetHeader
@@ -46,16 +62,66 @@ const withdraw = () => {
           }
       />
       <ScrollView className='px-5 my-2'>
+
         <ThemedText>Select Asset</ThemedText>
-        <View className={`border-[1px] border-sec my-2 px-2`}>
+
+        <View className={`border-[1px] border-sec my-2 px-2 ${flexNoJustify} gap-2`}>
           {select.icon}
+
           <Dropdown 
             title={select?.title}
             items={dropdown}
             setSelect={setSelect}
-            wrapper=' !justify-between'
-            listWrapper='!w-[90%] !-bottom-[100px] !left-[20px] !mx-auto '
+            wrapper=' !justify-between w-[90%]'
+            listWrapper='!w-[90%] !top-[173px]  !left-[20px] !mx-auto '
           />
+        </View>
+
+        <View className='my-3'>
+          <ThemedText>Amount ({select.title})</ThemedText>
+          <Textinput 
+          id="amount"
+          placeholder='$0.00'
+          onChangeText={handleChange}
+          value={detail.amount ? `$${detail.amount}` : ""}
+          className='w-full placeholder:text-pry-light'
+          inputStyle={` w-full text-white border-[1px] !bg-transparent ${detail.amount ? "border-sec" : "border-pry-light"}`}
+          keyboardType="number-pad"
+          />
+          <View className={flex}>
+            <ThemedText className='!text-pry-light !text-lg'>Min per Transaction $5</ThemedText>
+            <ThemedText className='!text-pry-light !text-lg'>Max per Transaction $20k</ThemedText>
+          </View>
+        </View>
+
+        <View className='my-3'>
+          <ThemedText>Wallet Address</ThemedText>
+          <Textinput 
+          id="address"
+          onChangeText={handleChange}
+          value={detail.address}
+          className='w-full'
+          inputStyle={` w-full text-white border-[1px] !bg-transparent ${detail.address ? "border-sec" : "border-pry-light"}`}
+          />
+          <ThemedText className='!text-pry-light !text-lg'>Ensure that the address matches the selected network. Withdrawal to the wrong address can’t be refuded</ThemedText>
+        </View>
+
+        <Button 
+          text='Withdraw'
+          disable={!valid}
+          onPress={()=> router.push("/(transactions)/withdrawal/Summary")}
+          className = {`mx-auto my-2 ${valid ?  "!bg-sec" : "!bg-gray-400"}`} 
+        />
+        
+        <View className='my-3'>
+          {Array.from({length: 3}, (_, i)=>(
+            <View key={String(i)} className={`${flexNoJustify} gap-2  my-2`}>
+              <View className='w-1 h-1 bg-white rounded-full'></View>
+              <ThemedText className='!text-white'>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+              </ThemedText>
+            </View>
+          ))}
         </View>
       </ScrollView>
     </View>

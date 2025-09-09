@@ -11,7 +11,7 @@ interface textinput {
   secure?: boolean
   placeholder?: string
   inputStyle?: string
-  value?: string | number
+  value: string | number
   keyboardType?: "default" | "numeric" | "email-address" | "phone-pad" | "number-pad"
 }
 

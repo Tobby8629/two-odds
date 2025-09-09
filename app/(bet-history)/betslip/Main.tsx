@@ -14,6 +14,9 @@ interface mainProps {
 interface flxCont {
   rh: string
   lh: string
+  className?: string
+  text1?: string
+  text2?: string
 }
 
 const Main = ({bet}: mainProps) => {
@@ -70,15 +73,14 @@ export default Main
 
 const styles = StyleSheet.create({})
 
-const FlexContent = ({rh, lh}: flxCont) => {
+export const FlexContent = ({rh, lh, text1, text2, className}: flxCont) => {
   const status = rh === "won"
-  console.log(status)
   return (
-    <View className={`${flex} mb-3`}>
-      <ThemedText className=' text-lg'>{lh}</ThemedText>
+    <View className={`${flex} ${className} mb-3`}>
+      <ThemedText className={`${text1} text-lg`}>{lh}</ThemedText>
       {lh === "Status" ? 
       <ThemedText className={`${status ? "!text-sec" : "!text-red-500"} capitalize text-lg`}>{rh}</ThemedText>:
-      <ThemedText className='capitalize text-lg'>{rh}</ThemedText> 
+      <ThemedText className={`${text2} capitalize text-lg`}>{rh}</ThemedText> 
       } 
     </View>
   )

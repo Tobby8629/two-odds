@@ -39,7 +39,7 @@ interface validateOutput {
 
 type InputField = 'email' | 'password' | 'text';
 
-type InputID = 'email' | 'password' | 'confirm_password' | 'reset_code';
+type InputID = 'email' | 'password' | 'confirm_password' | 'reset_code' | "address" | "amount";
 
 interface register {
     email: InputField,
