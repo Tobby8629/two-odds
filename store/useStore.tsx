@@ -13,6 +13,20 @@ interface betHistory {
   deleteBetSlip: (id:string) => void
 }
 
+interface WithdrawInfo{
+  amount: string | null,
+  asset: "solana" | "usdt" | "naira",
+  walletAddress: string,
+}
+
+interface withdrawal {
+  withdrawStatus: boolean
+  updateWithdrawStatus: () => void
+  removeWithdrawStatus: () => void
+  withdrawInfo: WithdrawInfo,
+  updateWithdrawInfo: (val: WithdrawInfo ) => void
+}
+
 const useBetslip = create<Betslip>((set) => ({
   match: match,
   removeMatch: (id: number) =>
@@ -27,6 +41,24 @@ export const useBetHistory = create<betHistory>((set, get)=>({
   deleteBetSlip: ((id: string) => set((state)=>({
     bets: state.bets.filter((bet)=> bet.id != Number(id))
   })))
+}))
+
+export const useWithdrawal = create<withdrawal>((set, get)=>({
+  withdrawStatus: false,
+  withdrawInfo: {
+    amount: null,
+    asset: "usdt",
+    walletAddress: "",
+  },
+  updateWithdrawStatus: (()=> set(()=> ({
+    withdrawStatus: true
+  }))),
+  removeWithdrawStatus: (()=>set(()=>({
+    withdrawStatus:false 
+  }))),
+  updateWithdrawInfo: ((val: WithdrawInfo)=>(set(()=>({
+    withdrawInfo: val
+  }))))
 }))
 
 export default useBetslip;

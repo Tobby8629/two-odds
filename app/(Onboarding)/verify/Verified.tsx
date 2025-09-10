@@ -7,7 +7,7 @@ const Verified = () => {
     <View className='bg-pry h-screen justify-center items-center'>
        <Image source={verified} />
        <Text className=' font-bold text-2xl my-8 text-white'>Email has been verified</Text>
-       <Pressable onPress={()=> router.replace("/Onboarding/CreatePassword")}>
+       <Pressable onPress={()=> router.replace("/(Onboarding)/CreatePassword")}>
         <Text className='text-sec text-xl font-semibold'>Continue</Text>
        </Pressable>
     </View>

@@ -9,10 +9,12 @@ import { FlexContent } from '../../(bet-history)/betslip/Main'
 import GreenUsdt from '@/assets/SVGs/icons/GreenUsdt'
 import { flex, flexNoJustify } from '@/constants/style'
 import Button from '@/components/Reuseables/Button'
+import { useWithdrawal } from '@/store/useStore'
 
 
 const WSummary = () => {
   const textStyle = " !text-black"
+  const { withdrawInfo } = useWithdrawal()
   return (
     <View className='h-screen bg-pry'>
       <Header>
@@ -24,7 +26,7 @@ const WSummary = () => {
       <View className='h-[80%] w-[85%] mx-auto justify-center'>
         <View className='bg-light-blue rounded-2xl h-[415px] py-8  p-5'>
             <ThemedText className={`${textStyle} text-center`}>Withdrawal Amount</ThemedText>
-            <ThemedText className={`${textStyle} text-center my-2 font-sansitaBoldItalic text-xl`}>$4000</ThemedText>
+            <ThemedText className={`${textStyle} text-center my-2 font-sansitaBoldItalic text-xl`}>${withdrawInfo.amount}</ThemedText>
             <View className={`${flex} py-5 border-b-[1px] border-gray-300`}>
                <ThemedText className={`${textStyle} text-lg`}>Asset:</ThemedText>
                <View className={`${flexNoJustify} gap-3 `}>
@@ -34,7 +36,7 @@ const WSummary = () => {
             </View>
             <FlexContent className='py-5 border-b-[1px] border-gray-300' text1={textStyle} text2={textStyle} lh={"Balance:"} rh={"$0.00"}/>
             <FlexContent className='py-5 border-b-[1px] border-gray-300' text1={textStyle} text2={textStyle} lh={"Received:"} rh={"$0.00"}/>
-            <FlexContent className='py-5 ' text1={textStyle} text2={textStyle} lh={"Wallet Address:"} rh={"$0.00"}/>
+            <FlexContent className='py-5 ' text1={textStyle} text2={textStyle} lh={"Wallet Address:"} rh={withdrawInfo.walletAddress}/>
             <Button 
               text='PIN'
               textStyle='!uppercase'

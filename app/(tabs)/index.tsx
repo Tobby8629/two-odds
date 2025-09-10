@@ -11,6 +11,7 @@ import Quickpick from '@/components/Home/Quickpick';
 import LiveBets from '@/components/Home/LiveBets';
 import Popular from '@/components/Home/Popular';
 import { Link } from 'expo-router';
+import WithdrawModal from '@/components/Home/WithdrawModal';
 
 export default function HomeScreen() {
   // const {userId} = useAuth()
@@ -69,6 +70,7 @@ export default function HomeScreen() {
         transaction history
       </Link> */}
       <Popular />
+      <WithdrawModal />
       
     </ScrollView>
     

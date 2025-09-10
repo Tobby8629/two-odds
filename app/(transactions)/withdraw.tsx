@@ -1,5 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import BetHeader from '@/components/Reuseables/BetHeader'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemedText } from '@/components/ThemedText'
@@ -9,9 +9,11 @@ import Dropdown, { ItemProp } from '@/components/Reuseables/dropdown'
 import USDT from '@/assets/SVGs/icons/Usdt'
 import Textinput from '@/components/Reuseables/Input/TextInput'
 import Button from '@/components/Reuseables/Button'
+import { useWithdrawal } from '@/store/useStore'
+
 
 const withdraw = () => {
-  const dropdown = [
+  const dropdown: ItemProp<"solana" | "usdt" | "naira">[] = [
     {
       title: "USDT",
       value: "usdt",
@@ -24,13 +26,15 @@ const withdraw = () => {
     },
     {
       title: "Solana",
-      value: "sol",
+      value: "solana",
       icon: <USDT />
     }
 
   ]
-  const [select, setSelect] = useState<ItemProp>(dropdown[0])
-  const [detail, setdetail] = useState({amount: "", address: ""})
+  const [select, setSelect] = useState< ItemProp<"solana" | "usdt" | "naira">>(dropdown[0])
+  const [error, setError] = useState(false)
+  const {updateWithdrawInfo} = useWithdrawal()
+  const [detail, setdetail] = useState({amount: "", asset:select.value, walletAddress: ""})
   const handleChange = (id: string, value: string) => {
     if(id=="amount"){
       const numeric = value.replace(/[^0-9.]/g, "");
@@ -40,6 +44,13 @@ const withdraw = () => {
       setdetail((prev)=>({...prev, [id]: value}))
     }
   }
+  const pushSummary = () => {
+    if(!error) {
+      updateWithdrawInfo(detail)
+      router.push("/(transactions)/withdrawal/Summary")
+    }
+  }
+
   const valid = Object.values(detail).every((val) => val !== "");
 
 
@@ -68,7 +79,7 @@ const withdraw = () => {
         <View className={`border-[1px] border-sec my-2 px-2 ${flexNoJustify} gap-2`}>
           {select.icon}
 
-          <Dropdown 
+          <Dropdown<"solana" | "usdt" | "naira">
             title={select?.title}
             items={dropdown}
             setSelect={setSelect}
@@ -99,9 +110,9 @@ const withdraw = () => {
           <Textinput 
           id="address"
           onChangeText={handleChange}
-          value={detail.address}
+          value={detail.walletAddress}
           className='w-full'
-          inputStyle={` w-full text-white border-[1px] !bg-transparent ${detail.address ? "border-sec" : "border-pry-light"}`}
+          inputStyle={` w-full text-white border-[1px] !bg-transparent ${detail.walletAddress ? "border-sec" : "border-pry-light"}`}
           />
           <ThemedText className='!text-pry-light !text-lg'>Ensure that the address matches the selected network. Withdrawal to the wrong address can’t be refuded</ThemedText>
         </View>
@@ -109,7 +120,7 @@ const withdraw = () => {
         <Button 
           text='Withdraw'
           disable={!valid}
-          onPress={()=> router.push("/(transactions)/withdrawal/Summary")}
+          onPress={pushSummary}
           className = {`mx-auto my-2 ${valid ?  "!bg-sec" : "!bg-gray-400"}`} 
         />
         

@@ -12,25 +12,26 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
 
-export interface ItemProp {
+export interface ItemProp<T = string> {
   title: string;
-  value: string;
+  value: T;
   icon?: ReactNode | string
 }
 
-interface DropdownProps {
+interface DropdownProps<T = string> {
   title: string;
-  items: ItemProp[];
-  setSelect: React.Dispatch<React.SetStateAction<ItemProp>>;
+  items: ItemProp<T>[];
+  setSelect: React.Dispatch<React.SetStateAction<ItemProp<T>>>;
   maxHeight?: number;
   eachStyle?: string;
-  listWrapper?:string;
-  wrapper?:string;
-  eachText?: (item?: ItemProp) => string;
-  extra?:(item: ItemProp) => React.ReactNode
+  listWrapper?: string;
+  wrapper?: string;
+  eachText?: (item: ItemProp<T>) => string;
+  extra?: (item: ItemProp<T>) => React.ReactNode;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({
+
+const Dropdown = <T, > ({
   title,
   items,
   setSelect,
@@ -40,7 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   wrapper,
   eachText,
   extra
-}) => {
+}: DropdownProps) => {
   const [open, setOpen] = useState(false);
   const [anchor, setAnchor] = useState({ x: 0, y: 0, w: 0, h: 0 });
   const headerRef = useRef<View>(null);
@@ -109,10 +110,11 @@ const Dropdown: React.FC<DropdownProps> = ({
     else openMenu();
   };
 
-  const handleSelect = (it: ItemProp) => {
-    setSelect(it);
-    closeMenu();
-  };
+ const handleSelect = (it: ItemProp) => {
+  setSelect(it);
+  closeMenu();
+};
+
 
   return (
     <>
