@@ -13,7 +13,7 @@ interface betHistory {
   deleteBetSlip: (id:string) => void
 }
 
-interface WithdrawInfo{
+export interface WithdrawInfo{
   amount: string | null,
   asset: "solana" | "usdt" | "naira",
   walletAddress: string,

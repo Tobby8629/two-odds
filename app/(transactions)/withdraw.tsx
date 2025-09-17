@@ -9,14 +9,14 @@ import Dropdown, { ItemProp } from '@/components/Reuseables/dropdown'
 import USDT from '@/assets/SVGs/icons/Usdt'
 import Textinput from '@/components/Reuseables/Input/TextInput'
 import Button from '@/components/Reuseables/Button'
-import { useWithdrawal } from '@/store/useStore'
+import { useWithdrawal, WithdrawInfo } from '@/store/useStore'
 
 
 const withdraw = () => {
   const dropdown: ItemProp<"solana" | "usdt" | "naira">[] = [
     {
       title: "USDT",
-      value: "usdt",
+      value: "usdt" ,
       icon: <USDT />
     },
     {
@@ -31,10 +31,10 @@ const withdraw = () => {
     }
 
   ]
-  const [select, setSelect] = useState< ItemProp<"solana" | "usdt" | "naira">>(dropdown[0])
+  const [select, setSelect] = useState<ItemProp<"solana" | "usdt" | "naira">>(dropdown[0])
   const [error, setError] = useState(false)
   const {updateWithdrawInfo} = useWithdrawal()
-  const [detail, setdetail] = useState({amount: "", asset:select.value, walletAddress: ""})
+  const [detail, setdetail] = useState<WithdrawInfo>({amount: "", asset:select.value, walletAddress: ""})
   const handleChange = (id: string, value: string) => {
     if(id=="amount"){
       const numeric = value.replace(/[^0-9.]/g, "");
@@ -50,6 +50,8 @@ const withdraw = () => {
       router.push("/(transactions)/withdrawal/Summary")
     }
   }
+
+  
 
   const valid = Object.values(detail).every((val) => val !== "");
 

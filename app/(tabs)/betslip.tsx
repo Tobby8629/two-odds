@@ -13,7 +13,8 @@ import PopupD from '@/components/Betslip/PopupD';
 import Error from '@/components/Reuseables/Error';
 
 export default function TabTwoScreen() {
-  const options = [
+ 
+  const options: ItemProp<"bet_Accumulator" | "single" | "system">[] = [
     {title:"Bet Accumulator", value: "bet_Accumulator"}, 
     {title:"Single Bet", value: "single"}, 
     {title:"System Bet", value: "system"}
@@ -24,7 +25,7 @@ export default function TabTwoScreen() {
   const onOpen = () => {
     setVisible(true)
   }
-  const [selected, setSelected] = useState<ItemProp>(options[0]) 
+  const [selected, setSelected] = useState<ItemProp<"bet_Accumulator" | "single" | "system">>(options[0]) 
   const { match, clearBetslip} = useBetslip()
   const { height } = Dimensions.get("window");
   const handleSubmit = (stake: number | null, baseStake: number) => {
