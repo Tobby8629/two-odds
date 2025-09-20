@@ -1,14 +1,11 @@
-import React, { Key, ReactNode, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
+  Text,
   TouchableOpacity,
-  Animated,
-  Easing,
-  StyleSheet,
   Modal,
-  Pressable,
   ScrollView,
-  LayoutChangeEvent,
+  StyleSheet,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
@@ -16,7 +13,7 @@ import { ThemedText } from "../ThemedText";
 export interface ItemProp<T> {
   title: string;
   value: T;
-  icon?: ReactNode | string;
+  icon?: React.ReactNode | string;
 }
 
 interface DropdownProps<T> {
@@ -31,184 +28,137 @@ interface DropdownProps<T> {
   extra?: (item: ItemProp<T>) => React.ReactNode;
 }
 
-const Dropdown = <T,>({
+export default function Dropdown<T>({
   title,
   items,
   setSelect,
-  maxHeight = 260,
+  maxHeight = 300,
   eachStyle,
   listWrapper,
   wrapper,
   eachText,
   extra,
-}: DropdownProps<T>) => {
-  const [open, setOpen] = useState(false);
-  const [anchor, setAnchor] = useState({ x: 0, y: 0, w: 0, h: 0 });
-
-  const fade = useRef(new Animated.Value(0)).current;
-  const slide = useRef(new Animated.Value(6)).current;
-  const rotate = useRef(new Animated.Value(0)).current;
-
-  const rotateDeg = rotate.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "180deg"],
-  });
-
-  const openMenu = () => {
-    setOpen(true);
-    Animated.parallel([
-      Animated.timing(fade, {
-        toValue: 1,
-        duration: 160,
-        easing: Easing.out(Easing.quad),
-        useNativeDriver: true,
-      }),
-      Animated.timing(slide, {
-        toValue: 0,
-        duration: 160,
-        easing: Easing.out(Easing.quad),
-        useNativeDriver: true,
-      }),
-      Animated.timing(rotate, {
-        toValue: 1,
-        duration: 160,
-        easing: Easing.out(Easing.quad),
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
-
-  const closeMenu = () => {
-    Animated.parallel([
-      Animated.timing(fade, {
-        toValue: 0,
-        duration: 140,
-        easing: Easing.in(Easing.quad),
-        useNativeDriver: true,
-      }),
-      Animated.timing(slide, {
-        toValue: 6,
-        duration: 140,
-        easing: Easing.in(Easing.quad),
-        useNativeDriver: true,
-      }),
-      Animated.timing(rotate, {
-        toValue: 0,
-        duration: 140,
-        easing: Easing.in(Easing.quad),
-        useNativeDriver: true,
-      }),
-    ]).start(({ finished }) => finished && setOpen(false));
-  };
-
-  const handleToggle = () => {
-    if (open) closeMenu();
-    else openMenu();
-  };
+}: DropdownProps<T>) {
+  const [visible, setVisible] = useState(false);
 
   const handleSelect = (item: ItemProp<T>) => {
     setSelect(item);
-    closeMenu();
-  };
-
-  // measure button layout
-  const handleLayout = (event: LayoutChangeEvent) => {
-    const { x, y, width, height } = event.nativeEvent.layout;
-    setAnchor({ x, y, w: width, h: height });
+    setVisible(false);
   };
 
   return (
-    <>
+    <View style={[styles.wrapper, wrapper ? { margin: 5 } : {}]}>
+      {/* Dropdown Button */}
       <TouchableOpacity
-        onLayout={handleLayout}
-        onPress={handleToggle}
-        style={styles.header}
-        className={wrapper}
+        className="gap-2 !items-center !bg-transparent "
+        style={styles.dropdownButton}
+        onPress={() => setVisible(true)}
       >
-        <ThemedText className="text-lg font-semibold">{title}</ThemedText>
-        <Animated.View style={{ transform: [{ rotate: rotateDeg }] }}>
-          <FontAwesome5 name="chevron-down" size={14} color="white" />
-        </Animated.View>
+        <ThemedText className=" font-medium text-xl" style={styles.dropdownText}>{title}</ThemedText>
+        <FontAwesome5 name="chevron-down" size={16} color={"white"} />
       </TouchableOpacity>
 
-      {open && (
-        <Modal
-          transparent
-          animationType="none"
-          visible={open}
-          onRequestClose={closeMenu}
-          statusBarTranslucent
+      {/* Modal Dropdown List */}
+      <Modal
+        visible={visible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setVisible(false)}
+      >
+        <TouchableOpacity
+          className="  top-[15%] !w-[90%] !left-0 !right-0 "
+          style={styles.overlay}
+          activeOpacity={1}
+          onPressOut={() => setVisible(false)}
         >
-          {/* background overlay */}
-          <Pressable style={StyleSheet.absoluteFill} onPress={closeMenu} />
-
-          {/* dropdown menu */}
-          <Animated.View
+          <View
+            className="!w-full"
             style={[
-              styles.menu,
-              {
-                top: anchor.y + anchor.h + 4, // position below button
-                left: anchor.x,
-                width: anchor.w,
-                opacity: fade,
-                transform: [{ translateY: slide }],
-                maxHeight,
-              },
+              styles.listWrapper,
+              { maxHeight: maxHeight },
+              listWrapper ? { padding: 5 } : {},
             ]}
-            className={listWrapper}
           >
-            <ScrollView bounces={false}>
-              {items.map((item) => (
-                <Pressable
-                  key={item.value as Key}
-                  style={styles.item}
+            <ScrollView>
+              {items.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[styles.item, eachStyle ? { marginVertical: 2 } : {}]}
                   onPress={() => handleSelect(item)}
-                  className={eachStyle}
                 >
-                  <ThemedText
-                    className={`text-white ${
+                  {/* Icon */}
+                  {typeof item.icon === "string" ? (
+                    <FontAwesome5
+                      name={item.icon}
+                      size={16}
+                      style={styles.icon}
+                    />
+                  ) : (
+                    item.icon
+                  )}
+
+                  {/* Item Text */}
+                  <ThemedText className={`${
                       eachText ? eachText(item) : ""
-                    }`}
-                  >
+                    }`} >
                     {item.title}
                   </ThemedText>
-                  {extra && extra(item)}
-                </Pressable>
+
+                  {/* Extra Node */}
+                  {extra && <View style={styles.extra}>{extra(item)}</View>}
+                </TouchableOpacity>
               ))}
             </ScrollView>
-          </Animated.View>
-        </Modal>
-      )}
-    </>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingVertical: 10,
+  wrapper: {
+    marginVertical: 10,
   },
-  menu: {
+  dropdownButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 12,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 8,
+  },
+  dropdownText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  overlay: {
+    flex: 1,
     position: "absolute",
+    // left: "50%",
+  },
+
+  listWrapper: {
+    marginHorizontal: 20,
     backgroundColor: "#1f5079",
-    borderRadius: 10,
-    // overflow: "hidden",
-    shadowColor: "#000",
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
-    width: "100%",
-    zIndex: 999,
+    borderRadius: 8,
+    paddingVertical: 5,
   },
   item: {
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "rgba(255,255,255,0.15)",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 12,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  itemText: {
+    fontSize: 16,
+    flex: 1,
+  },
+  extra: {
+    marginLeft: 10,
   },
 });
 
-export default Dropdown;
+
