@@ -80,13 +80,13 @@ const withdraw = () => {
 
         <View className={`border-[1px] border-sec my-2 px-2 ${flexNoJustify} gap-2`}>
           {select.icon}
-
           <Dropdown<"solana" | "usdt" | "naira">
             title={select?.title}
+            className='!top-[23%] w-[90%]'
             items={dropdown}
             setSelect={setSelect}
-            wrapper=' !justify-between w-[90%]'
-            listWrapper='!w-[90%] !top-[173px]  !left-[20px] !mx-auto '
+            // wrapper=' !justify-between w-[90%]'
+            // listWrapper='!w-[90%] !top-[173px]  !left-[20px] !mx-auto '
           />
         </View>
 

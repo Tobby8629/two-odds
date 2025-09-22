@@ -46,7 +46,8 @@ export default function TabTwoScreen() {
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
           <Text className='text-xl font-bold text-white '>{match.length}</Text>
         </View>
-        <Dropdown 
+        <Dropdown <"bet_Accumulator" | "single" | "system">
+          className='top-[15%] !-translate-x-[-60%]'
           title={selected?.title} 
           items={options} 
           setSelect={setSelected}

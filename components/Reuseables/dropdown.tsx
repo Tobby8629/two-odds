@@ -6,6 +6,7 @@ import {
   Modal,
   ScrollView,
   StyleSheet,
+  Pressable,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ThemedText } from "../ThemedText";
@@ -23,6 +24,7 @@ interface DropdownProps<T> {
   maxHeight?: number;
   eachStyle?: string;
   listWrapper?: string;
+  className: string;
   wrapper?: string;
   eachText?: (item: ItemProp<T>) => string;
   extra?: (item: ItemProp<T>) => React.ReactNode;
@@ -37,6 +39,7 @@ export default function Dropdown<T>({
   listWrapper,
   wrapper,
   eachText,
+  className,
   extra,
 }: DropdownProps<T>) {
   const [visible, setVisible] = useState(false);
@@ -47,7 +50,8 @@ export default function Dropdown<T>({
   };
 
   return (
-    <View style={[styles.wrapper, wrapper ? { margin: 5 } : {}]}>
+    <View
+     style={[styles.wrapper, wrapper ? { margin: 5 } : {}]}>
       {/* Dropdown Button */}
       <TouchableOpacity
         className="gap-2 !items-center !bg-transparent "
@@ -58,6 +62,8 @@ export default function Dropdown<T>({
         <FontAwesome5 name="chevron-down" size={16} color={"white"} />
       </TouchableOpacity>
 
+      {/* <Pressable className=" absolute" onPress={() => setVisible(false)}/> */}
+
       {/* Modal Dropdown List */}
       <Modal
         visible={visible}
@@ -66,13 +72,12 @@ export default function Dropdown<T>({
         onRequestClose={() => setVisible(false)}
       >
         <TouchableOpacity
-          className="  top-[15%] !w-[90%] !left-0 !right-0 "
           style={styles.overlay}
           activeOpacity={1}
           onPressOut={() => setVisible(false)}
         >
           <View
-            className="!w-full"
+            className={`${className}`}
             style={[
               styles.listWrapper,
               { maxHeight: maxHeight },
@@ -134,8 +139,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    position: "absolute",
-    // left: "50%",
   },
 
   listWrapper: {
@@ -143,7 +146,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#1f5079",
     borderRadius: 8,
     paddingVertical: 5,
+    position: "absolute"
   },
+
   item: {
     flexDirection: "row",
     alignItems: "center",
