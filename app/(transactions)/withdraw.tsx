@@ -85,7 +85,7 @@ const withdraw = () => {
             className='!top-[23%] w-[90%]'
             items={dropdown}
             setSelect={setSelect}
-            // wrapper=' !justify-between w-[90%]'
+            wrapper=' !justify-between !w-[95%] !bg-green-400'
             // listWrapper='!w-[90%] !top-[173px]  !left-[20px] !mx-auto '
           />
         </View>

@@ -51,10 +51,10 @@ export default function Dropdown<T>({
 
   return (
     <View
-     style={[styles.wrapper, wrapper ? { margin: 5 } : {}]}>
+     style={[styles.wrapper, { margin: 5 }]}>
       {/* Dropdown Button */}
       <TouchableOpacity
-        className="gap-2 !items-center !bg-transparent "
+        className={`gap-2 !items-center  ${wrapper}`}
         style={styles.dropdownButton}
         onPress={() => setVisible(true)}
       >
