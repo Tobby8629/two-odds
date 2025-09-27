@@ -82,11 +82,10 @@ const withdraw = () => {
           {select.icon}
           <Dropdown<"solana" | "usdt" | "naira">
             title={select?.title}
-            className='!top-[23%] w-[90%]'
+            className='!top-[21%] w-[90%]'
             items={dropdown}
             setSelect={setSelect}
-            wrapper=' !justify-between !w-[95%] !bg-green-400'
-            // listWrapper='!w-[90%] !top-[173px]  !left-[20px] !mx-auto '
+            wrapper=' !justify-between !w-[96%] !px-0 py-1'
           />
         </View>
 
@@ -110,7 +109,7 @@ const withdraw = () => {
         <View className='my-3'>
           <ThemedText>Wallet Address</ThemedText>
           <Textinput 
-          id="address"
+          id="walletAddress"
           onChangeText={handleChange}
           value={detail.walletAddress}
           className='w-full'
@@ -142,5 +141,3 @@ const withdraw = () => {
 }
 
 export default withdraw
-
-const styles = StyleSheet.create({})

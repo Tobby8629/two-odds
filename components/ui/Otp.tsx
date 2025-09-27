@@ -1,27 +1,32 @@
-import { router } from "expo-router";
-import  { useState, useRef } from "react";
+import { useRef, useLayoutEffect } from "react";
 import { TextInput, View, StyleSheet, Keyboard } from "react-native";
-interface otpInt { 
+
+interface otpInt {
   length: number;
-  onSubmit: (otp: string) => void
+  onSubmit: (otp: string) => void;
   otp: string[];
   setOtp: React.Dispatch<React.SetStateAction<string[]>>;
- }
+}
+
 const OTPInput = ({ length, onSubmit, otp, setOtp }: otpInt) => {
-  const inputs = useRef<Array<TextInput | null>>([]);
+  const inputs = useRef<(TextInput | null)[]>([]);
+
+  // Log refs after render
+  useLayoutEffect(() => {
+    console.log("Refs after render:", inputs.current);
+  }, [otp]);
+
   const handleChangeText = (text: string, index: number) => {
-    if (!/^\d*$/.test(text)) return; // Allow only numbers
+    if (!/^\d*$/.test(text)) return;
 
     const updatedOtp = [...otp];
     updatedOtp[index] = text;
     setOtp(updatedOtp);
 
-    // Move to the next input if there's a value
     if (text && index < length - 1) {
       inputs.current[index + 1]?.focus();
     }
 
-    // If OTP is fully entered, submit it
     if (updatedOtp.every((digit) => digit !== "")) {
       Keyboard.dismiss();
       onSubmit(updatedOtp.join(""));
@@ -38,8 +43,6 @@ const OTPInput = ({ length, onSubmit, otp, setOtp }: otpInt) => {
     }
   };
 
-
-
   return (
     <View style={styles.container}>
       {otp.map((_, index) => (
@@ -51,8 +54,9 @@ const OTPInput = ({ length, onSubmit, otp, setOtp }: otpInt) => {
           value={otp[index]}
           onChangeText={(text) => handleChangeText(text, index)}
           onKeyPress={(e) => handleKeyPress(e, index)}
-          ref={(ref) => (inputs.current[index] = ref)}
-          className="bg-slate-200 text-4xl font-bold"
+          ref={(ref) => {
+            if (ref) inputs.current[index] = ref; // ✅ safe assignment
+          }}
         />
       ))}
     </View>
@@ -73,8 +77,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     textAlign: "center",
-    
+    fontSize: 20,
     borderRadius: 3,
+    backgroundColor: "#e2e8f0",
+    fontWeight: "bold",
   },
 });
 

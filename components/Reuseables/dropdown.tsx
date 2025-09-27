@@ -62,7 +62,6 @@ export default function Dropdown<T>({
         <FontAwesome5 name="chevron-down" size={16} color={"white"} />
       </TouchableOpacity>
 
-      {/* <Pressable className=" absolute" onPress={() => setVisible(false)}/> */}
 
       {/* Modal Dropdown List */}
       <Modal
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 12,
-    backgroundColor: "#f5f5f5",
+    // backgroundColor: "#f5f5f5",
     borderRadius: 8,
   },
   dropdownText: {
