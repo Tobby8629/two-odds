@@ -28,6 +28,7 @@ const Deposits = () => {
           Balance(USD) $20.00
         </Text>
         <Textinput 
+          value={value}
           id='price'
           keyboardType='numeric'
           inputStyle='!bg-transparent !h-auto text-white !my-0'

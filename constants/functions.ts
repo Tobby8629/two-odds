@@ -139,3 +139,20 @@ export const verifying = (
 export const hasFalseValue = (checkvalue: verifyInt) =>  Object.values(checkvalue).some(value => value === false);
 
 
+// utils/dateFilter.ts
+export const filterByDate = (dateFilter: "all" | "7days" | "14days" | "30days", txnDate: string) => {
+  if (dateFilter === "all") return true;
+
+  const now = new Date();
+  const transactionDate = new Date(txnDate);
+
+  let daysLimit = 0;
+  if (dateFilter === "7days") daysLimit = 7;
+  if (dateFilter === "14days") daysLimit = 14;
+  if (dateFilter === "30days") daysLimit = 30;
+
+  const past = new Date();
+  past.setDate(now.getDate() - daysLimit);
+
+  return transactionDate >= past && transactionDate <= now;
+};

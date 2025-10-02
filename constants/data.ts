@@ -344,3 +344,37 @@ export  const match: MatchProps[]  = [
         date: "01 Dec 2025 6:30",
       },
     ];
+
+   
+export type TransactionType = "withdrawal" | "deposits" | "winnings";
+
+export interface Transaction {
+  id: string;
+  type: TransactionType;
+  amount: number;
+  date: string; // ISO string
+}
+
+// Helper to generate random transactions within last 30 days
+const randomDateWithin30Days = () => {
+  const now = new Date();
+  const past = new Date();
+  past.setDate(now.getDate() - 30);
+
+  return new Date(
+    past.getTime() + Math.random() * (now.getTime() - past.getTime())
+  ).toISOString();
+};
+
+export const mockTransactions: Transaction[] = Array.from({ length: 20 }, (_, i) => {
+  const types: TransactionType[] = ["withdrawal", "deposits", "winnings"];
+  const type = types[Math.floor(Math.random() * types.length)];
+  const amount = Math.floor(Math.random() * 1000) + 50; // between 50 and 1050
+
+  return {
+    id: `txn-${i + 1}`,
+    type,
+    amount,
+    date: randomDateWithin30Days(),
+  };
+});

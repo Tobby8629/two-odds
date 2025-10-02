@@ -25,6 +25,7 @@ interface DropdownProps<T> {
   eachStyle?: string;
   listWrapper?: string;
   className: string;
+  mainWrapper?: string;
   wrapper?: string;
   eachText?: (item: ItemProp<T>) => string;
   extra?: (item: ItemProp<T>) => React.ReactNode;
@@ -35,9 +36,10 @@ export default function Dropdown<T>({
   items,
   setSelect,
   maxHeight = 300,
-  eachStyle,
-  listWrapper,
+  mainWrapper,
   wrapper,
+  listWrapper,
+  eachStyle,
   eachText,
   className,
   extra,
@@ -51,10 +53,12 @@ export default function Dropdown<T>({
 
   return (
     <View
-     style={[styles.wrapper, { margin: 5 }]}>
+     style={[styles.wrapper, { margin: 5 }]}
+      className={`${mainWrapper}`}
+     >
       {/* Dropdown Button */}
       <TouchableOpacity
-        className={`gap-2 !items-center  ${wrapper}`}
+        className={`${wrapper}`}
         style={styles.dropdownButton}
         onPress={() => setVisible(true)}
       >
@@ -124,6 +128,7 @@ const styles = StyleSheet.create({
   wrapper: {
     marginVertical: 10,
   },
+
   dropdownButton: {
     flexDirection: "row",
     justifyContent: "space-between",
