@@ -10,6 +10,7 @@ import Dropdown, { ItemProp } from "@/components/Reuseables/dropdown";
 import { useMemo, useState } from "react";
 import { mockTransactions } from "@/constants/data";
 import { filterByDate } from "@/constants/functions";
+import DatePickerExample from "@/components/Reuseables/DatePicker";
 
 type TransactionType = "withdrawal" | "winnings" | "deposits" | "";
 
@@ -74,10 +75,11 @@ const History = () => {
             ) : null
           }
         />
-        <View className="flex-row p-3 px-6 w-[49.8%] border-l-[1px] border-white items-center justify-between">
-          <Text className="text-white">Date</Text>
+        <DatePickerExample 
+        dateText={
           <FontAwesome6 name="angle-down" size={24} color="white" />
-        </View>
+        }
+        />
       </View>
 
 
@@ -116,6 +118,7 @@ const History = () => {
             />
           ))}
     </ScrollView>
+    
 
     </Layout>
   );
