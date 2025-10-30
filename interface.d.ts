@@ -14,7 +14,12 @@ interface MatchProps {
     odds: string,
     time: string,
     live: boolean,
-    result: string
+    result: string,
+    home:string 
+    away:string 
+    homeOdds:string,
+    awayOdds:string,
+    drawOdds:string,
   }
 
   interface betProps {
