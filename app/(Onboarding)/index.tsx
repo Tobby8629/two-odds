@@ -1,7 +1,8 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import SplashSvg from '@/assets/SVGs/Splash'
-import Swiper from 'react-native-swiper'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SplashSvg from '@/assets/SVGs/Splash';
+import Swiper from 'react-native-swiper';
 
 const index = () => {
   return (
