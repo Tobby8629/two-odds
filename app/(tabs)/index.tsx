@@ -15,15 +15,16 @@ import WithdrawModal from '@/components/Home/WithdrawModal';
 // P2P imports
 import P2PToggle from '@/components/P2P/P2PToggle';
 import P2PLanding from '@/components/P2P/P2PLanding';
-import { useTabStore } from '@/store/useTabStore'; // Zustand store
+import P2PSearching from '@/components/P2P/P2PSearching';
+import { useTabStore } from '@/store/useTabStore';
+import { useP2PStore } from '@/store/useP2PStore';
 
 export default function TabsIndex() {
   const { activeTab, setActiveTab } = useTabStore();
+  const {currentScreen} = useP2PStore();
 
   return (
     <ScrollView className='bg-pry py-14 pb-52'>
-
-      {/* BET / P2P Toggle Feature */}
       
       <P2PToggle
         activeTab={activeTab}
@@ -31,7 +32,7 @@ export default function TabsIndex() {
         containerStyle={{ alignSelf: 'center', marginBottom: 20 }} // fixed container style issue
       />
 
-      {/* Show content based on selected tab */}
+      /* Show content based on selected tab */
       {activeTab === 'bets' ? (
         <>
           <Head />
@@ -45,9 +46,13 @@ export default function TabsIndex() {
           <WithdrawModal />
         </>
       ) : (
-        // P2P Landing Page
-        <P2PLanding />
+        <>
+          {currentScreen === 'landing' && <P2PLanding />}
+          {currentScreen === 'searching' && <P2PSearching />}
+          {/* P2PBetsList will come later */}
+        </>
       )}
+
     </ScrollView>
   );
 }
