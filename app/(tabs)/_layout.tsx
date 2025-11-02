@@ -6,17 +6,21 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Nav } from '@/interface';
 import { nav } from '@/constants/data';
+import { useTabStore } from '@/store/useTabStore';
+import { useP2PStore } from '@/store/useP2PStore';
+import * as Haptics from 'expo-haptics';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const game = true; // This should be determined based on your app's logic
-  const bets = 14
+  const bets = 14;
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarShowLabel:  false,
+        tabBarShowLabel: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
@@ -26,7 +30,8 @@ export default function TabLayout() {
           },
           default: {},
         }),
-      }}>
+      }}
+    >
       {nav.map((item: Nav) => (
         <Tabs.Screen
           key={item.name}
@@ -36,15 +41,37 @@ export default function TabLayout() {
             headerTitleStyle: { display: 'none' },
             tabBarIcon: ({ focused }) => (
               <item.icon
-               bets={item.name === 'bets' ? bets ? bets : null : false}
-               game={item.name === 'betslip' ? game ? true : false : false} 
-               color={focused ? "#ffa500" : colorScheme === 'dark' ?  "white" :  "black"} 
+                bets={item.name === 'bets' ? (bets ? bets : null) : false}
+                game={item.name === 'betslip' ? (game ? true : false) : false}
+                color={focused ? "#ffa500" : colorScheme === 'dark' ? "white" : "black"}
+              />
+            ),
+            // Added Home button reset logic using resetToHome
+            tabBarButton: (props) => (
+              <HapticTab
+                {...props}
+                onPressIn={(ev) => {
+                  if (process.env.EXPO_OS === 'ios') {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }
+
+                  // Reset P2P flow when Home tab is pressed
+                  if (item.name === 'index') {
+                    const { setActiveTab } = useTabStore.getState();
+                    const { resetToHome } = useP2PStore.getState();
+
+                    setActiveTab('bets');  // Switch to main Bets tab
+                    resetToHome();          // Reset P2P flow to landing
+                  }
+
+                  props.onPressIn?.(ev);
+                }}
               />
             ),
           }}
         />
       ))}
-       
+
       {/* <Tabs.Screen
         name="index"
         options={{

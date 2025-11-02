@@ -7,7 +7,6 @@ import { useP2PStore } from '@/store/useP2PStore';
 
 export default function P2PLanding() {
     const { setScreen} = useP2PStore();
-    //Navigate to Searching Screen
     const handleFindPlayers = () => {
         setScreen('searching');
     };

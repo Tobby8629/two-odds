@@ -94,7 +94,7 @@ export default function RadarAnimation({ isSearching }: RadarAnimationProps) {
         />
       </View>
 
-      /* R4 - Outer ring, moved DOWN */
+     { /* R4 - Outer ring, moved DOWN */}
       <View
         className="rounded-full items-center justify-center overflow-hidden absolute"
         style={{
@@ -114,7 +114,7 @@ export default function RadarAnimation({ isSearching }: RadarAnimationProps) {
         />
       </View>
 
-      /* R3 - 3rd ring, better aligned */
+      {/* R3 - 3rd ring, better aligned */}
       <View
         className="rounded-full items-center justify-center overflow-hidden absolute"
         style={{
@@ -135,7 +135,7 @@ export default function RadarAnimation({ isSearching }: RadarAnimationProps) {
         />
       </View>
 
-      /* L4 - Outer ring, corrected position */
+      {/* L4 - Outer ring, corrected position */}
       <View
         className="rounded-full items-center justify-center overflow-hidden absolute"
         style={{
@@ -156,7 +156,7 @@ export default function RadarAnimation({ isSearching }: RadarAnimationProps) {
         />
       </View>
 
-      /* L3 - 3rd ring, better aligned */
+      {/* L3 - 3rd ring, better aligned */}
       <View
         className="rounded-full items-center justify-center overflow-hidden absolute"
         style={{
@@ -178,7 +178,7 @@ export default function RadarAnimation({ isSearching }: RadarAnimationProps) {
       </View>
 
 
-      /* TOP Avatar */
+      {/* Top ring, redirected */}
       <View
         className="rounded-full items-center justify-center overflow-hidden absolute"
         style={{
