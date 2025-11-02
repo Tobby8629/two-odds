@@ -1,5 +1,6 @@
 import { MatchProps } from '@/interface'
-import { Text, View } from 'react-native'
+import useBetslip, { select } from '@/store/useStore'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 interface PopularProps {
   data: MatchProps
@@ -28,23 +29,40 @@ export const Footer = () => {
 } 
 
 export const MatchCard = ({data}:PopularProps) => {
+  const {selectGame, match, selectedGames} = useBetslip()
+  const game = match.find((game) => game.id == data.id)
     return (
       <View className='px-5 pt-2'>
         <View className='bg-[#E3F2FD] flex-row justify-between items-center p-3 mb-5 rounded-lg h-[95px]'>
           <View className=' gap-5 w-6/12'>
             <View className='flex-row items-center gap-3'>
               <View className='w-3 h-3 rounded-full bg-slate-500' />
-              <Text className='text-lg capitalize 2xl'>{data.home}</Text>
+              <Text className='text-lg capitalize 2xl'>{game?.home}</Text>
             </View>
             <View className='flex-row items-center gap-3'>
               <View className='w-3 h-3 rounded-full bg-slate-500' />
-              <Text className='text-lg capitalize 2xl'>{data.away}</Text>
+              <Text className='text-lg capitalize 2xl'>{game?.away}</Text>
             </View>
           </View>
           <View className='flex-row items-center justify-between gap-2 w-6/12'>
-            <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-[31%]'>{data?.homeOdds}</Text>
-            <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-[31%]'>{data?.drawOdds}</Text>
-            <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-[31%]'>{data?.awayOdds}</Text>
+            
+            <TouchableOpacity 
+              onPress={()=>selectGame({id: game!.id, option: "Home"})}
+              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
+              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-full'>{game?.homeOdds}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              onPress={()=>selectGame({id: game!.id, option: "Draw"})}
+              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
+              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-full'>{game?.drawOdds}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              onPress={()=>selectGame({id: game!.id, option:"Away"})}
+              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
+              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center! rounded-[5px] w-full'>{game?.awayOdds}</Text>
+            </TouchableOpacity>
           </View> 
         </View>
       </View>

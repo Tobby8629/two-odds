@@ -10,7 +10,6 @@ interface MatchProps {
     id:number,
     status: "won" | "lost" | "pending"
     match: string,
-    selected: string,
     odds: string,
     time: string,
     live: boolean,
@@ -20,6 +19,7 @@ interface MatchProps {
     homeOdds:string,
     awayOdds:string,
     drawOdds:string,
+    selected: string[]
   }
 
   interface betProps {
