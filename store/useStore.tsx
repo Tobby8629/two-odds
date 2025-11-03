@@ -41,34 +41,6 @@ const useBetslip = create<Betslip>((set) => ({
   match: match,
   selectedGames: [],
 
-  // selectGame: ({ id, option }: select) =>
-  // set((state) => {
-  //   //this updates the cloned match that display in the home page
-  //   const updatedMatches = state.match.map((e: MatchProps) => {
-  //     if (e.id === id) {
-  //       const alreadySelected = e.selected.some((opt) => opt.option === option);
-  //       const newSelected = alreadySelected
-  //         ? e.selected.filter((opt) => opt.option !== option)
-  //         : [...e.selected, {id: String(e.selected.length), option:option}];
-  //       return { ...e, selected: newSelected };
-  //     }
-  //     return e;
-  //   });
-
-  //   const updatedGame = updatedMatches.find((e) => e.id === id);
-
-  //   // const updatedSelectedGames = updatedGame?.selected.length
-  //   //   ? [...state.selectedGames.filter((g) => g.id !== id), updatedGame]
-  //   //   : state.selectedGames.filter((g) => g.id !== id);
-
-  //   const updatedSelectedGames = [...state.selectedGames, updatedGame]
-
-  //   return {
-  //     match: updatedMatches,
-  //     selectedGames: updatedSelectedGames,
-  //   };
-  // }),
-
   selectGame: ({ id, option }: select) =>
   set((state) => {
   let newSelectedGames = [...state.selectedGames];
@@ -112,7 +84,7 @@ const useBetslip = create<Betslip>((set) => ({
   removeMatch: (id: string) =>
     set((state) => ({
       match: state.match.map((e: MatchProps) =>
-        e.selected.some((e)=>e.id === id) ? { ...e, selected: e.selected.filter((e)=>e.id === id)} : e
+        e.selected.some((e)=>e.id === id) ? { ...e, selected: e.selected.filter((e)=>e.id !== id)} : e
       ),
       selectedGames: state.selectedGames.filter((e: MatchPropsBetslip) => e.selected.id !== id)
   })),

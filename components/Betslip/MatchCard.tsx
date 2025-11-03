@@ -19,7 +19,7 @@ const MatchCard = () => {
       {selectedGames.map((e, index)=>(
         <View key={index} className={`${flex} mb-5`}>
           <View className={`${flexNoJustify} gap-3 min-w-[80%]`}>
-            <Pressable onPress={() => removeMatch(e.selected.option)}>
+            <Pressable onPress={() => removeMatch(e.selected.id)}>
               <GoldX />
             </Pressable>
             <View className='gap-2'>

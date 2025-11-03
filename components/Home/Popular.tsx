@@ -7,26 +7,32 @@ interface PopularProps {
 }
 
 
-export const PopularHeader = () => {
+export const PopularHeader = ({ isSticky = false }: { isSticky?: boolean }) => {
   return (
-    <View className='px-5 pt-5'>
-      <View className='flex-row items-center justify-between mb-4 pr-5'>
-        <Text className='text-3xl text-white'>Popular</Text>
-        <View className='flex-row items-center justify-between w-5/12'>
-          <Text className='text-2xl text-white text-center'>1</Text>
-          <Text className='text-2xl text-white text-center'>x</Text>
-          <Text className='text-2xl text-white text-center'>2</Text>
-        </View>
+    <View
+      className={`px-5  ${
+        isSticky ? 'bg-pry-fade pt-14 font-semibold border-b-2 border-white' : ' pt-5'
+      }`} 
+      style={{
+        zIndex: 10, 
+      }}
+    >
+      <View className="flex-row items-center justify-between mb-4 pr-5">
+        <Text className="text-3xl text-white">Popular</Text>
+
+  
+        {!isSticky && (
+          <View className="flex-row items-center justify-between w-5/12">
+            <Text className="text-2xl text-white text-center">1</Text>
+            <Text className="text-2xl text-white text-center">x</Text>
+            <Text className="text-2xl text-white text-center">2</Text>
+          </View>
+        )}
       </View>
     </View>
-  )
-}
+  );
+};
 
-export const Footer = () => {
-  return (
-    <View className='h-20' />
-  )
-} 
 
 export const MatchCard = ({data}:PopularProps) => {
   const {selectGame, match, selectedGames} = useBetslip()
