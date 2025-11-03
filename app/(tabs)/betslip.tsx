@@ -26,7 +26,7 @@ export default function TabTwoScreen() {
     setVisible(true)
   }
   const [selected, setSelected] = useState<ItemProp<"bet_Accumulator" | "single" | "system">>(options[0]) 
-  const { match, clearBetslip} = useBetslip()
+  const {selectedGames, clearBetslip } = useBetslip()
   const { height } = Dimensions.get("window");
   const handleSubmit = (stake: number | null, baseStake: number) => {
     if(stake && stake < baseStake || !stake) {
@@ -34,6 +34,7 @@ export default function TabTwoScreen() {
     }
   }
 
+  // console.log("selectedGames", selectedGames);
 
   return (
     <View  
@@ -44,7 +45,7 @@ export default function TabTwoScreen() {
     >
       <View className={`${flex} fixed top-0 pt-14 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`}>
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
-          <Text className='text-xl font-bold text-white '>{match.length}</Text>
+          <Text className='text-xl font-bold text-white '>{selectedGames.length}</Text>
         </View>
         <Dropdown <"bet_Accumulator" | "single" | "system">
           className='top-[15%] !-translate-x-[-60%]'
@@ -62,7 +63,7 @@ export default function TabTwoScreen() {
           </Pressable>
         </View>
       </View>
-      {match.length <= 0 ? <EmptyState className='!mt-[50%] ' text='Your betslip is empty'/> : 
+      {selectedGames.length <= 0 ? <EmptyState className='!mt-[50%] ' text='Your betslip is empty'/> : 
         <>
           <MatchCard />
           <Footer handleSubmit={handleSubmit}/>

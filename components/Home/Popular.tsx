@@ -48,20 +48,20 @@ export const MatchCard = ({data}:PopularProps) => {
             
             <TouchableOpacity 
               onPress={()=>selectGame({id: game!.id, option: "Home"})}
-              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
-              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-full'>{game?.homeOdds}</Text>
+              className={`${game?.selected.some((e)=>e.option.includes("Home")) ? "bg-sec" : "bg-[#ABB2FA]"}`}>
+              <Text className='text-lg text-black p-2 text-center rounded-[5px] w-full'>{game?.homeOdds}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               onPress={()=>selectGame({id: game!.id, option: "Draw"})}
-              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
-              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-full'>{game?.drawOdds}</Text>
+              className={`${game?.selected.some((e)=>e.option.includes("Draw")) ? "bg-sec" : "bg-[#ABB2FA]"}`}>
+              <Text className='text-lg text-black  p-2 text-center rounded-[5px] w-full'>{game?.drawOdds}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               onPress={()=>selectGame({id: game!.id, option:"Away"})}
-              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
-              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center! rounded-[5px] w-full'>{game?.awayOdds}</Text>
+              className={`${game?.selected.some((e)=>e.option.includes("Away")) ? "bg-sec" : "bg-[#ABB2FA]"}`}>
+              <Text className='text-lg text-black  p-2 text-center! rounded-[5px] w-full'>{game?.awayOdds}</Text>
             </TouchableOpacity>
           </View> 
         </View>

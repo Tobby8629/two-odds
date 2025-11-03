@@ -19,7 +19,23 @@ interface MatchProps {
     homeOdds:string,
     awayOdds:string,
     drawOdds:string,
-    selected: string[]
+    selected: {id: string, option: "Home" | "Away" | "Draw"}[],
+  }
+
+  interface MatchPropsBetslip { 
+    id:number,
+    // status: "won" | "lost" | "pending"
+    match: string,
+    odds: string,
+    time: string,
+    live: boolean,
+    result: string,
+    home:string 
+    away:string 
+    homeOdds:string,
+    awayOdds:string,
+    drawOdds:string,
+    selected: {id: string, option: "Home" | "Away" | "Draw"},
   }
 
   interface betProps {
