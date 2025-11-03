@@ -11,7 +11,7 @@ export const PopularHeader = ({ isSticky = false }: { isSticky?: boolean }) => {
   return (
     <View
       className={`px-5  ${
-        isSticky ? 'bg-pry-fade pt-14 font-semibold border-b-2 border-white' : ' pt-5'
+        isSticky ? 'bg-pry-fade pt-5 font-semibold border-b-2 border-white' : ' pt-5'
       }`} 
       style={{
         zIndex: 10, 

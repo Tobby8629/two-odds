@@ -58,7 +58,7 @@ export default function HomeScreen() {
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = e.nativeEvent.contentOffset.y;
-    setIsSticky(scrollY > 480);
+    setIsSticky(scrollY > 520);
   };
 
   const combinedData: CombinedItem[] = ['header', ...match];
