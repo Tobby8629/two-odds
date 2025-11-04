@@ -1,5 +1,5 @@
 import { MatchProps } from '@/interface'
-import useBetslip, { select } from '@/store/useStore'
+import useBetslip from '@/store/useStore'
 import { Text, TouchableOpacity, View } from 'react-native'
 
 interface PopularProps {

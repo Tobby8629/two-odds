@@ -1,8 +1,6 @@
 import { bets, match } from "@/constants/data";
 import { betProps, MatchProps, MatchPropsBetslip } from "@/interface";
 import { create } from "zustand";
-import { v4 as uuidv4 } from "uuid";
-
 
 export interface select {
   id: number,
@@ -46,7 +44,10 @@ const useBetslip = create<Betslip>((set) => ({
   let newSelectedGames = [...state.selectedGames];
 
   const updatedMatch = state.match.map((e) => {
+    //check for the game with the given id
+
     if (e.id === id) {
+      //check if the option is already selected
       const alreadySelected = e.selected.some((opt) => opt.option === option);
 
       if (alreadySelected) {
@@ -84,16 +85,20 @@ const useBetslip = create<Betslip>((set) => ({
   removeMatch: (id: string) =>
     set((state) => ({
       match: state.match.map((e: MatchProps) =>
+        //filters the selected option from the match selected array
         e.selected.some((e)=>e.id === id) ? { ...e, selected: e.selected.filter((e)=>e.id !== id)} : e
       ),
+      //filters out the game from selectedGames
       selectedGames: state.selectedGames.filter((e: MatchPropsBetslip) => e.selected.id !== id)
   })),
 
   clearBetslip: () =>
   set((state) => ({
+    //this clears all selected options in the match array
     match: state.match.map((e) =>
       e.selected.length > 0 ? { ...e, selected: [] } : e
     ),
+    //this clears all selected games
     selectedGames: [],
   })),
 
