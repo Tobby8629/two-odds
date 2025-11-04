@@ -1,17 +1,28 @@
 import { View } from 'react-native'
-import React from 'react'
-import SplashSvg from '@/assets/SVGs/Splash'
-import SolidRoundSpinner from '@/components/Reuseables/SolidSpinner'
-
+import { MotiView } from 'moti'
+import SplashSvg from '@/assets/SVGs/newSplash'
+import Two from './Two'
+import Odds from './Odds'
 
 const SplashScreen = () => {
   return (
     <View className='h-screen bg-pry justify-center items-center'>
       <SplashSvg />
-      <View className=' h-20 my-3 500 w-20 items-center justify-center'>
-          <SolidRoundSpinner style={{borderColor: "#FFC107"}} /> 
-        </View>
-      {/* <SolidRoundSpinner className='border-sec' /> */}
+
+      <MotiView
+        className='flex-row my-12 gap-2'
+        from={{ opacity: 0.3 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          loop: true,
+          type: 'timing',
+          duration: 1500,
+          repeatReverse: true,
+        }}
+      >
+        <Two />
+        <Odds />
+      </MotiView>
     </View>
   )
 }

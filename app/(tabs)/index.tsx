@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { StyleSheet } from "react-native";
 import Head from "@/components/Home/Head";
@@ -25,11 +26,33 @@ export default function TabsIndex() {
   const Content = () => {
     if (activeTab === "bets") {
       return (
+=======
+import { FlatList } from 'react-native';
+import Head from '@/components/Home/Head';
+import Sport from '@/components/Home/Sport';
+import Quickpick from '@/components/Home/Quickpick';
+import LiveBets from '@/components/Home/LiveBets';
+import { Footer, MatchCard, PopularHeader } from '@/components/Home/Popular';
+import WithdrawModal from '@/components/Home/WithdrawModal';
+import useBetslip from '@/store/useStore';
+
+export default function HomeScreen() {
+  const { match } = useBetslip()
+  console.log("match", match);
+
+  return (
+    <FlatList
+      data={match}
+      renderItem={({ item }) => <MatchCard data={item}/>}
+      keyExtractor={(item) => item.id.toString()}
+      ListHeaderComponent={
+>>>>>>> master
         <>
           <Head />
           <Sport />
           <Quickpick />
           <LiveBets />
+<<<<<<< HEAD
           <Popular />
           <WithdrawModal />
         </>
@@ -69,3 +92,19 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
 });
+=======
+          <PopularHeader />
+        </>
+      }
+      ListFooterComponent={
+        <>
+          <Footer />
+          <WithdrawModal />
+        </>
+      }
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ backgroundColor: '#123456', paddingVertical: 56 }}
+    />
+  );
+}
+>>>>>>> master

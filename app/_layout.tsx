@@ -9,7 +9,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import SplashScreen from './SplashScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from './(Onboarding)/OnboardContext';
-import betHistory from './bet-history';
+// import betHistory from './bet-history';
 
 
 
@@ -35,7 +35,6 @@ export default function RootLayout() {
     return <SplashScreen />;
   }
 
- 
 
   return (
     <>
