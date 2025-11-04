@@ -10,8 +10,13 @@ module.exports = {
        "pry-light": "#1F5079",
        "pry-fade": '#03345dcc',
        sec: "#FFC107",
-       'light-blue': "#E3F2FD"
+       'light-blue': "#E3F2FD",
+
+       "p2p-tab": "#012746",
+        "p2p-active": "#1c5789",
+
       },
+      
       fontFamily: {
         sansitaBoldItalic: ["SansitaOneBoldItalic"],
       }
