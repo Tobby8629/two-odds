@@ -1,5 +1,5 @@
 import { MatchProps } from '@/interface'
-import useBetslip, { select } from '@/store/useStore'
+import useBetslip from '@/store/useStore'
 import { Text, TouchableOpacity, View } from 'react-native'
 
 interface PopularProps {
@@ -7,26 +7,32 @@ interface PopularProps {
 }
 
 
-export const PopularHeader = () => {
+export const PopularHeader = ({ isSticky = false }: { isSticky?: boolean }) => {
   return (
-    <View className='px-5 pt-5'>
-      <View className='flex-row items-center justify-between mb-4 pr-5'>
-        <Text className='text-3xl text-white'>Popular</Text>
-        <View className='flex-row items-center justify-between w-5/12'>
-          <Text className='text-2xl text-white text-center'>1</Text>
-          <Text className='text-2xl text-white text-center'>x</Text>
-          <Text className='text-2xl text-white text-center'>2</Text>
-        </View>
+    <View
+      className={`px-5  ${
+        isSticky ? 'bg-pry-fade pt-5 font-semibold border-b-2 border-white' : ' pt-5'
+      }`} 
+      style={{
+        zIndex: 10, 
+      }}
+    >
+      <View className="flex-row items-center justify-between mb-4 pr-5">
+        <Text className="text-3xl text-white">Popular</Text>
+
+  
+        {!isSticky && (
+          <View className="flex-row items-center justify-between w-5/12">
+            <Text className="text-2xl text-white text-center ">1</Text>
+            <Text className="text-2xl text-white text-center ">x</Text>
+            <Text className="text-2xl text-white text-center ">2</Text>
+          </View>
+        )}
       </View>
     </View>
-  )
-}
+  );
+};
 
-export const Footer = () => {
-  return (
-    <View className='h-20' />
-  )
-} 
 
 export const MatchCard = ({data}:PopularProps) => {
   const {selectGame, match, selectedGames} = useBetslip()
@@ -45,23 +51,22 @@ export const MatchCard = ({data}:PopularProps) => {
             </View>
           </View>
           <View className='flex-row items-center justify-between gap-2 w-6/12'>
-            
             <TouchableOpacity 
               onPress={()=>selectGame({id: game!.id, option: "Home"})}
-              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
-              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-full'>{game?.homeOdds}</Text>
+              className={`${game?.selected.some((e)=>e.option.includes("Home")) ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}>
+              <Text className='text-lg text-black p-2 text-center w-full'>{game?.homeOdds}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               onPress={()=>selectGame({id: game!.id, option: "Draw"})}
-              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
-              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center rounded-[5px] w-full'>{game?.drawOdds}</Text>
+              className={`${game?.selected.some((e)=>e.option.includes("Draw")) ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}>
+              <Text className='text-lg text-black  p-2 text-center w-full'>{game?.drawOdds}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               onPress={()=>selectGame({id: game!.id, option:"Away"})}
-              className={`${game?.selected.includes("Away") ? "bg-sec" : "bg-[#ABB2FA]"}`}>
-              <Text className='text-lg text-black bg-[#ABB2FA] p-2 text-center! rounded-[5px] w-full'>{game?.awayOdds}</Text>
+              className={`${game?.selected.some((e)=>e.option.includes("Away")) ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}>
+              <Text className='text-lg text-black  p-2 text-center! w-full'>{game?.awayOdds}</Text>
             </TouchableOpacity>
           </View> 
         </View>

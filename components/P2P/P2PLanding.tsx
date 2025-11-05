@@ -4,9 +4,12 @@ import Logo from '@/assets/SVGs/Logo';
 import Head from '@/components/Home/Head';
 import P2PLandingButton from '@/components/P2P/P2PLandingButton';
 import { useP2PStore } from '@/store/useP2PStore';
+import { useTabStore } from '@/store/useTabStore';
+import P2PToggle from './P2PToggle';
 
 export default function P2PLanding() {
     const { setScreen} = useP2PStore();
+    const { activeTab, setActiveTab } = useTabStore();
     const handleFindPlayers = () => {
         setScreen('searching');
     };
@@ -16,10 +19,11 @@ export default function P2PLanding() {
 
   return (
     <ScrollView
-      contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}
-      className="bg-pry"
+      contentContainerStyle={{ flexGrow: 1, paddingVertical: 52 }}
+      className="bg-[#123456]"
       showsVerticalScrollIndicator={false}
     >
+      <P2PToggle active={activeTab} onChange={setActiveTab} />
       <Head />
 
       <View className="items-center justify-center px-6 mb-8 mt-8">

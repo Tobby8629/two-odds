@@ -9,7 +9,7 @@ export default function P2PBetsList() {
  
   return (
     
-    <View className="flex- mt-2 pt-5 pb-5 mb-5 bg-pry">
+    <View className="flex-1 mb-5 bg-pry" style={{ paddingVertical: 42 }}>
         <Head />
       <View/>
       <ScrollView

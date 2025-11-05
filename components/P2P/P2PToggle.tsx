@@ -12,7 +12,7 @@ export interface P2PToggleProps {
 export default function P2PToggle({ active, onChange, containerStyle }: P2PToggleProps) {
   return (
     <View
-      className="mx-auto mt-4 w-[160px] h-[26px] rounded-[3px] bg-p2p-tab flex-row justify-between p-[2px]"
+      className="mx-auto mt-4 w-[160px] h-[26px] rounded-[3px] bg-p2p-tab flex-row justify-between p-[2px] "
       style={containerStyle}
     >
       <Pressable
