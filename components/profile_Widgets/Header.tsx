@@ -22,7 +22,9 @@ const Header = () => {
           <UserLogo />
           <Text className='text-white'>Profile ID</Text>
       </View>
-      <SettingsIcon />
+      <Pressable onPress={()=> router.push("/(settings)")}>
+        <SettingsIcon />
+      </Pressable>
       </View>
       <View className={`${flex} my-2 `}>
       <View className="flex-row items-center gap-2">
