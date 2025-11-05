@@ -7,7 +7,7 @@ import { useWithdrawal } from "@/store/useStore"
 
 const WithdrawModal = () => {
   const {withdrawStatus, removeWithdrawStatus } = useWithdrawal()
-  console.log(withdrawStatus)
+
   if (withdrawStatus)
     return (
       <Modal transparent visible>

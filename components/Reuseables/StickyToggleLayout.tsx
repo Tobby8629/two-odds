@@ -1,46 +1,63 @@
-
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import P2PToggle from '@/components/P2P/P2PToggle';
 
 interface StickyToggleLayoutProps {
   active: 'p2p' | 'bets';
   onChange: (active: 'p2p' | 'bets') => void;
-  children: React.ReactNode;
+  children: React.ReactNode[] | React.ReactNode;
 }
 
+/**
+ * This layout allows a sticky P2PToggle bar
+ * while keeping FlatList scroll behavior intact.
+ */
 export default function StickyToggleLayout({
   active,
   onChange,
   children,
 }: StickyToggleLayoutProps) {
+  // We expect the first child to be FlatList content
+  // and we'll render the sticky toggle above it.
   return (
-    <View className="flex-1 bg-pry">
-      {/* Sticky Toggle Bar */}
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 50,
-          backgroundColor: '#003C6F',
-          paddingVertical: 8,
+    <View style={styles.container}>
+      <FlatList
+        data={['header', 'content']}
+        renderItem={({ item }) => {
+          if (item === 'header') {
+            return (
+              <View style={styles.stickyHeader}>
+                <P2PToggle active={active} onChange={onChange} />
+              </View>
+            );
+          }
+          return <>{children}</>;
         }}
-      >
-        <P2PToggle active={active} onChange={onChange} />
-      </View>
-
-      {/* Scrollable content below */}
-      <ScrollView
-        contentContainerStyle={{
-          paddingTop: 50, // to keep space so toggle doesn’t overlap
-          paddingBottom: 20,
-        }}
+        keyExtractor={(item) => item}
         showsVerticalScrollIndicator={false}
-      >
-        {children}
-      </ScrollView>
+        contentContainerStyle={styles.contentContainer}
+      />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#123456',
+  },
+  stickyHeader: {
+    backgroundColor: '#003C6F',
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+    zIndex: 10,
+    elevation: 6, // Android shadow
+    shadowColor: '#000', // iOS shadow
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+  },
+  contentContainer: {
+    paddingBottom: 56,
+  },
+});

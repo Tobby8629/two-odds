@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       colors: {
        pry: "#003C6F",
+       pryf: "#123456",
        "pry-light": "#1F5079",
        "pry-fade": '#03345dcc',
        sec: "#FFC107",
