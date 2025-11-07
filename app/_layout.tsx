@@ -31,6 +31,9 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+
+  //Show splasscreen
+
   if (!loaded || splash) {
     return <SplashScreen />;
   }

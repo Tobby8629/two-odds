@@ -24,7 +24,7 @@ const RadioButton: React.FC<Props> = ({ value, onToggle }) => {
 
   const knobBg = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [ "#FFD700","#ffffff"], // white → gold
+    outputRange: [ "#979797","#ffffff"], // white → gold
   });
 
   const bgColor = animatedValue.interpolate({
