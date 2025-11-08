@@ -13,6 +13,7 @@ import Basketball from "@/assets/SVGs/sport/Basketball";
 import AmericanFootball from "@/assets/SVGs/sport/AF";
 import Tennis from "@/assets/SVGs/sport/Tennis";
 import Volleyball from "@/assets/SVGs/sport/Volleyball";
+import { RelativePathString } from "expo-router";
 
 export const load = [
   {
@@ -170,7 +171,6 @@ export const quickpick:Nav[] = [
     icon: Volleyball,
   }
 ]
-
 
 export const nav:Nav[] = [
   {
@@ -423,3 +423,26 @@ export const mockTransactions: Transaction[] = Array.from({ length: 20 }, (_, i)
     date: randomDateWithin30Days(),
   };
 });
+
+export const settings: { name: string; link: RelativePathString }[] = [
+    { name: "My Profile", link: "./(settings)/(profile)/profile" },
+    { name: "Security", link: "./(settings)/(security)/security" },
+    { name: "Notifications", link: "./(settings)/notifications" },
+    { name: "Account Limits", link: "./(settings)/accountLimit" },
+    { name: "Transactions", link: "../(transactions)/history" },
+  ];
+
+export type SECURITY = "password" | "2fa" | "pin" | "delete";
+
+export const securityRoutes: {
+  id: SECURITY;
+  name: string;
+  link: string;
+}[] = [
+  { id: "password", name: "Change Password", link: "/(settings)/(security)/change_password" },
+  { id: "2fa", name: "Two-factor Authentication (2FA)", link: "/(settings)/(security)/two_factor" },
+  { id: "pin", name: "Withdrawal Pin", link: "/(settings)/(security)/withdrawal_pin" },
+  { id: "delete", name: "Delete Account", link: "/(settings)/(security)/delete_account" },
+];
+
+
