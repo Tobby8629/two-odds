@@ -60,7 +60,12 @@ interface validateOutput {
 
 type InputField = 'email' | 'password' | 'text';
 
-type InputID = 'email' | 'password' | 'confirm_password' | 'reset_code' | "address" | "amount";
+type InputID = 'email' | 'password' | 'confirm_password' | 
+'reset_code' | "address" | "amount" |
+"oldpassword" |
+    "newpassword" |
+    "confirmpassword"
+;
 
 interface register {
     email: InputField,
