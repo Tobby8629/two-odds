@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import RadioButton from "@/components/Reuseables/Input/RadioBtn";
 import { ThemedText } from "@/components/ThemedText";

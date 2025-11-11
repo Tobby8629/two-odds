@@ -1,17 +1,11 @@
 import { Pressable, View } from 'react-native';
 import Layout from './Layout';
-import { Link, RelativePathString } from 'expo-router';
+import { Link } from 'expo-router';
 import AngleRight from '@/assets/SVGs/Angle-right';
 import { ThemedText } from '@/components/ThemedText';
+import { settings } from '@/constants/data';
 
 const Setting = () => {
-  const settings: { name: string; link: RelativePathString }[] = [
-    { name: "My Profile", link: "./(settings)/(profile)/profile" },
-    { name: "Security", link: "./(settings)/(security)/security" },
-    { name: "Notifications", link: "./(settings)/notifications" },
-    { name: "Account Limits", link: "./(settings)/accountLimit" },
-    { name: "Transactions", link: "../(transactions)/history" },
-  ];
 
   return (
     <Layout header="Settings">

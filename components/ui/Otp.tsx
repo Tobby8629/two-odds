@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from "react";
+import { useRef, useLayoutEffect, useEffect } from "react";
 import { TextInput, View, StyleSheet, Keyboard } from "react-native";
 
 interface otpInt {
@@ -12,9 +12,14 @@ const OTPInput = ({ length, onSubmit, otp, setOtp }: otpInt) => {
   const inputs = useRef<(TextInput | null)[]>([]);
 
   // Log refs after render
-  useLayoutEffect(() => {
-    console.log("Refs after render:", inputs.current);
-  }, [otp]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      inputs.current[0]?.focus(); // 👈 This opens the keyboard automatically
+    }, 300);
+    return () => clearTimeout(timer);
+  },[]);
+
+
 
   const handleChangeText = (text: string, index: number) => {
     if (!/^\d*$/.test(text)) return;
