@@ -93,7 +93,7 @@ export default function ChangePassword() {
         <ThemedText className="text-lg mb-3 !text-sec  font-semibold">Password Requirements</ThemedText>
       
       {Array.from({length: 3,}).map((_, index)=>(
-        <View className="flex-row items-baseline mb-3 gap-2">
+        <View key={index.toString()} className="flex-row items-baseline mb-3 gap-2">
           <View className="w-1 h-1 rounded-full bg-white"/>
           <ThemedText className="leading-7">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora obcaecati placeat nulla, fugit inventore magnam dicta tempore quasi in!</ThemedText>
         </View>
@@ -102,6 +102,11 @@ export default function ChangePassword() {
     </Layout>
   );
 }
+
+
+
+
+
 
 
  {/* <TextInput
