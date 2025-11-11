@@ -41,7 +41,7 @@ const WithdrawalPin = () => {
             length={4}
             onSubmit={handleSubmit}
           />
-         </View>
+        </View>
 
           <Button text="Confirm" onPress={handleSubmit} className="mt-6 w-1/2 mx-auto" />
 
