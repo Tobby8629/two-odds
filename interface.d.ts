@@ -6,6 +6,8 @@ interface validateInput {
   password?: string
 }
 
+export type sports = "football" | "basketball" | "tennis"| "volleyball" 
+
 interface MatchProps { 
     id:number,
     status: "won" | "lost" | "pending"

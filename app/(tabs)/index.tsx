@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   NativeSyntheticEvent,
@@ -19,6 +19,8 @@ import P2PToggle from "@/components/P2P/P2PToggle";
 import P2PLanding from "@/components/P2P/P2PLanding";
 import P2PSearching from "@/components/P2P/P2PSearching";
 import P2PBetsList from "@/components/P2P/P2PBetsList";
+import { useSport } from "@/store/useSports";
+import { useFocusEffect } from "expo-router";
 
 type CombinedItem = "header" | MatchProps;
 
@@ -27,7 +29,13 @@ export default function HomeScreen() {
   const [isSticky, setIsSticky] = useState(false);
   const { activeTab, setActiveTab } = useTabStore();
   const { currentScreen } = useP2PStore();
+  const { handleSelect, switchAndSelect} = useSport()
 
+  useFocusEffect(
+    useCallback(() => {
+      handleSelect("");
+    }, [handleSelect])
+  );
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = e.nativeEvent.contentOffset.y;
     setIsSticky(scrollY > 520);
@@ -58,7 +66,7 @@ return (
         <>
           <P2PToggle active={activeTab} onChange={setActiveTab} />
           <Head />
-          <Sport />
+          <Sport handlePress={switchAndSelect}/>
           <Quickpick />
           <LiveBets />
         </>

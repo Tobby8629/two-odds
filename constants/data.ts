@@ -82,48 +82,48 @@ export const passwordverification:  Array<{ id: number; val: keyof verifyInt; te
 
 export const sports:Nav[] = [
   {
-    name: "index",
+    name: "football",
     link: "/(tabs)",
     icon: Football,
   },
   {
-    name: "menu",
+    name: "basketball",
     link: "/(tabs)/menu",
     icon: Basketball
   },
   {
-    name: "betslip",
+    name: "tennis",
     link: "/(tabs)/betslip",
     icon: AmericanFootball,
   },
 
   {
-    name: "bets",
+    name: "volley",
     link: "/(tabs)/bets",
     icon: Tennis,
   },
   {
-    name: "profile",
-    link: "/(tabs)/profile",
-    icon: Volleyball,
-  }
-,
+    name: "football1",
+    link: "/(tabs)",
+    icon: Football,
+  },
   {
-    name: "betslip1",
+    name: "basketball1",
+    link: "/(tabs)/menu",
+    icon: Basketball
+  },
+  {
+    name: "tennis1",
     link: "/(tabs)/betslip",
     icon: AmericanFootball,
   },
 
   {
-    name: "bets1",
+    name: "volley1",
     link: "/(tabs)/bets",
     icon: Tennis,
   },
-  {
-    name: "profile1",
-    link: "/(tabs)/profile",
-    icon: Volleyball,
-  }
+  
 ]
 
 export const quickpick:Nav[] = [
