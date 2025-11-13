@@ -5,7 +5,8 @@ import Sport from '@/components/Home/Sport'
 import { useCallback } from 'react'
 import { useSport } from '@/store/useSports'
 import {  useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
-import { sports } from '@/interface'
+import { allsport } from '@/components/menu/tabSwitch'
+import { sports as availsport} from '@/interface'
 
 const menu = () => {
   const { handleSelect, selectedsport } = useSport();
@@ -25,10 +26,13 @@ const menu = () => {
     <StaticLayout>
       <Head />
       <Sport handlePress={handleSelect}/>
+      {allsport(selectedsport as availsport)}
     </StaticLayout>
   )
 }
 
 export default menu
+
+
 
 const styles = StyleSheet.create({})

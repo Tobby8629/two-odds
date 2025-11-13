@@ -6,6 +6,17 @@ interface validateInput {
   password?: string
 }
 
+interface League {
+  name: string;
+  popular: boolean;
+}
+
+interface CountryLeagues {
+  popular: boolean
+  country: string;
+  leagues: League[];
+}
+
 export type sports = "football" | "basketball" | "tennis"| "volleyball" 
 
 interface MatchProps { 

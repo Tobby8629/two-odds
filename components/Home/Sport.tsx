@@ -11,7 +11,7 @@ interface ctrl {
 const Sport = ({handlePress}: ctrl) => {
   const { selectedsport} = useSport()
   return (
-    <View className="py-5 border-b-2 border-white">
+    <View className="py-5">
       <Text className="text-white px-6 mb-5 text-2xl uppercase font-semibold">
         Sports
       </Text>
