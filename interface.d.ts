@@ -17,7 +17,7 @@ interface CountryLeagues {
   leagues: League[];
 }
 
-export type sports = "football" | "basketball" | "tennis"| "volleyball" 
+export type sports = "football" | "basketball" | "tennis"| "volleyball" | "americafootball"
 
 interface MatchProps { 
     id:number,

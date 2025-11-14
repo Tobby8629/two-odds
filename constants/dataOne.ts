@@ -1,4 +1,4 @@
-import { CountryLeagues } from "@/interface";
+import { CountryLeagues, sports } from "@/interface";
 
 export const footballLeagues: CountryLeagues[] = [
   {
@@ -100,3 +100,103 @@ export const footballLeagues: CountryLeagues[] = [
     ],
   },
 ];
+
+export const basketballLeagues: CountryLeagues[] = [
+  {
+    popular: true,
+    country: "United States",
+    leagues: [
+      { name: "NBA", popular: true },
+      { name: "WNBA", popular: false },
+      { name: "NBA G League", popular: false },
+    ],
+  },
+  {
+    popular: false,
+    country: "Spain",
+    leagues: [
+      { name: "Liga ACB", popular: true },
+      { name: "LEB Oro", popular: false },
+    ],
+  },
+  {
+    popular: false,
+    country: "Turkey",
+    leagues: [
+      { name: "Basketbol Süper Ligi", popular: true },
+    ],
+  },
+  {
+    popular: false,
+    country: "Australia",
+    leagues: [
+      { name: "NBL", popular: true },
+    ],
+  },
+];
+
+export const tennisLeagues: CountryLeagues[] = [
+  {
+    popular: true,
+    country: "International",
+    leagues: [
+      { name: "ATP Tour", popular: true },
+      { name: "WTA Tour", popular: true },
+      { name: "ITF World Tennis Tour", popular: false },
+    ],
+  },
+  {
+    popular: false,
+    country: "Grand Slam Tournaments",
+    leagues: [
+      { name: "Wimbledon", popular: true },
+      { name: "US Open", popular: true },
+      { name: "Australian Open", popular: true },
+      { name: "French Open (Roland Garros)", popular: true },
+    ],
+  },
+];
+export const americanFootballLeagues: CountryLeagues[] = [
+  {
+    popular: true,
+    country: "United States",
+    leagues: [
+      { name: "NFL (National Football League)", popular: true },
+      { name: "NCAA College Football", popular: false },
+      { name: "XFL", popular: false },
+      { name: "USFL", popular: false },
+    ],
+  },
+  {
+    popular: false,
+    country: "Canada",
+    leagues: [
+      { name: "CFL (Canadian Football League)", popular: true },
+    ],
+  },
+  {
+    popular: false,
+    country: "Europe",
+    leagues: [
+      { name: "European League of Football (ELF)", popular: true },
+    ],
+  },
+];
+
+
+
+
+export const updateDataArry = (sport: sports) => {
+  switch (sport) {
+    case "basketball": 
+      return basketballLeagues
+      break;
+    case "tennis":
+        return tennisLeagues
+    case "americafootball":
+      return americanFootballLeagues
+    default:
+      return footballLeagues
+      break;
+  }
+}

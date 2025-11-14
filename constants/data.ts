@@ -94,13 +94,13 @@ export const sports:Nav[] = [
   {
     name: "tennis",
     link: "/(tabs)/betslip",
-    icon: AmericanFootball,
+    icon:  Tennis,
   },
 
   {
-    name: "volley",
+    name: "americafootball",
     link: "/(tabs)/bets",
-    icon: Tennis,
+    icon:  AmericanFootball,
   },
   {
     name: "football1",
