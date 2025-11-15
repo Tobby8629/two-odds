@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/ThemedText'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { logo } from '@/constants/functions'
 import interfaceSwitch from '@/components/gameInterfaces/InterfaceSwitch'
-import { sports } from '@/interface'
+import { Match, sports } from '@/interface'
 
 
 const league = () => {
@@ -16,7 +16,7 @@ const league = () => {
   const {league} = useLocalSearchParams<{ league?: string, country?: string }>();
   const country = dataArry.find((e)=> e.leagues.some((l)=> l.name === league))?.country
   const matches = dataArry.map((e)=> e.leagues).flat().find((e)=> e.name === league)?.matches
-  console.log(matches)
+ 
   return (
    <StaticLayout className="!pt-0">
       <Layout
@@ -31,7 +31,7 @@ const league = () => {
           <FontAwesome6 name="angle-right" color={"white"} />
         </View>
       </View>
-      {interfaceSwitch(selectedsport as sports)}
+      {interfaceSwitch(selectedsport as sports, matches as Match[])}
     </Layout>
     </StaticLayout>
   )
