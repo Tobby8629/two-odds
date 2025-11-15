@@ -6,10 +6,20 @@ interface validateInput {
   password?: string
 }
 
+interface Match {
+  home: string;
+  away: string;
+  date: string;
+  time: string;
+  popular: boolean;
+}
+
 interface League {
   name: string;
   popular: boolean;
+  matches?: Match[];
 }
+
 
 interface CountryLeagues {
   popular: boolean

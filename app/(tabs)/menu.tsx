@@ -7,6 +7,7 @@ import { useSport } from '@/store/useSports'
 import {  useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { LeagueTemplate } from '@/components/menu/template'
 import { FontAwesome6 } from '@expo/vector-icons'
+import { logo } from '@/constants/functions'
 
 const menu = () => {
   const { handleSelect, selectedsport} = useSport();
@@ -21,29 +22,13 @@ const menu = () => {
     }, [sport, handleSelect, selectedsport])
   );
 
-  const logo = () => {
-    switch (selectedsport) {
-      case "basketball":
-        return "basketball";
-
-      case "americafootball":
-      return "football";
-      
-      case "tennis":
-      return "table-tennis-paddle-ball";
-    
-      default:
-        return "futbol"
-      break;
-    }
-  }
   
   return (
     <StaticLayout>
       <Head />
       <Sport handlePress={handleSelect}/>
       <LeagueTemplate 
-        sport = {<FontAwesome6 name={logo()} color={"gold"}/>}
+        sport = {<FontAwesome6 name={logo(selectedsport)} color={"gold"}/>}
       />
     </StaticLayout>
   )

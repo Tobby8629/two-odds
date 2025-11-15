@@ -157,3 +157,20 @@ export const filterByDate = (dateFilter: "all" | "7days" | "14days" | "30days", 
   return transactionDate >= past && transactionDate <= now;
 };
 
+
+export const logo = (selectedsport: string) => {
+    switch (selectedsport) {
+      case "basketball":
+        return "basketball";
+
+      case "americafootball":
+      return "football";
+      
+      case "tennis":
+      return "table-tennis-paddle-ball";
+    
+      default:
+        return "futbol"
+      break;
+    }
+  }
