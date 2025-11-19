@@ -347,50 +347,49 @@ export  const match: MatchProps[]  = [
     },
   ]
 
-   export const bets = [
-      {
-        id: 1,
-        betType: "accumulator",
-        games: match,
-        potentialWin: 2000,
-        stake: 300,
-        status: "won",
-        cashout: 0,
-        date: "01 Dec 2025 6:30",
-      },
-      {
-        id: 2,
-        betType: "accumulator",
-        games: match,
-        potentialWin: 3000,
-        stake: 300,
-        status: "won",
-        cashout: 200,
-        date: "01 Dec 2025 6:30",
-      },
-      {
-        id: 3,
-        betType: "accumulator",
-        games: match,
-        potentialWin: 4000,
-        stake: 300,
-        status: "won",
-        cashout: 200,
-        date: "01 Dec 2025 6:30",
-      },
-      {
-        id: 4,
-        betType: "accumulator",
-        games: match,
-        potentialWin: 5000,
-        stake: 300,
-        status: "lost",
-        cashout: 200,
-        date: "01 Dec 2025 6:30",
-      },
-    ];
+export const bets = [
+  {
+    id: 1,
+    betType: "accumulator",
+    games: match,
+    potentialWin: 2000,
+    stake: 300,
+    status: "won",
+    cashout: 0,
+    date: "01 Dec 2025 6:30",
+  },
+  {
+    id: 2,
+    betType: "accumulator",
+    games: match,
+    potentialWin: 3000,
+    stake: 300,
+    status: "won",
+    cashout: 200,
+    date: "01 Dec 2025 6:30",
+  },
+  {
+    id: 3,
+    betType: "accumulator",
+    games: match,
+    potentialWin: 4000,
+    stake: 300,
+    status: "won",
+    cashout: 200,
+    date: "01 Dec 2025 6:30",
+  },
+  {
+    id: 4,
+    betType: "accumulator",
+    games: match,
+    potentialWin: 5000,
+    stake: 300,
+    status: "lost",
+    cashout: 200,
+    date: "01 Dec 2025 6:30",
+  },
+];
 
-   
 export type TransactionType = "withdrawal" | "deposits" | "winnings";
 
 export interface Transaction {
