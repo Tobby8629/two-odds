@@ -4,19 +4,22 @@ import Tennis from "./Tennis";
 import AmericaFootball from "./AmericaFootball";
 import Football from "./Football";
 
-const interfaceSwitch = (selectedsport: sports, data: Match[]) => {
+interface InterfaceSwitchProps {
+  selectedsport: sports;
+  matches: Match[];
+}
+
+const interfaceSwitch = ({ selectedsport, matches }: InterfaceSwitchProps) => {
   switch (selectedsport) {
     case "basketball":
-      return <BasketBall />;
+      return <BasketBall matches={matches} />;
     case "americafootball":
       return <AmericaFootball />;
     case "tennis":
-      return <Tennis />;
-  
+      return <Tennis matches={matches} />;
     default:
-      return <Football />
-      break;
+      return <Football />; 
   }
-}
+};
 
-export default interfaceSwitch
+export default interfaceSwitch;

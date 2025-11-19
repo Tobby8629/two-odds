@@ -10,29 +10,30 @@ import { logo } from '@/constants/functions'
 import interfaceSwitch from '@/components/gameInterfaces/InterfaceSwitch'
 import { Match, sports } from '@/interface'
 
-
 const league = () => {
-  const { dataArry,selectedsport } = useSport()
-  const {league} = useLocalSearchParams<{ league?: string, country?: string }>();
-  const country = dataArry.find((e)=> e.leagues.some((l)=> l.name === league))?.country
-  const matches = dataArry.map((e)=> e.leagues).flat().find((e)=> e.name === league)?.matches
- 
+  const { dataArry, selectedsport } = useSport()
+  const { league } = useLocalSearchParams<{ league?: string; country?: string }>()
+  const country = dataArry.find((e) => e.leagues.some((l) => l.name === league))?.country
+  const matches = dataArry.map((e) => e.leagues).flat().find((e) => e.name === league)?.matches
+
   return (
-   <StaticLayout className="!pt-0">
+    <StaticLayout className="!pt-0">
       <Layout
         title={`${country} - ${league}`}
-        handleClick={()=>router.back()}
+        handleClick={() => router.back()}
       >
-      <View className='flex-row bg-pry-light px-6 justify-between border-y border-white py-5 items-center '>
-        <ThemedText className='text-lg font-medium'>Friday matches</ThemedText>
-        <View className='flex-row gap-1 items-center'>
-          <FontAwesome6 name={logo(selectedsport)} color={"gold"}/>
-          <ThemedText>live</ThemedText>
-          <FontAwesome6 name="angle-right" color={"white"} />
+        <View className="flex-row bg-pry-light px-6 justify-between border-y border-white py-5 items-center">
+          <ThemedText className="text-lg font-medium">Friday matches</ThemedText>
+          <View className="flex-row gap-1 items-center">
+            <FontAwesome6 name={logo(selectedsport)} color={"gold"} />
+            <ThemedText>live</ThemedText>
+            <FontAwesome6 name="angle-right" color={"white"} />
+          </View>
         </View>
-      </View>
-      {interfaceSwitch(selectedsport as sports, matches as Match[])}
-    </Layout>
+
+        {/* InterfaceSwitch now renders a FlatList safely inside Layout */}
+        {interfaceSwitch({ selectedsport: selectedsport as sports, matches: matches as Match[] })}
+      </Layout>
     </StaticLayout>
   )
 }

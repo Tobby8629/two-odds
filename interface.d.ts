@@ -12,6 +12,21 @@ interface Match {
   date: string;
   time: string;
   popular: boolean;
+  odds?: {
+    home: string;
+      draw?: string;
+    away: string;
+    overUnder?: {
+      line: string;
+      over: string;
+      under: string;
+    }[];
+    handicap?: {
+      line: string; // e.g., "-1.5", "+2.5"
+      home: string; // odds for home team with this handicap
+      away: string; // odds for away team with this handicap
+    }[];
+  };
 }
 
 interface League {
