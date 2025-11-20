@@ -10,6 +10,7 @@ module.exports = {
        pryf: "#123456",
        "pry-light": "#1F5079",
        "pry-fade": '#03345dcc',
+       "cus-purple": "#ABB2FA",
        sec: "#FFC107",
        'light-blue': "#E3F2FD",
 

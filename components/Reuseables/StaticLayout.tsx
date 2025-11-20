@@ -7,7 +7,7 @@ interface StaticLayoutProps {
 }
 
 const StaticLayout: React.FC<StaticLayoutProps> = ({ children, className }) => {
-  const [isScrollable, setIsScrollable] = useState(false);
+  const [isScrollable, setIsScrollable] = useState(true);
   const [contentHeight, setContentHeight] = useState(0);
   const { height: screenHeight } = useWindowDimensions();
 
