@@ -1,14 +1,33 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+// components/gameInterfaces/Tennis/Tennis.tsx
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import TennisTabs, { TabType } from './Tennis/TennisTabs';
+import WinnerTab from './BasketBall/WinnerTab';
+import TennisOverUnderTab from './Tennis/TennisOverUnderTab';
+import HandicapTab from './BasketBall/HandicapTab';
+import { Match } from '@/interface';
 
-const Tennis = () => {
-  return (
-    <View>
-      <Text>Tennis</Text>
-    </View>
-  )
+interface TennisProps {
+  matches: Match[];
 }
 
-export default Tennis
+const Tennis: React.FC<TennisProps> = ({ matches }) => {
+  const [activeTab, setActiveTab] = useState<TabType>('winner');
 
-const styles = StyleSheet.create({})
+  return (
+    <View style={styles.container}>
+      <TennisTabs onTabChange={setActiveTab} initialTab="winner" />
+      {activeTab === 'winner' && <WinnerTab matches={matches} />}
+      {activeTab === 'overunder' && <TennisOverUnderTab matches={matches} />}
+      {activeTab === 'handicap' && <HandicapTab matches={matches} />}
+    </View>
+  );
+};
+
+export default Tennis;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

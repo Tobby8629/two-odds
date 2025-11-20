@@ -18,7 +18,7 @@ export default function P2PToggle({ active, onChange, containerStyle }: P2PToggl
       <Pressable
         onPress={() => onChange("bets")}
         className={`flex-1 mx-[1px] rounded-[3px] items-center justify-center ${
-          active === "bets" ? "bg-p2p-active" : "bg-p2p-tab"
+          active === "bets" ? "bg-sec" : "bg-p2p-tab"
         }`}
         style={{ width: 30, height: 20 }}
       >
@@ -28,7 +28,7 @@ export default function P2PToggle({ active, onChange, containerStyle }: P2PToggl
       <Pressable
         onPress={() => onChange("p2p")}
         className={`flex-1 mx-[3px] rounded-[3px] items-center justify-center ${
-          active === "p2p" ? "bg-p2p-active" : "bg-p2p-tab"
+          active === "p2p" ? "bg-sec" : "bg-p2p-tab"
         }`}
         style={{ width: 32, height: 18 }}
       >
