@@ -25,9 +25,15 @@ export function LeagueTemplate ({ sport}: TEMPLATE) {
     return list
   }
 
+  const regular = (arry: CountryLeagues[]) => {
+    const list = arry.filter((e)=> e.popular === false)
+    return list
+  }
+
   const {selectedsport, dataArry} = useSport()
 
   const firstArr = popular(dataArry)
+  const secArr = regular(dataArry)
   return (
     <View className='flex-1'>
       {firstArr &&
@@ -58,7 +64,7 @@ export function LeagueTemplate ({ sport}: TEMPLATE) {
           <ThemedText className='capitalize text-lg font-medium'>All Leagues</ThemedText>
         </View>
         <View className='px-6'>
-          {dataArry.map((item, idx) => (
+          {secArr.map((item, idx) => (
             <Pressable
             onPress={()=>update(item.country)}
             key={idx} 

@@ -7,8 +7,8 @@ import { useSport } from '@/store/useSports'
 import { ThemedText } from '@/components/ThemedText'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { logo } from '@/constants/functions'
-import interfaceSwitch from '@/components/gameInterfaces/InterfaceSwitch'
 import { Match, sports } from '@/interface'
+import interfaceSwitch from '@/components/gameInterfaces/InterfaceSwitch'
 
 const league = () => {
   const { dataArry, selectedsport } = useSport()
@@ -17,7 +17,7 @@ const league = () => {
   const matches = dataArry.map((e) => e.leagues).flat().find((e) => e.name === league)?.matches
 
   return (
-    <StaticLayout className="!pt-0">
+    // <StaticLayout className="!pt-0">
       <Layout
         title={`${country} - ${league}`}
         handleClick={() => router.back()}
@@ -34,7 +34,7 @@ const league = () => {
         {/* InterfaceSwitch now renders a FlatList safely inside Layout */}
         {interfaceSwitch({ selectedsport: selectedsport as sports, matches: matches as Match[] })}
       </Layout>
-    </StaticLayout>
+    // </StaticLayout>
   )
 }
 

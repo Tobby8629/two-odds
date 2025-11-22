@@ -2,7 +2,7 @@ import { Match, sports } from "@/interface";
 import BasketBall from "./BasketBall";
 import Tennis from "./Tennis";
 import AmericaFootball from "./AmericaFootball";
-import Football from "./Football";
+import Football from "./Football/Football";
 
 interface InterfaceSwitchProps {
   selectedsport: sports;

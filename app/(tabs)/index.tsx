@@ -12,7 +12,7 @@ import LiveBets from "@/components/Home/LiveBets";
 import { MatchCard, PopularHeader } from "@/components/Home/Popular";
 import WithdrawModal from "@/components/Home/WithdrawModal";
 import useBetslip from "@/store/useStore";
-import { MatchProps } from "@/interface";
+import { CombinedItem, MatchProps } from "@/interface";
 import { useTabStore } from "@/store/useTabStore";
 import { useP2PStore } from "@/store/useP2PStore";
 import P2PToggle from "@/components/P2P/P2PToggle";
@@ -21,8 +21,6 @@ import P2PSearching from "@/components/P2P/P2PSearching";
 import P2PBetsList from "@/components/P2P/P2PBetsList";
 import { useSport } from "@/store/useSports";
 import { useFocusEffect } from "expo-router";
-
-type CombinedItem = "header" | MatchProps;
 
 export default function HomeScreen() {
   const { match } = useBetslip();

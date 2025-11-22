@@ -42,7 +42,7 @@ export const footballLeagues: CountryLeagues[] = [
   },
 
   {
-    popular: true,
+    popular: false,
     country: "Italy",
     leagues: [
       {

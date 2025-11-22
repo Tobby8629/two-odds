@@ -111,6 +111,8 @@ interface register {
     subscribe: boolean
 }
 
+export type CombinedItem = "header" | MatchProps;
+
 interface Err {
     message: string
     status: boolean
@@ -131,3 +133,47 @@ interface Nav {
   link: RelativePathString,
   icon: React.ComponentType<any>,
 }
+
+export interface BetOption 
+{ id: string; title: string; init: string; }
+
+export interface GoalOption{ 
+  id: string; 
+  select: boolean; 
+  init: string; 
+} 
+
+export interface BettingMarket { 
+  id: number; 
+  title: string; 
+  selected: boolean; 
+  options: BetOption[]; 
+  goals?: GoalOption[]; 
+}
+
+export interface OVERHEADER { 
+  goalDD: boolean; 
+  setGoalDD: React.Dispatch<React.SetStateAction<boolean>>; 
+  selectedMarket: BettingMarket; 
+  setMarkets: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
+} 
+
+interface OVERUNDER { 
+  selectGame: (option: {id: number, option: "Home" | "Away" | "Draw"}) => void; 
+  checkSelected: (arr: {id: string, option: "Home" | "Away" | "Draw"}[], 
+    option: string) => boolean; match: MatchProps;
+} 
+
+interface MARKET { 
+  markets: BettingMarket[]; 
+  selectMarket: (id: number) => void; 
+}
+
+
+export const optionMap: Record<Option, OddsKey> = {
+  Home: "homeOdds",
+  Draw: "drawOdds",
+  Away: "awayOdds",
+  Over: "overOdds",
+  Under: "underOdds",
+};
