@@ -4,6 +4,7 @@ import OverUnderButtons from "./OverUnderBtn";
 import OddsButton from "./OddsBTN";
 import { ThemedText } from "@/components/ThemedText";
 import { BettingMarket, MatchProps } from "@/interface";
+import { useSport } from "@/store/useSports";
 
 interface Props {
   match: MatchProps;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const MatchCard = ({ match, selectedMarket, selectGame }: Props) => {
+  const { selectedsport } = useSport()
   return (
     <View className={`${flex} my-3 px-3 py-3 bg-light-blue mb-3 mx-6 rounded-xl`}>
       <View className="w-[48%]">
@@ -21,9 +23,19 @@ const MatchCard = ({ match, selectedMarket, selectGame }: Props) => {
       </View>
 
       <View className="w-[50%]">
-        {selectedMarket?.id === 3 ? (
+        {selectedMarket?.title &&
+        (selectedMarket.title.includes("Over") ||
+          selectedMarket.title.includes("Under") ||
+          selectedMarket.title.includes("Handicap")) ? (
           <OverUnderButtons match={match} selectGame={selectGame} />
-        ) : (
+        ) : 
+        selectedsport === "tennis" || selectedsport === "basketball" ?  
+        <View className="flex-row justify-between">
+          <OddsButton className="w-[47%]" match={match} type="Home" selectGame={selectGame} />
+          <OddsButton className="w-[47%]" match={match} type="Away" selectGame={selectGame} />
+        </View>
+        :
+        (
           <View className="flex-row justify-between">
             <OddsButton match={match} type="Home" selectGame={selectGame} />
             <OddsButton match={match} type="Draw" selectGame={selectGame} />
@@ -31,6 +43,7 @@ const MatchCard = ({ match, selectedMarket, selectGame }: Props) => {
           </View>
         )}
       </View>
+
     </View>
   );
 };

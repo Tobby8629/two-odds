@@ -1,24 +1,25 @@
-import { Match, sports } from "@/interface";
+import { BettingMarket, MatchProps, sports } from "@/interface";
 import BasketBall from "./BasketBall";
-import Tennis from "./Tennis";
 import AmericaFootball from "./AmericaFootball";
-import Football from "./Football/Football";
+import Football from "./Football";
 
 interface InterfaceSwitchProps {
   selectedsport: sports;
-  matches: Match[];
+  matches: MatchProps[];
+  markets: BettingMarket[];
+  setMarkets: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
 }
 
-const interfaceSwitch = ({ selectedsport, matches }: InterfaceSwitchProps) => {
+const interfaceSwitch = ({ selectedsport, matches, markets, setMarkets }: InterfaceSwitchProps) => {
   switch (selectedsport) {
     case "basketball":
-      return <BasketBall matches={matches} />;
+      return <BasketBall matches={matches} markets={markets} setMarkets={setMarkets} />;
     case "americafootball":
-      return <AmericaFootball />;
+      return <AmericaFootball  />;
     case "tennis":
-      return <Tennis matches={matches} />;
+      return <BasketBall matches={matches} markets={markets} setMarkets={setMarkets}/>;
     default:
-      return <Football />; 
+      return <Football matches={matches} markets={markets} setMarkets={setMarkets}/>; 
   }
 };
 

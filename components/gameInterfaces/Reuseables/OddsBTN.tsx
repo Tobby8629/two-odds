@@ -5,10 +5,11 @@ import { Pressable } from "react-native";
 interface Props {
   match: MatchProps;
   type: "Home" | "Away" | "Draw";
+  className?: string;
   selectGame: (option: { id: number; option: "Home" | "Away" | "Draw" }) => void;
 }
 
-const OddsButton = ({ match, type, selectGame }: Props) => {
+const OddsButton = ({ match, type, selectGame, className }: Props) => {
   const isSelected = match.selected.some((s) => s.option === type);
 
   const oddsMap = {
@@ -20,7 +21,7 @@ const OddsButton = ({ match, type, selectGame }: Props) => {
   return (
     <Pressable
       onPress={() => selectGame({ id: match.id, option: type })}
-      className={`${isSelected ? "bg-sec" : "bg-cus-purple"} px-3 py-3 rounded-xl w-[31%]`}
+      className={`${className} ${isSelected ? "bg-sec" : "bg-cus-purple"} px-3 py-3 rounded-xl w-[31%]`}
     >
       <ThemedText
         className={`${isSelected ? "!text-white" : "!text-black"} text-center`}

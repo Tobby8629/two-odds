@@ -58,7 +58,6 @@ export default GameCard;
 
 const styles = StyleSheet.create({
   card: {
-    width: 330,
     height: 94,
     borderRadius: 10,
     backgroundColor: '#E3F2FD',

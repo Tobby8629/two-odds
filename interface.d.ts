@@ -145,6 +145,7 @@ export interface GoalOption{
 
 export interface BettingMarket { 
   id: number; 
+  sport: string;
   title: string; 
   selected: boolean; 
   options: BetOption[]; 

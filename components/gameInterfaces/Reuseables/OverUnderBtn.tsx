@@ -4,7 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { MatchProps } from "@/interface";
 interface Props {
   match: MatchProps;
-  selectGame: (option: { id: number; option: "Home" | "Draw" }) => void;
+  selectGame: (option: { id: number; option: "Home" | "Draw"  }) => void;
 }
 
 const OverUnderButtons = ({ match, selectGame }: Props) => (

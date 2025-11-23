@@ -1,14 +1,17 @@
 // components/gameInterfaces/BasketBall/WinnerTab.tsx
 import React from 'react';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
-import { Match } from '@/interface';
+import { Match, MatchProps } from '@/interface';
 import GameCard from './GameCard';
+import MatchCard from '../Reuseables/MatchCard';
+import useBetslip from '@/store/useStore';
 
 interface WinnerTabProps {
-  matches: Match[];
+  matches: MatchProps[];
 }
 
 const WinnerTab: React.FC<WinnerTabProps> = ({ matches }) => {
+  const { selectGame } = useBetslip()
   return (
     <View style={{ flex: 1 }}>
       {/* Sticky Header Bar */}
@@ -29,7 +32,8 @@ const WinnerTab: React.FC<WinnerTabProps> = ({ matches }) => {
         nestedScrollEnabled={true}
       >
         {matches.map((item, idx) => (
-          <GameCard key={`${item.home}-${item.away}-${idx}`} match={item} />
+          // <MatchCard match={item} selectGame={selectGame} selectedMarket={} />
+          <Text>{item.away}</Text>
         ))}
       </ScrollView>
     </View>

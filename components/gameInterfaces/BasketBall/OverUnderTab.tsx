@@ -1,15 +1,18 @@
 // components/gameInterfaces/BasketBall/OverUnderTab.tsx
 import React from 'react';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
-import { Match } from '@/interface';
-import OverUnderGameCard from './OverUnderGameCard';
+import { Match, MatchProps } from '@/interface';
+// import OverUnderGameCard from './OverUnderGameCard';
 import { Ionicons } from '@expo/vector-icons';
+import MatchCard from '../Reuseables/MatchCard';
+import useBetslip from '@/store/useStore';
 
 interface OverUnderTabProps {
-  matches: Match[];
+  matches: MatchProps[];
 }
 
 const OverUnderTab: React.FC<OverUnderTabProps> = ({ matches }) => {
+  const { selectGame } = useBetslip()
   return (
     <View style={{ flex: 1 }}>
       {/* Header Bar */}
@@ -38,10 +41,7 @@ const OverUnderTab: React.FC<OverUnderTabProps> = ({ matches }) => {
         nestedScrollEnabled={true}
       >
         {matches.map((item, idx) => (
-          <OverUnderGameCard
-            key={`${item.home}-${item.away}-${idx}`}
-            match={item}
-          />
+          <MatchCard match={item} selectGame={selectGame} selectedMarket={} />
         ))}
       </ScrollView>
     </View>

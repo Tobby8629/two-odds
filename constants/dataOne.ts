@@ -1,4 +1,4 @@
-import { CountryLeagues, sports } from "@/interface";
+import { BettingMarket, CountryLeagues, sports } from "@/interface";
 
 export const footballLeagues: CountryLeagues[] = [
   {
@@ -2077,6 +2077,7 @@ export const americanFootballLeagues: CountryLeagues[] = [
     ],
   },
 ];
+
 
 export const updateDataArry = (sport: sports) => {
   switch (sport) {

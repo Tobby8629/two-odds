@@ -5,10 +5,10 @@ import TennisTabs, { TabType } from './Tennis/TennisTabs';
 import WinnerTab from './BasketBall/WinnerTab';
 import TennisOverUnderTab from './Tennis/TennisOverUnderTab';
 import HandicapTab from './BasketBall/HandicapTab';
-import { Match } from '@/interface';
+import { Match, MatchProps } from '@/interface';
 
 interface TennisProps {
-  matches: Match[];
+  matches: MatchProps[];
 }
 
 const Tennis: React.FC<TennisProps> = ({ matches }) => {
@@ -19,7 +19,7 @@ const Tennis: React.FC<TennisProps> = ({ matches }) => {
       <TennisTabs onTabChange={setActiveTab} initialTab="winner" />
       {activeTab === 'winner' && <WinnerTab matches={matches} />}
       {activeTab === 'overunder' && <TennisOverUnderTab matches={matches} />}
-      {activeTab === 'handicap' && <HandicapTab matches={matches} />}
+      {/* {activeTab === 'handicap' && <HandicapTab matches={matches} />} */}
     </View>
   );
 };

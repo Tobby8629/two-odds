@@ -1,20 +1,30 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import StaticLayout from '@/components/Reuseables/StaticLayout'
 import Layout from '../../Layout'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useSport } from '@/store/useSports'
 import { ThemedText } from '@/components/ThemedText'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { logo } from '@/constants/functions'
-import { Match, sports } from '@/interface'
+import { BettingMarket, MatchProps, sports } from '@/interface'
 import interfaceSwitch from '@/components/gameInterfaces/InterfaceSwitch'
+import useBetslip from '@/store/useStore'
+import { useEffect, useState } from 'react'
+import { getMarketsBySport } from './data'
+
 
 const league = () => {
   const { dataArry, selectedsport } = useSport()
   const { league } = useLocalSearchParams<{ league?: string; country?: string }>()
   const country = dataArry.find((e) => e.leagues.some((l) => l.name === league))?.country
-  const matches = dataArry.map((e) => e.leagues).flat().find((e) => e.name === league)?.matches
+  // const matches = dataArry.map((e) => e.leagues).flat().find((e) => e.name === league)?.matches
+  const { match} = useBetslip();
+  const [markets, setMarkets] = useState<BettingMarket[]>([]);
+
+  useEffect(() => {
+    setMarkets(getMarketsBySport(selectedsport as "football" | "basketball"));
+  }, [selectedsport]);
+
+
 
   return (
     // <StaticLayout className="!pt-0">
@@ -32,7 +42,7 @@ const league = () => {
         </View>
 
         {/* InterfaceSwitch now renders a FlatList safely inside Layout */}
-        {interfaceSwitch({ selectedsport: selectedsport as sports, matches: matches as Match[] })}
+        {interfaceSwitch({ selectedsport: selectedsport as sports, matches: match as MatchProps[], markets: markets, setMarkets: setMarkets })}
       </Layout>
     // </StaticLayout>
   )

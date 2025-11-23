@@ -6,69 +6,26 @@ import {
   NativeSyntheticEvent,
 } from "react-native";
 import React, { useCallback, useState } from "react";
-import { useStore } from "zustand";
 import useBetslip from "@/store/useStore";
-import { BettingMarket, CombinedItem } from "@/interface";
+import { BettingMarket, CombinedItem, MatchProps } from "@/interface";
+import MarketTabs from "./Reuseables/MarketTab";
+import HeaderRow from "./Reuseables/HeaderRow";
+import MatchCard from "./Reuseables/MatchCard";
 
-import MarketTabs from "./MarketTab";
-import HeaderRow from "./HeaderRow";
-import MatchCard from "./MatchCard";
 
-const Football = () => {
+interface FootballProps {
+  matches: MatchProps[];
+  markets: BettingMarket[];
+  setMarkets: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
+}
+
+const Football = ({matches, markets, setMarkets}: FootballProps) => {
   const [goalDD, setGoalDD] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const {selectGame}   = useBetslip()
 
-  const { match, selectGame } = useBetslip();
-  const combined: CombinedItem[] = ["header", ...match];
-
-  const [markets, setMarkets] = useState<BettingMarket[]>([
-    {
-      id: 1,
-      title: "1X2",
-      selected: true,
-      options: [
-        { id: "home", title: "Home", init: "1" },
-        { id: "draw", title: "Draw", init: "X" },
-        { id: "away", title: "Away", init: "2" },
-      ],
-    },
-    {
-      id: 2,
-      title: "Double Chance",
-      selected: false,
-      options: [
-        { id: "home_draw", title: "Home or Draw", init: "1X" },
-        { id: "home_away", title: "Home or Away", init: "12" },
-        { id: "draw_away", title: "Draw or Away", init: "X2" },
-      ],
-    },
-    {
-      id: 3,
-      title: "Over / Under",
-      selected: false,
-      options: [
-        { id: "over", title: "Over", init: "Over" },
-        { id: "under", title: "Under", init: "Under" },
-      ],
-      goals: [
-        { id: "1", select: true, init: "0.5" },
-        { id: "2", select: false, init: "1.5" },
-        { id: "3", select: false, init: "2.5" },
-        { id: "4", select: false, init: "3.5" },
-        { id: "5", select: false, init: "4.5" },
-        { id: "6", select: false, init: "5.5" },
-      ],
-    },
-    {
-      id: 4,
-      title: "BTTS",
-      selected: false,
-      options: [
-        { id: "yes", title: "Yes", init: "Yes" },
-        { id: "no", title: "No", init: "No" },
-      ],
-    },
-  ]);
+  
+  const combined: CombinedItem[] = ["header", ...matches];
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setIsSticky(e.nativeEvent.contentOffset.y > 500);

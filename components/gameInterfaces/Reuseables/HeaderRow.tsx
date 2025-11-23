@@ -14,7 +14,9 @@ interface Props {
 const HeaderRow = ({ selectedMarket, setMarkets, goalDD, setGoalDD }: Props) => {
   if (!selectedMarket) return null;
 
-  if (selectedMarket.id === 3) {
+  if (selectedMarket.title.includes("Over") ||
+          selectedMarket.title.includes("Under") ||
+          selectedMarket.title.includes("Handicap")) {
     return (
       <OverUnderHeader
         selectedMarket={selectedMarket}

@@ -1,12 +1,12 @@
 // components/Tennis/TennisOverUnderTab.tsx
 import React from 'react';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
-import { Match } from '@/interface';
-import OverUnderGameCard from '../BasketBall/OverUnderGameCard';
+import { Match, MatchProps } from '@/interface';
+// import OverUnderGameCard from '../BasketBall/OverUnderGameCard';
 import { Ionicons } from '@expo/vector-icons';
 
 interface TennisOverUnderTabProps {
-  matches: Match[];
+  matches: MatchProps[];
 }
 
 const TennisOverUnderTab: React.FC<TennisOverUnderTabProps> = ({ matches }) => {
@@ -37,10 +37,11 @@ const TennisOverUnderTab: React.FC<TennisOverUnderTabProps> = ({ matches }) => {
         nestedScrollEnabled={true}
       >
         {matches.map((item, idx) => (
-          <OverUnderGameCard
-            key={`${item.home}-${item.away}-${idx}`}
-            match={item}
-          />
+          // <OverUnderGameCard
+          //   key={`${item.home}-${item.away}-${idx}`}
+          //   match={item}
+          // />
+          <Text>{item.away}</Text>
         ))}
       </ScrollView>
     </View>
