@@ -1,32 +1,29 @@
+import { Result } from './node_modules/glob/dist/esm/glob.d';
+import { select } from './store/useStore';
+import { identity } from './node_modules/zod-to-json-schema/dist-test-v3/cjs/node_modules/zod/v3/helpers/util.d';
 import { validate } from '@/constants/data';
 import React, { Dispatch } from "react"
+import { Match } from './constants/dataOne';
 
 interface validateInput {
   email?: string
   password?: string
 }
 
-interface Match {
-  home: string;
-  away: string;
-  date: string;
-  time: string;
-  popular: boolean;
-  odds?: {
-    home: string;
-      draw?: string;
-    away: string;
-    overUnder?: {
-      line: string;
-      over: string;
-      under: string;
-    }[];
-    handicap?: {
-      line: string; // e.g., "-1.5", "+2.5"
-      home: string; // odds for home team with this handicap
-      away: string; // odds for away team with this handicap
-    }[];
-  };
+interface MatchProps { 
+    id:number,
+    status: "won" | "lost" | "pending"
+    match: string,
+    odds: string,
+    time: string,
+    live: boolean,
+    result: string,
+    home:string 
+    away:string 
+    homeOdds:string,
+    awayOdds:string,
+    drawOdds:string,
+    selected: {id: string, option: "Home" | "Away" | "Draw"}[],
 }
 
 interface League {
@@ -60,21 +57,14 @@ interface MatchProps {
     selected: {id: string, option: "Home" | "Away" | "Draw"}[],
   }
 
-  interface MatchPropsBetslip { 
-    id:number,
-    // status: "won" | "lost" | "pending"
-    match: string,
-    odds: string,
-    time: string,
-    live: boolean,
-    result: string,
-    home:string 
-    away:string 
-    homeOdds:string,
-    awayOdds:string,
-    drawOdds:string,
-    selected: {id: string, option: "Home" | "Away" | "Draw"},
-  }
+  interface MatchPropsBetslip {
+  // matchID: string;
+  id: number;
+  home: string;
+  away: string;
+  selected: SelectedOption;
+}
+
 
   interface betProps {
     id: number,
@@ -112,6 +102,8 @@ interface register {
 }
 
 export type CombinedItem = "header" | MatchProps;
+
+export type CombiSportItem = "header" | Match;
 
 interface Err {
     message: string

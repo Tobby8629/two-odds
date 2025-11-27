@@ -1,32 +1,35 @@
 import { ThemedText } from "@/components/ThemedText";
-import { MatchProps } from "@/interface";
+import { Match } from "@/constants/dataOne";
 import { Pressable } from "react-native";
 
 interface Props {
-  match: MatchProps;
+  match: Match;
   type: "Home" | "Away" | "Draw";
   className?: string;
   selectGame: (option: { id: number; option: "Home" | "Away" | "Draw" }) => void;
 }
 
 const OddsButton = ({ match, type, selectGame, className }: Props) => {
+  // Detect if THIS specific option is selected
   const isSelected = match.selected.some((s) => s.option === type);
 
-  const oddsMap = {
-    Home: match.homeOdds,
-    Away: match.awayOdds,
-    Draw: match.drawOdds,
-  } as const;
+  // Get the right odds number
+  const oddsValue =
+    type === "Home" ? match?.odds?.home :
+    type === "Draw" ? match?.odds?.draw :
+    match?.odds?.away;
 
   return (
     <Pressable
       onPress={() => selectGame({ id: match.id, option: type })}
-      className={`${className} ${isSelected ? "bg-sec" : "bg-cus-purple"} px-3 py-3 rounded-xl w-[31%]`}
+      className={`px-3 py-3 rounded-xl w-[31%] 
+        ${isSelected ? "bg-sec" : "bg-cus-purple"} 
+        ${className ?? ""}`}
     >
       <ThemedText
-        className={`${isSelected ? "!text-white" : "!text-black"} text-center`}
+        className={`text-center ${isSelected ? "!text-white" : "!text-black"}`}
       >
-        {oddsMap[type]}
+        {oddsValue}
       </ThemedText>
     </Pressable>
   );

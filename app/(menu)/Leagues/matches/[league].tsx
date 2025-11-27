@@ -42,7 +42,7 @@ const league = () => {
         </View>
 
         {/* InterfaceSwitch now renders a FlatList safely inside Layout */}
-        {interfaceSwitch({ selectedsport: selectedsport as sports, matches: match as MatchProps[], markets: markets, setMarkets: setMarkets })}
+        {interfaceSwitch({ selectedsport: selectedsport as sports, markets: markets, setMarkets: setMarkets })}
       </Layout>
     // </StaticLayout>
   )

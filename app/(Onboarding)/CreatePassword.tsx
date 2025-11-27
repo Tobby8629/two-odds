@@ -37,7 +37,7 @@ const CreatePassword = () => {
     verifying(data, checkvalue, setcheckvalue);
   },[data])
 
- const check = hasFalseValue(checkvalue)
+  const check = hasFalseValue(checkvalue)
 
   const onChange = (value: string, id: InputID | undefined) => {
     if(id){

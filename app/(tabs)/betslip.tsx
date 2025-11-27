@@ -11,6 +11,7 @@ import MatchCard from '@/components/Betslip/MatchCard';
 import Footer from '@/components/Betslip/Footer';
 import PopupD from '@/components/Betslip/PopupD';
 import Error from '@/components/Reuseables/Error';
+import { useSport } from '@/store/useSports';
 
 export default function TabTwoScreen() {
  
@@ -26,7 +27,7 @@ export default function TabTwoScreen() {
     setVisible(true)
   }
   const [selected, setSelected] = useState<ItemProp<"bet_Accumulator" | "single" | "system">>(options[0]) 
-  const {selectedGames, clearBetslip } = useBetslip()
+  const {selectedGames, clearBetslip } = useSport()
   const { height } = Dimensions.get("window");
   const handleSubmit = (stake: number | null, baseStake: number) => {
     if(stake && stake < baseStake || !stake) {

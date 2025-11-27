@@ -1,9 +1,10 @@
 import { View, Pressable } from "react-native";
 import { flex } from "@/constants/style";
 import { ThemedText } from "@/components/ThemedText";
-import { MatchProps } from "@/interface";
+import { Match } from "@/constants/dataOne";
+
 interface Props {
-  match: MatchProps;
+  match: Match;
   selectGame: (option: { id: number; option: "Home" | "Draw"  }) => void;
 }
 
@@ -14,7 +15,7 @@ const OverUnderButtons = ({ match, selectGame }: Props) => (
       className="w-[45%] bg-cus-purple px-3 py-3 rounded-xl"
     >
       <ThemedText className="text-center text-black">
-        {match.homeOdds}
+        {match.odds?.home}
       </ThemedText>
     </Pressable>
 
@@ -23,7 +24,7 @@ const OverUnderButtons = ({ match, selectGame }: Props) => (
       className="w-[45%] bg-cus-purple px-3 py-3 rounded-xl"
     >
       <ThemedText className="text-center text-black">
-        {match.drawOdds}
+        {match.odds?.away}
       </ThemedText>
     </Pressable>
   </View>

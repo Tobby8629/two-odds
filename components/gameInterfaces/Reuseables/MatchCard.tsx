@@ -3,11 +3,12 @@ import { flex } from "@/constants/style";
 import OverUnderButtons from "./OverUnderBtn";
 import OddsButton from "./OddsBTN";
 import { ThemedText } from "@/components/ThemedText";
-import { BettingMarket, MatchProps } from "@/interface";
+import { BettingMarket} from "@/interface";
 import { useSport } from "@/store/useSports";
+import { Match } from "@/constants/dataOne";
 
 interface Props {
-  match: MatchProps;
+  match: Match;
   selectedMarket: BettingMarket | undefined;
   selectGame:(option: {id: number, option: "Home" | "Away" | "Draw"}) => void; 
 }

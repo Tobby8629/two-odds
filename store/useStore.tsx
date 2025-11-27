@@ -1,6 +1,8 @@
-import { bets, match } from "@/constants/data";
-import { betProps, MatchProps, MatchPropsBetslip } from "@/interface";
+import { bets } from "@/constants/data";
+import {  Match } from "@/constants/dataOne";
+import { betProps,  MatchPropsBetslip } from "@/interface";
 import { create } from "zustand";
+import { useSport } from "./useSports";
 
 export interface select {
   id: number,
@@ -8,7 +10,8 @@ export interface select {
 }
 
 interface Betslip {
-  match: MatchProps[];
+  match: Match[];
+  setMatches: ( matches: Match[]) => void; 
   selectGame: ({id, option}:select) => void;
   selectedGames: MatchPropsBetslip[];
   removeMatch: (id: string) => void;
@@ -35,73 +38,80 @@ interface withdrawal {
   updateWithdrawInfo: (val: WithdrawInfo ) => void
 }
 
-const useBetslip = create<Betslip>((set) => ({
-  match: match,
+export const useBetslip = create<Betslip>((set) => ({
+  match: [], 
   selectedGames: [],
 
-  selectGame: ({ id, option }: select) =>
+  setMatches: (matches: Match[]) => set({ match: matches }),
+
+  selectGame: ({ id, option }) =>
   set((state) => {
-  let newSelectedGames = [...state.selectedGames];
+    let newSelectedGames = [...state.selectedGames];
+    
+    const updatedMatch = state.match.map((e) => {
+      if (e.id === id) {
+        console.log("work")
+        const alreadySelected = e.selected.some((opt) => opt.option === option);
 
-  const updatedMatch = state.match.map((e) => {
-    //check for the game with the given id
+        if (alreadySelected) {
+          //Get the ID of the already selected option from the Game selected
+          const SGID = e.selected.find((opt) => opt.option === option)?.id;
 
-    if (e.id === id) {
-      //check if the option is already selected
-      const alreadySelected = e.selected.some((opt) => opt.option === option);
+          //Filter out this option from the selected option from the Game selected
+          const newSelected = e.selected.filter((opt) => opt.option !== option);
 
-      if (alreadySelected) {
-        // Remove selected option from match
-        const SGID = e.selected.find((opt) => opt.option === option)?.id;
-        const newSelected = e.selected.filter((opt) => opt.option !== option);
+          // remove from selectedGames (single object)
+          newSelectedGames = newSelectedGames.filter(
+            (game) => game.selected.id !== SGID
+          );
 
-        // Remove corresponding game from selectedGames
-        newSelectedGames = newSelectedGames.filter(
-          (game) => game.selected.id !== SGID
-        );
+          return { ...e, selected: newSelected };
+        } 
+        else {
+          console.log("working")
+          const newOption = { id: String(Date.now()), option };
+          const newSelected = [...e.selected, newOption];
 
-        return { ...e, selected: newSelected };
-      } else {
-        // Add new selected option
-        const newOption = { id: String(Date.now()), option };
-        const newSelected = [...e.selected, newOption];
+          // add to selectedGames
+          newSelectedGames = [
+            ...newSelectedGames,
+            {
+              id: e.id,
+              home: e.home,
+              away: e.away,
+              selected: newOption, // single object
+            },
+          ];
 
-        // Add game to selectedGames
-        newSelectedGames = [...newSelectedGames, { ...e, selected: newOption }];
-
-        return { ...e, selected: newSelected };
+          return { ...e, selected: newSelected };
+        }
       }
-    }
-    return e;
-  });
+      return e;
+    });
 
-  return {
-    match: updatedMatch,
-    selectedGames: newSelectedGames,
-  };
- }),
-
+    return {
+      match: updatedMatch,
+      selectedGames: newSelectedGames,
+    };
+  }),
 
   removeMatch: (id: string) =>
     set((state) => ({
-      match: state.match.map((e: MatchProps) =>
-        //filters the selected option from the match selected array
-        e.selected.some((e)=>e.id === id) ? { ...e, selected: e.selected.filter((e)=>e.id !== id)} : e
+      match: state.match.map((e) =>
+        e.selected.some((opt) => opt.id === id)
+          ? { ...e, selected: e.selected.filter((opt) => opt.id !== id) }
+          : e
       ),
-      //filters out the game from selectedGames
-      selectedGames: state.selectedGames.filter((e: MatchPropsBetslip) => e.selected.id !== id)
-  })),
+      selectedGames: state.selectedGames.filter((e) => e.selected.id !== id),
+    })),
 
   clearBetslip: () =>
-  set((state) => ({
-    //this clears all selected options in the match array
-    match: state.match.map((e) =>
-      e.selected.length > 0 ? { ...e, selected: [] } : e
-    ),
-    //this clears all selected games
-    selectedGames: [],
-  })),
-
+    set((state) => ({
+      match: state.match.map((e) =>
+        e.selected.length > 0 ? { ...e, selected: [] } : e
+      ),
+      selectedGames: [],
+    })),
 }));
 
 export const useBetHistory = create<betHistory>((set, get)=>({

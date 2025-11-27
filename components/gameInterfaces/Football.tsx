@@ -7,14 +7,16 @@ import {
 } from "react-native";
 import React, { useCallback, useState } from "react";
 import useBetslip from "@/store/useStore";
-import { BettingMarket, CombinedItem, MatchProps } from "@/interface";
+import { BettingMarket, CombinedItem, CombiSportItem } from "@/interface";
 import MarketTabs from "./Reuseables/MarketTab";
 import HeaderRow from "./Reuseables/HeaderRow";
 import MatchCard from "./Reuseables/MatchCard";
+import { Match } from "@/constants/dataOne";
+import { useSport } from "@/store/useSports";
 
 
 interface FootballProps {
-  matches: MatchProps[];
+  matches: Match[];
   markets: BettingMarket[];
   setMarkets: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
 }
@@ -22,10 +24,9 @@ interface FootballProps {
 const Football = ({matches, markets, setMarkets}: FootballProps) => {
   const [goalDD, setGoalDD] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
-  const {selectGame}   = useBetslip()
-
+  const {selectGame}   = useSport()
   
-  const combined: CombinedItem[] = ["header", ...matches];
+  const combined: CombiSportItem[] = ["header", ...matches];
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     setIsSticky(e.nativeEvent.contentOffset.y > 500);

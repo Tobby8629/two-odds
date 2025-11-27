@@ -1,16 +1,18 @@
 // components/gameInterfaces/BasketBall.tsx
 import React, { useCallback, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native'; 
-import { BettingMarket, Match, MatchProps } from '@/interface';
+import { BettingMarket } from '@/interface';
 import MatchCard from './Reuseables/MatchCard';
 import useBetslip from '@/store/useStore';
 import MarketTabs from './Reuseables/MarketTab';
 import HeaderRow from './Reuseables/HeaderRow';
+import { Match } from '@/constants/dataOne';
+import { useSport } from '@/store/useSports';
 
 interface BasketBallProps {
-  matches: MatchProps[];
+  matches: Match[];
   markets: BettingMarket[];
-    setMarkets: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
+  setMarkets: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
 }
 
 const BasketBall: React.FC<BasketBallProps> = ({ matches, markets, setMarkets }) => {
@@ -25,7 +27,7 @@ const BasketBall: React.FC<BasketBallProps> = ({ matches, markets, setMarkets })
   }, []);
   
   const selectedMarket = markets.find((m) => m.selected);
-  const { selectGame } = useBetslip()
+  const { selectGame } = useSport()
   
 
   return (

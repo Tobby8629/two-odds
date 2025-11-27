@@ -6,38 +6,15 @@ import { ThemedText } from '@/components/ThemedText';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useSport } from '@/store/useSports';
 import Layout from '../Layout';
-import { 
-  footballLeagues, 
-  basketballLeagues, 
-  tennisLeagues, 
-  americanFootballLeagues 
-} from '@/constants/dataOne';
 
 const Country = () => {
   const { country } = useLocalSearchParams<{ country?: string }>();
-  const { selectedsport } = useSport();
-
-  // Select correct sport leagues array
-  const leaguesArray = () => {
-    switch (selectedsport) {
-      case 'basketball':
-        return basketballLeagues;
-      case 'football':
-        return footballLeagues;
-      case 'tennis':
-        return tennisLeagues;
-      case 'americafootball':
-        return americanFootballLeagues;
-      default:
-        return footballLeagues;
-    }
-  };
-
-  const leagues = leaguesArray().find(e => e.country === country)?.leagues;
-
+  const { selectedsport, dataArry } = useSport();
+  const leagues = dataArry.find(e => e.country === country)?.leagues;
   const update = (name: string) => {
     router.push(`/(menu)/Leagues/matches/${name}`);
   };
+  console.log(selectedsport)
 
   return (
     <StaticLayout className="!pt-0">

@@ -12,7 +12,7 @@ import LiveBets from "@/components/Home/LiveBets";
 import { MatchCard, PopularHeader } from "@/components/Home/Popular";
 import WithdrawModal from "@/components/Home/WithdrawModal";
 import useBetslip from "@/store/useStore";
-import { CombinedItem, MatchProps } from "@/interface";
+import { CombinedItem, CombiSportItem, MatchProps } from "@/interface";
 import { useTabStore } from "@/store/useTabStore";
 import { useP2PStore } from "@/store/useP2PStore";
 import P2PToggle from "@/components/P2P/P2PToggle";
@@ -23,23 +23,25 @@ import { useSport } from "@/store/useSports";
 import { useFocusEffect } from "expo-router";
 
 export default function HomeScreen() {
-  const { match } = useBetslip();
+  // const { match,setMatches } = useBetslip();
   const [isSticky, setIsSticky] = useState(false);
   const { activeTab, setActiveTab } = useTabStore();
   const { currentScreen } = useP2PStore();
-  const { handleSelect, switchAndSelect} = useSport()
+  const { handleSelect, dataArry, updateDataArry} = useSport()
 
-  useFocusEffect(
-    useCallback(() => {
-      handleSelect("");
-    }, [handleSelect])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     handleSelect("");
+  //   }, [handleSelect])
+  // );
+
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = e.nativeEvent.contentOffset.y;
     setIsSticky(scrollY > 520);
   };
-
-const combinedData: CombinedItem[] = ["header", ...match];
+const match = dataArry.flatMap((e)=>e.leagues.flatMap((e)=>e.matches))
+// console.log(match)
+const combinedData: CombiSportItem[] = ["header", ...match];
 if(activeTab === "p2p") {
   // Render P2P related components or screens
   if (currentScreen === "landing") return <P2PLanding />;
@@ -48,13 +50,13 @@ if(activeTab === "p2p") {
 }
 
 return (
-    <FlatList<CombinedItem>
+    <FlatList<CombiSportItem>
       data={combinedData}
       renderItem={({ item }) =>
         item === "header" ? (
           <PopularHeader isSticky={isSticky} />
         ) : (
-          <MatchCard data={item} />
+          <MatchCard data={item}/>
         )
       }
       keyExtractor={(item) =>
@@ -64,7 +66,7 @@ return (
         <>
           <P2PToggle active={activeTab} onChange={setActiveTab} />
           <Head />
-          <Sport handlePress={switchAndSelect}/>
+          <Sport handlePress={handleSelect}/>
           <Quickpick />
           <LiveBets />
         </>
@@ -86,3 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 56,
   },
 });
+
+
+
+ 

@@ -5,10 +5,12 @@ import { flex, flexNoJustify } from '@/constants/style'
 import GoldX from '@/assets/SVGs/icons/GoldX'
 import Ball from '@/assets/SVGs/sport/ball'
 import { ThemedText } from '../ThemedText'
+import { useSport } from '@/store/useSports'
 
 
 const MatchCard = () => {
-  const { selectedGames, removeMatch} = useBetslip()
+  const { selectedGames, removeMatch} = useSport()
+  console.log(selectedGames)
   const oddsKey = {
   Home: "homeOdds",
   Draw: "drawOdds",

@@ -9,6 +9,8 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import SplashScreen from './SplashScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from './(Onboarding)/OnboardContext';
+import { useSport } from '@/store/useSports';
+import useBetslip from '@/store/useStore';
 // import betHistory from './bet-history';
 
 
@@ -17,6 +19,8 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const queryclient = new QueryClient
   const [ splash, setsplash] = useState(true)
+  const { setMatches } = useBetslip()
+  const { dataArry, updateDataArry, selectedsport } = useSport()
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     SansitaOneBoldItalic: require('../assets/fonts/Sansita/Sansita-BoldItalic.ttf')
@@ -31,8 +35,11 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  useEffect(()=>{
+    setMatches(dataArry.flatMap((e)=>e.leagues?.flatMap((e)=>e.matches)))
+  },[dataArry])
 
-  //Show splasscreen
+  // Show splasscreen
 
   if (!loaded || splash) {
     return <SplashScreen />;
