@@ -27,13 +27,13 @@ export default function HomeScreen() {
   const [isSticky, setIsSticky] = useState(false);
   const { activeTab, setActiveTab } = useTabStore();
   const { currentScreen } = useP2PStore();
-  const { handleSelect, dataArry, updateDataArry} = useSport()
+  const { handleSelect, dataArry, selectedsport, updateDataArry} = useSport()
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     handleSelect("");
-  //   }, [handleSelect])
-  // );
+  useFocusEffect(
+    useCallback(() => {
+      handleSelect(selectedsport);
+    }, [selectedsport])
+  );
 
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollY = e.nativeEvent.contentOffset.y;
@@ -54,7 +54,7 @@ return (
       data={combinedData}
       renderItem={({ item }) =>
         item === "header" ? (
-          <PopularHeader isSticky={isSticky} />
+          <PopularHeader sport={selectedsport} isSticky={isSticky} />
         ) : (
           <MatchCard data={item}/>
         )
@@ -66,7 +66,7 @@ return (
         <>
           <P2PToggle active={activeTab} onChange={setActiveTab} />
           <Head />
-          <Sport handlePress={handleSelect}/>
+          <Sport selectSport={selectedsport} handlePress={handleSelect}/>
           <Quickpick />
           <LiveBets />
         </>

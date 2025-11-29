@@ -1,15 +1,15 @@
 import React from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { sports } from '@/constants/data';
-import { useSport } from '@/store/useSports';
 import { sports as availsport } from '@/interface';
 
 interface ctrl {
   handlePress: (sport: availsport) => void
+  selectSport: string
 }
 
-const Sport = ({handlePress}: ctrl) => {
-  const { selectedsport} = useSport()
+const Sport = ({handlePress, selectSport}: ctrl) => {
+
   return (
     <View className="py-5">
       <Text className="text-white px-6 mb-5 text-2xl uppercase font-semibold">
@@ -25,7 +25,7 @@ const Sport = ({handlePress}: ctrl) => {
           <Pressable
             onPress={()=>handlePress(sport.name as availsport)}
             key={index}
-            className={`${sport.name === selectedsport ? "bg-sec" : "bg-white"}
+            className={`${sport.name === selectSport ? "bg-sec" : "bg-white"}
             mr-4 rounded-full p-3 justify-center items-center`}
           >
             <sport.icon size={28} color="#000" />

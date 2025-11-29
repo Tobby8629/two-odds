@@ -9,12 +9,12 @@ import Layout from '../Layout';
 
 const Country = () => {
   const { country } = useLocalSearchParams<{ country?: string }>();
-  const { selectedsport, dataArry } = useSport();
+  const { menuSelectedsport, dataArry } = useSport();
   const leagues = dataArry.find(e => e.country === country)?.leagues;
   const update = (name: string) => {
     router.push(`/(menu)/Leagues/matches/${name}`);
   };
-  console.log(selectedsport)
+ 
 
   return (
     <StaticLayout className="!pt-0">

@@ -8,27 +8,29 @@ import {  useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { LeagueTemplate } from '@/components/menu/template'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { logo } from '@/constants/functions'
+import { updateDataArry } from '@/constants/dataOne'
+import { sports } from '@/interface'
 
 const menu = () => {
-  const { handleSelect, selectedsport} = useSport();
+  const { menuhandleSelect, menuSelectedsport} = useSport();
   const { sport } = useLocalSearchParams<{ sport?: string }>();
-
   useFocusEffect(
     useCallback(() => {
-      if (selectedsport === "") {
-        handleSelect("football");
+      if (menuSelectedsport === "") {
+        menuhandleSelect("football");
+        updateDataArry(menuSelectedsport as sports)
       }
-      
-    }, [sport, handleSelect, selectedsport])
+     menuhandleSelect(menuSelectedsport)
+    }, [sport, menuhandleSelect, menuSelectedsport])
   );
 
   
   return (
     <StaticLayout>
       <Head />
-      <Sport handlePress={handleSelect}/>
+      <Sport selectSport={menuSelectedsport} handlePress={menuhandleSelect}/>
       <LeagueTemplate 
-        sport = {<FontAwesome6 name={logo(selectedsport)} color={"gold"}/>}
+        sport = {<FontAwesome6 name={logo(menuSelectedsport)} color={"gold"}/>}
       />
     </StaticLayout>
   )

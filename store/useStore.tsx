@@ -50,7 +50,6 @@ export const useBetslip = create<Betslip>((set) => ({
     
     const updatedMatch = state.match.map((e) => {
       if (e.id === id) {
-        console.log("work")
         const alreadySelected = e.selected.some((opt) => opt.option === option);
 
         if (alreadySelected) {
@@ -68,7 +67,6 @@ export const useBetslip = create<Betslip>((set) => ({
           return { ...e, selected: newSelected };
         } 
         else {
-          console.log("working")
           const newOption = { id: String(Date.now()), option };
           const newSelected = [...e.selected, newOption];
 

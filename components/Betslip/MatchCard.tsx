@@ -10,7 +10,6 @@ import { useSport } from '@/store/useSports'
 
 const MatchCard = () => {
   const { selectedGames, removeMatch} = useSport()
-  console.log(selectedGames)
   const oddsKey = {
   Home: "homeOdds",
   Draw: "drawOdds",

@@ -13,12 +13,14 @@ interface USESPORTPROPS {
   footballData: CountryLeagues[];
   basketballData: CountryLeagues[];
   selectedsport: availsport | "";
+  menuSelectedsport: availsport | "";
   selectGame: ({id, option}:select) => void;
   selectedGames: MatchPropsBetslip[];
   removeMatch: (id: string) => void;
   clearBetslip: () => void;
   updateDataArry: (sport: sports) => CountryLeagues[];
   handleSelect: (sport: availsport | "") => void;
+  menuhandleSelect: (sport: availsport | "") => void;
   switchAndSelect: (sport: availsport) => void;
 }
 
@@ -28,6 +30,7 @@ export const useSport = create<USESPORTPROPS>((set, get) => ({
   basketballData: basketballData,
   selectedsport: "football",
   selectedGames: [],
+  menuSelectedsport: "football",
 
   updateDataArry: (sport: sports) => {
     const { footballData, basketballData } = get();
@@ -47,12 +50,18 @@ export const useSport = create<USESPORTPROPS>((set, get) => ({
     set((state) => ({
       selectedsport: sport,
       dataArry: state.updateDataArry(sport as sports),
+  })),
+
+  menuhandleSelect: (sport: availsport | "") =>
+    set((state) => ({
+      menuSelectedsport: sport,
+      dataArry: state.updateDataArry(sport as sports),
     })),
 
   switchAndSelect: (sport: availsport) => {
     router.push("/(tabs)/menu");
     set((state) => ({
-      selectedsport: sport,
+      menuSelectedsport: sport,
       dataArry: state.updateDataArry(sport),
     }));
   },
