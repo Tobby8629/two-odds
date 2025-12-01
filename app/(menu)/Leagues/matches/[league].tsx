@@ -13,7 +13,7 @@ import { getMarketsBySport } from './data'
 
 
 const league = () => {
-  const { dataArry, selectedsport } = useSport()
+  const { dataArry, menuSelectedsport } = useSport()
   const { league } = useLocalSearchParams<{ league?: string; country?: string }>()
   const country = dataArry.find((e) => e.leagues.some((l) => l.name === league))?.country
   // const matches = dataArry.map((e) => e.leagues).flat().find((e) => e.name === league)?.matches
@@ -21,8 +21,8 @@ const league = () => {
   const [markets, setMarkets] = useState<BettingMarket[]>([]);
 
   useEffect(() => {
-    setMarkets(getMarketsBySport(selectedsport as "football" | "basketball"));
-  }, [selectedsport]);
+    setMarkets(getMarketsBySport(menuSelectedsport as "football" | "basketball"));
+  }, [menuSelectedsport]);
 
 
 
@@ -35,14 +35,14 @@ const league = () => {
         <View className="flex-row bg-pry-light px-6 justify-between border-y border-white py-5 items-center">
           <ThemedText className="text-lg font-medium">Friday matches</ThemedText>
           <View className="flex-row gap-1 items-center">
-            <FontAwesome6 name={logo(selectedsport)} color={"gold"} />
+            <FontAwesome6 name={logo(menuSelectedsport)} color={"gold"} />
             <ThemedText>live</ThemedText>
             <FontAwesome6 name="angle-right" color={"white"} />
           </View>
         </View>
 
         {/* InterfaceSwitch now renders a FlatList safely inside Layout */}
-        {interfaceSwitch({ selectedsport: selectedsport as sports, markets: markets, setMarkets: setMarkets })}
+        {interfaceSwitch({ selectedsport: menuSelectedsport as sports, markets: markets, setMarkets: setMarkets })}
       </Layout>
     // </StaticLayout>
   )

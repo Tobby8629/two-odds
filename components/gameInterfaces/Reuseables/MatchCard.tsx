@@ -14,7 +14,7 @@ interface Props {
 }
 
 const MatchCard = ({ match, selectedMarket, selectGame }: Props) => {
-  const { selectedsport } = useSport()
+  const { menuSelectedsport } = useSport()
   return (
     <View className={`${flex} my-3 px-3 py-3 bg-light-blue mb-3 mx-6 rounded-xl`}>
       <View className="w-[48%]">
@@ -30,7 +30,7 @@ const MatchCard = ({ match, selectedMarket, selectGame }: Props) => {
           selectedMarket.title.includes("Handicap")) ? (
           <OverUnderButtons match={match} selectGame={selectGame} />
         ) : 
-        selectedsport === "tennis" || selectedsport === "basketball" ?  
+        menuSelectedsport === "tennis" || menuSelectedsport === "basketball" ?  
         <View className="flex-row justify-between">
           <OddsButton className="w-[47%]" match={match} type="Home" selectGame={selectGame} />
           <OddsButton className="w-[47%]" match={match} type="Away" selectGame={selectGame} />

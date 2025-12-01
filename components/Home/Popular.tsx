@@ -53,17 +53,12 @@ export const PopularHeader = ({
 export const MatchCard = ({ data }: PopularProps) => {
   const { selectGame, selectedsport, selectedGames } = useSport();
   const game = data;
+  const Check = selectedGames.filter((e)=>e.id === data.id)
 
-  const Check = selectedGames.find((e)=>e.id === data.id)
+  const isHomeSelected = Check?.find?.((e)=> e.selected?.option?.includes("Home"));
+  const isDrawSelected = Check?.find?.((e)=> e.selected?.option?.includes("Draw"));
+  const isAwaySelected = Check?.find?.((e)=> e.selected?.option?.includes("Away"));
 
-  // Detect selected options
-  // const isHomeSelected = data.selected.some((e) => e.option.includes("Home"));
-  // const isDrawSelected = data.selected.some((e) => e.option.includes("Draw"));
-  // const isAwaySelected = data.selected.some((e) => e.option.includes("Away"));
-
-   const isHomeSelected = Check?.selected?.option?.includes("Home");
-  const isDrawSelected = Check?.selected.option?.includes("Draw");
-  const isAwaySelected = Check?.selected.ioption?.ncludes("Away");
 
   // Check if sport supports 3-way odds
   const isThreeWay = selectedsport === "football"; 

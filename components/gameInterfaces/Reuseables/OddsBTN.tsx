@@ -1,6 +1,8 @@
 import { ThemedText } from "@/components/ThemedText";
 import { Match } from "@/constants/dataOne";
+import { useSport } from "@/store/useSports";
 import { Pressable } from "react-native";
+import React from "react";
 
 interface Props {
   match: Match;
@@ -10,14 +12,25 @@ interface Props {
 }
 
 const OddsButton = ({ match, type, selectGame, className }: Props) => {
-  // Detect if THIS specific option is selected
-  const isSelected = match.selected.some((s) => s.option === type);
+  const { selectedGames } = useSport();
 
-  // Get the right odds number
+  // Filter once per match
+  const matchSelections = selectedGames.filter(
+    (g) => g.id === match.id
+  );
+
+  // This is the final boolean for THIS button
+  const isSelected = matchSelections.some(
+    (g) => g.selected.option === type
+  );
+
+  // Get the odds value based on type
   const oddsValue =
-    type === "Home" ? match?.odds?.home :
-    type === "Draw" ? match?.odds?.draw :
-    match?.odds?.away;
+    type === "Home"
+      ? match?.odds?.home
+      : type === "Draw"
+      ? match?.odds?.draw
+      : match?.odds?.away;
 
   return (
     <Pressable

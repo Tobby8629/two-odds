@@ -66,64 +66,105 @@ export const useSport = create<USESPORTPROPS>((set, get) => ({
     }));
   },
 
-  selectGame: ({ id, option }) =>
+  // selectGame: ({ id, option }) =>
+  // set((state) => {
+  //   let newSelectedGames = [...state.selectedGames];
+
+  //   const updatedDataArry = state.dataArry.map((country) => ({
+  //     ...country,
+  //     leagues: country.leagues.map((league) => ({
+  //       ...league,
+  //       matches: league.matches.map((match) => {
+  //         if (match.id !== id) return match;
+
+  //         // const alreadySelected = match.selected.some(
+  //         //   (opt) => opt.option === option
+  //         // );
+
+  //         const alreadySelected = 
+
+  //         if (alreadySelected) {
+  //           // Get the option id
+  //           const optionId = match.selected.find(
+  //             (opt) => opt.option === option
+  //           )?.id;
+
+  //           // Remove from match
+  //           const newSelected = match.selected.filter(
+  //             (opt) => opt.option !== option
+  //           );
+
+  //           // Remove from selectedGames
+  //           newSelectedGames = newSelectedGames.filter(
+  //             (g) => g.selected.id !== optionId
+  //           );
+
+  //           return { ...match, selected: newSelected };
+  //         } else {
+  //           const newOption = { id: String(Date.now()), option };
+  //           const newSelected = [...match.selected, newOption];
+
+  //           // Add to selectedGames
+  //           newSelectedGames.push({
+  //             id: match.id,
+  //             home: match.home,
+  //             away: match.away,
+  //             selected: newOption,
+  //           });
+
+  //           return { ...match, selected: newSelected };
+  //         }
+  //       }),
+  //     })),
+  //   }));
+
+  //   return {
+  //     dataArry: updatedDataArry,
+  //     selectedGames: newSelectedGames,
+  //   };
+  // }),
+ 
+
+
+ selectGame: ({ id, option }) =>
   set((state) => {
     let newSelectedGames = [...state.selectedGames];
 
-    const updatedDataArry = state.dataArry.map((country) => ({
-      ...country,
-      leagues: country.leagues.map((league) => ({
-        ...league,
-        matches: league.matches.map((match) => {
-          if (match.id !== id) return match;
+    // 1. Check if already selected
+    const existing = newSelectedGames.find(
+      (g) => g.id === id && g.selected.option === option
+    );
 
-          const alreadySelected = match.selected.some(
-            (opt) => opt.option === option
-          );
+    if (existing) {
+      // REMOVE the selection
+      newSelectedGames = newSelectedGames.filter(
+        (g) => !(g.id === id && g.selected.option === option)
+      );
 
-          if (alreadySelected) {
-            // Get the option id
-            const optionId = match.selected.find(
-              (opt) => opt.option === option
-            )?.id;
+      return { selectedGames: newSelectedGames };
+    }
 
-            // Remove from match
-            const newSelected = match.selected.filter(
-              (opt) => opt.option !== option
-            );
+    // 2. Not selected yet — ADD selection
+    // We must retrieve match details (home, away) from dataArry
+    const match = state.dataArry
+      .flatMap((c) => c.leagues)
+      .flatMap((l) => l.matches)
+      .find((m) => m.id === id);
 
-            // Remove from selectedGames
-            newSelectedGames = newSelectedGames.filter(
-              (g) => g.selected.id !== optionId
-            );
+    if (!match) return { selectedGames: newSelectedGames }; // failsafe
 
-            return { ...match, selected: newSelected };
-          } else {
-            const newOption = { id: String(Date.now()), option };
-            const newSelected = [...match.selected, newOption];
+    const newOption = { id: String(Date.now()), option };
 
-            // Add to selectedGames
-            newSelectedGames.push({
-              id: match.id,
-              home: match.home,
-              away: match.away,
-              selected: newOption,
-            });
+    newSelectedGames.push({
+      id: match.id,
+      home: match.home,
+      away: match.away,
+      selected: newOption,
+    });
 
-            return { ...match, selected: newSelected };
-          }
-        }),
-      })),
-    }));
-
-    return {
-      dataArry: updatedDataArry,
-      selectedGames: newSelectedGames,
-    };
+    return { selectedGames: newSelectedGames };
   }),
- 
 
-  
 
 
 removeMatch: (id: string) =>
