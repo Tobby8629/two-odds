@@ -57,6 +57,20 @@ interface MatchProps {
     selected: {id: string, option: "Home" | "Away" | "Draw"}[],
   }
 
+  interface SelectedOption {
+    id: string;
+    option: "Home" | "Away" | "Draw" | `Over ${string}` | `Under ${string}`;
+  }
+  
+  type Option = "Home" | "Away" | "Draw" | "Over" | "Under";
+  
+  type OddsKey = 
+    | "homeOdds"
+    | "awayOdds"
+    | "drawOdds"
+    | "overOdds"
+    | "underOdds";
+
   interface MatchPropsBetslip {
   // matchID: string;
   id: number;
@@ -145,11 +159,14 @@ export interface BettingMarket {
 }
 
 export interface OVERHEADER { 
-  goalDD: boolean; 
-  setGoalDD: React.Dispatch<React.SetStateAction<boolean>>; 
-  selectedMarket: BettingMarket; 
-  setMarkets: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
-} 
+  goalDD?: boolean; 
+  setGoalDD?: React.Dispatch<React.SetStateAction<boolean>>; 
+  selectedMarket?: BettingMarket; 
+  setMarkets?: React.Dispatch<React.SetStateAction<BettingMarket[]>>;
+  BBoverUnder?: { line: string; over: string; under: string }[];
+  generalvalue: string;
+  updateGoalSelection: (line: string) => void;
+}
 
 interface OVERUNDER { 
   selectGame: (option: {id: number, option: "Home" | "Away" | "Draw"}) => void; 

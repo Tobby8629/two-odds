@@ -6,6 +6,7 @@ import GoldX from '@/assets/SVGs/icons/GoldX'
 import Ball from '@/assets/SVGs/sport/ball'
 import { ThemedText } from '../ThemedText'
 import { useSport } from '@/store/useSports'
+import { Option } from '@/interface'
 
 
 const MatchCard = () => {
@@ -28,11 +29,16 @@ const MatchCard = () => {
                 <Ball />
                 <ThemedText className=' font-semibold !text-white text-2xl capitalize'>{e?.selected?.option}</ThemedText>
               </View>
-              <ThemedText className=' font-medium text-lg'>{e.match}</ThemedText>
-              <ThemedText className='capitalize pr-3'>{e.time}</ThemedText>
+              <View className={`${flexNoJustify} gap-1 w-full`}  >
+              <ThemedText className=' font-base text-lg'>{e.home}</ThemedText>
+              <ThemedText className=' font-base text-lg'> - </ThemedText>
+              <ThemedText className=' font-base text-lg'>{e.away}</ThemedText>
+              </View>
+
+              <ThemedText className='capitalize pr-3'>{e.id}</ThemedText>
             </View>
           </View>
-          <ThemedText>{e.selected ? e[oddsKey[e.selected.option]] : ""}</ThemedText>
+          {/* <ThemedText>{e.selected ? e[oddsKey[e.selected.option]] as Option : ""}</ThemedText> */}
         </View>
       ))}
     </ScrollView>

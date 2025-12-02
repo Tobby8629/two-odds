@@ -5,7 +5,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 
 interface LineSelectorProps {
   visible: boolean;
-  lines: Array<{ line: string; [key: string]: string }>;
+  lines: Array<{ line: string; over: string; under: string }>;
   selectedLine: string | null;
   onSelect: (line: string) => void;
   onClose: () => void;

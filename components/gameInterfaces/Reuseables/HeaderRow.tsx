@@ -3,6 +3,7 @@ import { flex } from "@/constants/style";
 import { BettingMarket } from "@/interface";
 import { ThemedText } from "@/components/ThemedText";
 import OverUnderHeader from "./OverUnder";
+import { BB } from "@/store/BBDD";
 
 interface Props {
   selectedMarket?: BettingMarket;
@@ -11,7 +12,8 @@ interface Props {
   setGoalDD: any;
 }
 
-const HeaderRow = ({ selectedMarket, setMarkets, goalDD, setGoalDD }: Props) => {
+const HeaderRow = ({ selectedMarket, setMarkets, goalDD, setGoalDD}: Props) => {
+  const { generalvalue, updateGoalSelection, BBoverUnder } = BB()
   if (!selectedMarket) return null;
 
   if (selectedMarket.title.includes("Over") ||
@@ -23,6 +25,9 @@ const HeaderRow = ({ selectedMarket, setMarkets, goalDD, setGoalDD }: Props) => 
         setMarkets={setMarkets}
         goalDD={goalDD}
         setGoalDD={setGoalDD}
+        BBoverUnder={BBoverUnder}
+        updateGoalSelection={updateGoalSelection}
+        generalvalue={generalvalue}
       />
     );
   }

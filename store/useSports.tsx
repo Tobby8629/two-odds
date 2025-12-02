@@ -4,9 +4,15 @@ import { router } from "expo-router";
 import { create } from "zustand";
 
 export interface select {
-  id: number,
-  option: "Home" | "Away" | "Draw"
+  id: number;
+  option:
+    | "Home"
+    | "Away"
+    | "Draw"
+    | `Over ${string}`
+    | `Under ${string}`;
 }
+
 
 interface USESPORTPROPS {
   dataArry: CountryLeagues[];

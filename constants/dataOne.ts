@@ -279,8 +279,10 @@ export const footballData: CountryLeagues[] = [
               draw: "3.50",
               away: "3.10",
               overUnder: [
+                { line: "1.5", over: "1.40", under: "3.20" },
                 { line: "2.5", over: "1.85", under: "1.95" },
-                { line: "3.5", over: "2.40", under: "1.60" }
+                { line: "3.5", over: "2.40", under: "1.60" },
+                { line: "4.5", over: "3.80", under: "1.30" }
               ],
               handicap: [
                 { line: "-1.5", home: "3.40", away: "1.30" },
@@ -303,7 +305,11 @@ export const footballData: CountryLeagues[] = [
               home: "2.70",
               draw: "3.20",
               away: "2.60",
-              overUnder: [{ line: "2.5", over: "1.90", under: "1.90" }],
+              overUnder: [
+                { line: "1.5", over: "1.50", under: "2.70" },
+                { line: "2.5", over: "1.90", under: "1.90" },
+                { line: "4.5", over: "3.20", under: "1.28" }
+              ],
               handicap: [{ line: "0", home: "1.85", away: "1.85" }]
             }
           },
@@ -322,7 +328,11 @@ export const footballData: CountryLeagues[] = [
               home: "1.60",
               draw: "4.20",
               away: "5.20",
-              overUnder: [{ line: "3.5", over: "2.10", under: "1.70" }],
+              overUnder: [
+                { line: "1.5", over: "1.30", under: "3.60" },
+                { line: "3.5", over: "2.10", under: "1.70" },
+                { line: "4.5", over: "3.60", under: "1.32" }
+              ],
               handicap: [{ line: "-1.5", home: "2.20", away: "1.60" }]
             }
           },
@@ -341,7 +351,11 @@ export const footballData: CountryLeagues[] = [
               home: "2.30",
               draw: "3.40",
               away: "2.90",
-              overUnder: [{ line: "2.5", over: "2.00", under: "1.80" }],
+              overUnder: [
+                { line: "1.5", over: "1.48", under: "2.60" },
+                { line: "2.5", over: "2.00", under: "1.80" },
+                { line: "4.5", over: "3.40", under: "1.32" }
+              ],
               handicap: [{ line: "-0.5", home: "2.30", away: "1.60" }]
             }
           },
@@ -360,7 +374,11 @@ export const footballData: CountryLeagues[] = [
               home: "2.50",
               draw: "3.30",
               away: "2.70",
-              overUnder: [{ line: "2.5", over: "1.95", under: "1.85" }],
+              overUnder: [
+                { line: "1.5", over: "1.45", under: "2.80" },
+                { line: "2.5", over: "1.95", under: "1.85" },
+                { line: "4.5", over: "3.60", under: "1.30" }
+              ],
               handicap: [{ line: "+0.5", home: "1.60", away: "2.30" }]
             }
           },
@@ -379,7 +397,11 @@ export const footballData: CountryLeagues[] = [
               home: "2.80",
               draw: "3.10",
               away: "2.50",
-              overUnder: [{ line: "2.5", over: "1.88", under: "1.92" }],
+              overUnder: [
+                { line: "1.5", over: "1.55", under: "2.45" },
+                { line: "2.5", over: "1.88", under: "1.92" },
+                { line: "4.5", over: "3.80", under: "1.28" }
+              ],
               handicap: [{ line: "0", home: "1.90", away: "1.90" }]
             }
           },
@@ -398,7 +420,11 @@ export const footballData: CountryLeagues[] = [
               home: "2.00",
               draw: "3.60",
               away: "3.70",
-              overUnder: [{ line: "2.5", over: "2.05", under: "1.75" }],
+              overUnder: [
+                { line: "1.5", over: "1.38", under: "3.10" },
+                { line: "2.5", over: "2.05", under: "1.75" },
+                { line: "4.5", over: "3.90", under: "1.25" }
+              ],
               handicap: [{ line: "-0.5", home: "1.95", away: "1.85" }]
             }
           },
@@ -417,7 +443,11 @@ export const footballData: CountryLeagues[] = [
               home: "2.40",
               draw: "3.20",
               away: "2.80",
-              overUnder: [{ line: "2.5", over: "1.90", under: "1.90" }],
+              overUnder: [
+                { line: "1.5", over: "1.44", under: "2.75" },
+                { line: "2.5", over: "1.90", under: "1.90" },
+                { line: "4.5", over: "3.50", under: "1.30" }
+              ],
               handicap: [{ line: "+1.0", home: "1.30", away: "3.40" }]
             }
           },
@@ -436,7 +466,11 @@ export const footballData: CountryLeagues[] = [
               home: "1.95",
               draw: "3.50",
               away: "3.80",
-              overUnder: [{ line: "2.0", over: "1.70", under: "2.20" }],
+              overUnder: [
+                { line: "1.5", over: "1.36", under: "3.40" },
+                { line: "2.0", over: "1.70", under: "2.20" },
+                { line: "4.5", over: "3.60", under: "1.25" }
+              ],
               handicap: [{ line: "-0.5", home: "2.00", away: "1.75" }]
             }
           },
@@ -455,7 +489,11 @@ export const footballData: CountryLeagues[] = [
               home: "2.60",
               draw: "3.20",
               away: "2.60",
-              overUnder: [{ line: "2.5", over: "1.92", under: "1.88" }],
+              overUnder: [
+                { line: "1.5", over: "1.48", under: "2.60" },
+                { line: "2.5", over: "1.92", under: "1.88" },
+                { line: "4.5", over: "3.50", under: "1.28" }
+              ],
               handicap: [{ line: "0", home: "1.92", away: "1.92" }]
             }
           }
@@ -464,6 +502,7 @@ export const footballData: CountryLeagues[] = [
     ]
   }
 ];
+
 
 export const basketballData: CountryLeagues[] = [
   {
@@ -487,12 +526,13 @@ export const basketballData: CountryLeagues[] = [
             odds: {
               home: "1.85",
               away: "2.10",
-              draw: undefined, // Basketball has no draws
+              draw: undefined,
               overUnder: [
+                { line: "205.5", over: "1.70", under: "2.10" },
                 { line: "210.5", over: "1.88", under: "1.92" },
                 { line: "215.5", over: "1.85", under: "1.95" },
                 { line: "220.5", over: "2.82", under: "1.68" },
-                { line: "230.5", over: "3.88", under: "1.92" }
+                { line: "230.5", over: "3.65", under: "1.42" }
               ],
               handicap: [
                 { line: "-1.5", home: "1.90", away: "1.90" },
@@ -517,8 +557,10 @@ export const basketballData: CountryLeagues[] = [
               away: "2.20",
               draw: undefined,
               overUnder: [
+                { line: "205.5", over: "1.72", under: "2.05" },
                 { line: "218.5", over: "1.90", under: "1.90" },
-                { line: "225.5", over: "2.20", under: "1.70" }
+                { line: "225.5", over: "2.20", under: "1.70" },
+                { line: "230.5", over: "3.40", under: "1.46" }
               ],
               handicap: [
                 { line: "-2.5", home: "1.95", away: "1.85" },
@@ -541,8 +583,10 @@ export const basketballData: CountryLeagues[] = [
               home: "1.90",
               away: "1.95",
               overUnder: [
+                { line: "205.5", over: "1.75", under: "2.00" },
                 { line: "209.5", over: "1.92", under: "1.88" },
-                { line: "215.5", over: "2.10", under: "1.70" }
+                { line: "215.5", over: "2.10", under: "1.70" },
+                { line: "230.5", over: "3.50", under: "1.40" }
               ],
               handicap: [
                 { line: "-1.5", home: "1.85", away: "1.90" }
@@ -564,8 +608,10 @@ export const basketballData: CountryLeagues[] = [
               home: "2.00",
               away: "1.80",
               overUnder: [
+                { line: "205.5", over: "1.72", under: "2.08" },
                 { line: "216.5", over: "1.88", under: "1.92" },
-                { line: "222.5", over: "2.40", under: "1.60" }
+                { line: "222.5", over: "2.40", under: "1.60" },
+                { line: "230.5", over: "3.60", under: "1.44" }
               ],
               handicap: [
                 { line: "+1.5", home: "1.85", away: "2.00" },
@@ -588,7 +634,9 @@ export const basketballData: CountryLeagues[] = [
               home: "1.70",
               away: "2.20",
               overUnder: [
-                { line: "214.5", over: "1.90", under: "1.88" }
+                { line: "205.5", over: "1.76", under: "2.00" },
+                { line: "214.5", over: "1.90", under: "1.88" },
+                { line: "230.5", over: "3.30", under: "1.48" }
               ],
               handicap: [
                 { line: "-3.5", home: "1.95", away: "1.80" }
@@ -610,7 +658,9 @@ export const basketballData: CountryLeagues[] = [
               home: "1.65",
               away: "2.30",
               overUnder: [
-                { line: "212.5", over: "1.85", under: "1.95" }
+                { line: "205.5", over: "1.78", under: "1.95" },
+                { line: "212.5", over: "1.85", under: "1.95" },
+                { line: "230.5", over: "3.50", under: "1.42" }
               ],
               handicap: [
                 { line: "-4.5", home: "2.00", away: "1.75" }
@@ -632,7 +682,9 @@ export const basketballData: CountryLeagues[] = [
               home: "1.88",
               away: "1.92",
               overUnder: [
-                { line: "211.5", over: "1.90", under: "1.90" }
+                { line: "205.5", over: "1.74", under: "2.08" },
+                { line: "211.5", over: "1.90", under: "1.90" },
+                { line: "230.5", over: "3.35", under: "1.48" }
               ],
               handicap: [
                 { line: "-1.5", home: "1.92", away: "1.88" }
@@ -654,7 +706,9 @@ export const basketballData: CountryLeagues[] = [
               home: "2.10",
               away: "1.75",
               overUnder: [
-                { line: "218.5", over: "1.92", under: "1.88" }
+                { line: "205.5", over: "1.82", under: "1.92" },
+                { line: "218.5", over: "1.92", under: "1.88" },
+                { line: "230.5", over: "3.40", under: "1.45" }
               ],
               handicap: [
                 { line: "+2.5", home: "1.85", away: "1.95" }
@@ -676,7 +730,9 @@ export const basketballData: CountryLeagues[] = [
               home: "1.85",
               away: "2.00",
               overUnder: [
-                { line: "213.5", over: "1.90", under: "1.90" }
+                { line: "205.5", over: "1.74", under: "2.05" },
+                { line: "213.5", over: "1.90", under: "1.90" },
+                { line: "230.5", over: "3.50", under: "1.45" }
               ],
               handicap: [
                 { line: "-2.0", home: "1.92", away: "1.85" }
@@ -698,7 +754,9 @@ export const basketballData: CountryLeagues[] = [
               home: "2.30",
               away: "1.65",
               overUnder: [
-                { line: "219.5", over: "1.88", under: "1.92" }
+                { line: "205.5", over: "1.80", under: "1.95" },
+                { line: "219.5", over: "1.88", under: "1.92" },
+                { line: "230.5", over: "3.60", under: "1.40" }
               ],
               handicap: [
                 { line: "+3.5", home: "1.90", away: "1.85" }

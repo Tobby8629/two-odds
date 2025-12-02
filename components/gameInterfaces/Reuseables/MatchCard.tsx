@@ -10,11 +10,11 @@ import { Match } from "@/constants/dataOne";
 interface Props {
   match: Match;
   selectedMarket: BettingMarket | undefined;
-  selectGame:(option: {id: number, option: "Home" | "Away" | "Draw"}) => void; 
+  generalGoal: string;
 }
 
-const MatchCard = ({ match, selectedMarket, selectGame }: Props) => {
-  const { menuSelectedsport } = useSport()
+const MatchCard = ({ match, selectedMarket, generalGoal }: Props) => {
+  const { menuSelectedsport, selectGame } = useSport()
   return (
     <View className={`${flex} my-3 px-3 py-3 bg-light-blue mb-3 mx-6 rounded-xl`}>
       <View className="w-[48%]">
@@ -28,7 +28,7 @@ const MatchCard = ({ match, selectedMarket, selectGame }: Props) => {
         (selectedMarket.title.includes("Over") ||
           selectedMarket.title.includes("Under") ||
           selectedMarket.title.includes("Handicap")) ? (
-          <OverUnderButtons match={match} selectGame={selectGame} />
+          <OverUnderButtons generalGoal={generalGoal} match={match}  />
         ) : 
         menuSelectedsport === "tennis" || menuSelectedsport === "basketball" ?  
         <View className="flex-row justify-between">

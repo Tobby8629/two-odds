@@ -8,6 +8,7 @@ import MarketTabs from './Reuseables/MarketTab';
 import HeaderRow from './Reuseables/HeaderRow';
 import { Match } from '@/constants/dataOne';
 import { useSport } from '@/store/useSports';
+import { BB } from '@/store/BBDD';
 
 interface BasketBallProps {
   matches: Match[];
@@ -27,8 +28,8 @@ const BasketBall: React.FC<BasketBallProps> = ({ matches, markets, setMarkets })
   }, []);
   
   const selectedMarket = markets.find((m) => m.selected);
-  const { selectGame } = useSport()
-  
+  const {generalvalue} =BB()
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -53,8 +54,8 @@ const BasketBall: React.FC<BasketBallProps> = ({ matches, markets, setMarkets })
           <MatchCard 
             key={String(idx)} 
             match={item} 
-            selectGame={selectGame} 
             selectedMarket={selectedMarket} 
+            generalGoal={generalvalue}
           />
         ))}
       </ScrollView>
