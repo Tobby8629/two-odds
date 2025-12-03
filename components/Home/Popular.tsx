@@ -2,7 +2,8 @@ import { Match } from '@/constants/dataOne';
 import { MatchProps, MatchPropsBetslip } from '@/interface'
 import { useSport } from '@/store/useSports';
 import useBetslip from '@/store/useStore'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { router } from 'expo-router';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 
 interface PopularProps {
   data: Match
@@ -58,7 +59,9 @@ export const MatchCard = ({ data }: PopularProps) => {
   const isHomeSelected = Check?.find?.((e)=> e.selected?.option?.includes("Home"));
   const isDrawSelected = Check?.find?.((e)=> e.selected?.option?.includes("Draw"));
   const isAwaySelected = Check?.find?.((e)=> e.selected?.option?.includes("Away"));
-
+  const navigateMatchDetails = (id: number) => {
+    router.push(`/(match)/${id}`);
+  };
 
   // Check if sport supports 3-way odds
   const isThreeWay = selectedsport === "football"; 
@@ -66,7 +69,7 @@ export const MatchCard = ({ data }: PopularProps) => {
 
   return (
     <View className="px-5 pt-2">
-      <View className="bg-[#E3F2FD] flex-row justify-between items-center p-3 mb-5 rounded-lg h-[95px]">
+      <Pressable onPress={() => navigateMatchDetails(data.id)} className="bg-[#E3F2FD] flex-row justify-between items-center p-3 mb-5 rounded-lg h-[95px]">
         
         {/* TEAMS */}
         <View className="gap-5 w-6/12">
@@ -118,7 +121,7 @@ export const MatchCard = ({ data }: PopularProps) => {
           </TouchableOpacity>
 
         </View>
-      </View>
+      </Pressable>
     </View>
   );
 };

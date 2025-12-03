@@ -41,11 +41,10 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
 
 
   // --------- CHECK SELECTED ----------
-  const matchSelected = selectedGames?.find(g => g.id === match.id);
+  const matchSelected = selectedGames?.filter(g => g.id === match.id);
 
-  const checkOver = matchSelected?.selected?.option === `Over ${line}`;
-  const checkUnder = matchSelected?.selected?.option === `Under ${line}`;
-
+  const checkOver = matchSelected?.some((e)=> e.selected?.option === `Over ${line}`);
+  const checkUnder = matchSelected?.some((e)=> e.selected?.option === `Under ${line}`);
 
   // --------- HANDLE SELECT LINE ----------
   const updateGoalSelection = (line: string) => {
