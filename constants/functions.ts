@@ -174,3 +174,36 @@ export const logo = (selectedsport: string) => {
       break;
     }
   }
+
+  export const SubKeyName = (subKey: string) => {
+    switch (subKey) {
+      case 'home':
+        return '1';
+      case 'away':
+        return '2';
+      case 'draw':
+        return 'X'; 
+      case 'home_home':
+        return 'Home/Home';
+      case 'home_away':
+        return 'Home/Away';
+      case 'draw_home':
+        return 'Draw/Home';
+      case 'draw_away':
+        return 'Draw/Away';
+      case 'away_home':
+        return 'Away/Home';
+      case 'away_away':
+        return 'Away/Away';
+        case 'HomeorDraw':
+        return '1X';
+      case 'HomeorAway':
+        return '12';
+      case 'DraworAway':
+        return 'X2';  
+      case 'matchTotalGoals':
+        return 'Total Goals';
+      default:
+        return subKey.charAt(0).toUpperCase() + subKey.slice(1);
+    }
+  };  

@@ -17,11 +17,107 @@ export interface MainMarkets {
 }
 
 // ---------- GOALS MARKETS ----------
-export interface GoalsMarkets {
-  teamTotalGoals: { [team: string]: { over: Odd; under: Odd } };
-  firstTeamToScore: { [team: string]: Odd };
-  exactGoals: { [team: string]: { 0: Odd; 1: Odd; 2: Odd; "3+": Odd } };
+// ------------------------------
+// Base Types
+// ------------------------------
+export interface OverUnderLine {
+  line: number;        // e.g., 0.5, 1.5, 2.5
+  over: number;        // odds for over
+  under: number;       // odds for under
 }
+
+export interface ExactGoalOption {
+  goals: string;       // "0" | "1" | "2" | "3+"
+  value: number;       // odds
+}
+
+export interface SimpleOption {
+  label: string;       // Yes/No, or any label text
+  value: number;       // odds
+}
+
+export interface TeamOption {
+  team: string;        // Arsenal, Liverpool, etc.
+  value: number;       // odds
+}
+
+export interface RaceToGoalRow {
+  label: string;       // "First to 1 Goal"
+  Arsenal: number;
+  Liverpool: number;
+  Neither: number;
+}
+
+// ------------------------------
+// Section Interfaces
+// ------------------------------
+export interface MatchTotalGoalsSection {
+  title: string;
+  lines: OverUnderLine[];
+}
+
+export interface TeamTotalGoalsSection {
+  title: string;
+  lines: OverUnderLine[];
+}
+
+export interface BothTeamsToScoreSection {
+  title: string;
+  options: SimpleOption[];   // Yes / No
+}
+
+export interface FirstTeamToScoreSection {
+  title: string;
+  options: TeamOption[];     // Arsenal / Liverpool / No Goal
+}
+
+export interface LastTeamToScoreSection {
+  title: string;
+  options: TeamOption[];
+}
+
+export interface ExactGoalsSection {
+  title: string;
+  options: ExactGoalOption[];
+}
+
+export interface FirstHalfTotalGoalsSection {
+  title: string;
+  lines: OverUnderLine[];
+}
+
+export interface FirstHalfTeamTotalGoalsSection {
+  title: string;
+  lines: OverUnderLine[];
+}
+
+export interface RaceToGoalsSection {
+  title: string;
+  options: RaceToGoalRow[];
+}
+
+// ------------------------------
+// Main Goals Interface
+// ------------------------------
+export interface GoalsMarket {
+  matchTotalGoals: MatchTotalGoalsSection;
+
+  teamTotalGoals: Record<string, TeamTotalGoalsSection>;        // Arsenal, Liverpool…
+
+  bothTeamsToScore: BothTeamsToScoreSection;
+
+  firstTeamToScore: FirstTeamToScoreSection;
+  lastTeamToScore: LastTeamToScoreSection;
+
+  exactGoals: Record<string, ExactGoalsSection>;                // Per-team exact goals
+
+  firstHalfTotalGoals: FirstHalfTotalGoalsSection;
+
+  firstHalfTeamTotalGoals: Record<string, FirstHalfTeamTotalGoalsSection>;
+
+  raceToGoals: RaceToGoalsSection;
+}
+
 
 // ---------- HANDICAP MARKETS ----------
 export interface HandicapMarkets {
@@ -60,7 +156,7 @@ export interface PlayerMarkets {
 // ---------- FULL FOOTBALL MARKETS ----------
 export interface FootballMarkets {
   main: MainMarkets;
-  goals: GoalsMarkets;
+  goals: GoalsMarket;
   handicap: HandicapMarkets;
   halves: HalvesMarkets;
   combos: ComboMarkets;
@@ -88,10 +184,145 @@ export const sampleFootballMarket: FootballMarkets = {
     winningMargin: { home1: { value: 4.5 }, home2: { value: 7.0 }, home3plus: { value: 15.0 }, draw: { value: 3.5 }, away1: { value: 5.0 }, away2: { value: 9.0 }, away3plus: { value: 20.0 } },
     totalGoalsBands: { "0-1": { value: 3.2 }, "2-3": { value: 1.9 }, "4-5": { value: 3.4 }, "6+": { value: 12.0 } }
   },
-  goals: {
-    teamTotalGoals: { Arsenal: { over: { value: 1.60 }, under: { value: 2.10 } }, Liverpool: { over: { value: 1.90 }, under: { value: 1.85 } } },
-    firstTeamToScore: { Arsenal: { value: 1.70 }, Liverpool: { value: 2.10 } },
-    exactGoals: { Arsenal: { 0: { value: 3.5 }, 1: { value: 2.0 }, 2: { value: 3.2 }, "3+": { value: 8.0 } } }
+ goals: {
+  // ---------------------------------------------
+  // 1. MATCH TOTAL GOALS (FULL GAME OVER/UNDER)
+  // ---------------------------------------------
+  matchTotalGoals: {
+    title: "Match Total Goals",
+    lines: [
+      { line: 0.5, over: 1.45, under: 2.85 },
+      { line: 1.5, over: 1.80, under: 2.00 },
+      { line: 2.5, over: 2.40, under: 1.55 },
+      { line: 3.5, over: 3.80, under: 1.25 },
+      { line: 4.5, over: 7.20, under: 1.08 },
+    ],
+  },
+
+  // ---------------------------------------------
+  // 2. TEAM TOTAL GOALS (EACH TEAM)
+  // ---------------------------------------------
+  teamTotalGoals: {
+    Arsenal: {
+      title: "Arsenal Total Goals",
+      lines: [
+        { line: 0.5, over: 1.60, under: 2.10 },
+        { line: 1.5, over: 2.45, under: 1.70 },
+        { line: 2.5, over: 4.80, under: 1.35 },
+      ],
+    },
+    Liverpool: {
+      title: "Liverpool Total Goals",
+      lines: [
+        { line: 0.5, over: 1.90, under: 1.85 },
+        { line: 1.5, over: 2.80, under: 1.45 },
+        { line: 2.5, over: 5.20, under: 1.28 },
+      ],
+    },
+  },
+
+  // ---------------------------------------------
+  // 3. BOTH TEAMS TO SCORE
+  // ---------------------------------------------
+  bothTeamsToScore: {
+    title: "Both Teams To Score",
+    options: [
+      { label: "Yes", value: 1.75 },
+      { label: "No", value: 2.00 },
+    ],
+  },
+
+  // ---------------------------------------------
+  // 4. FIRST TEAM TO SCORE
+  // ---------------------------------------------
+  firstTeamToScore: {
+    title: "First Team To Score",
+    options: [
+      { team: "Arsenal", value: 1.70 },
+      { team: "Liverpool", value: 2.10 },
+      { team: "No Goal", value: 9.50 },
+    ],
+  },
+
+  // ---------------------------------------------
+  // 5. LAST TEAM TO SCORE
+  // ---------------------------------------------
+  lastTeamToScore: {
+    title: "Last Team To Score",
+    options: [
+      { team: "Arsenal", value: 1.75 },
+      { team: "Liverpool", value: 2.00 },
+      { team: "No Goal", value: 10.0 },
+    ],
+  },
+
+  // ---------------------------------------------
+  // 6. EXACT GOALS (BY TEAM)
+  // ---------------------------------------------
+  exactGoals: {
+    Arsenal: {
+      title: "Arsenal Exact Goals",
+      options: [
+        { goals: "0", value: 3.5 },
+        { goals: "1", value: 2.0 },
+        { goals: "2", value: 3.2 },
+        { goals: "3+", value: 8.0 },
+      ],
+    },
+    Liverpool: {
+      title: "Liverpool Exact Goals",
+      options: [
+        { goals: "0", value: 3.8 },
+        { goals: "1", value: 2.1 },
+        { goals: "2", value: 3.0 },
+        { goals: "3+", value: 7.5 },
+      ],
+    },
+  },
+
+  // ---------------------------------------------
+  // 7. GOALS – FIRST HALF (Match)
+  // ---------------------------------------------
+  firstHalfTotalGoals: {
+    title: "1st Half Total Goals",
+    lines: [
+      { line: 0.5, over: 1.65, under: 2.10 },
+      { line: 1.5, over: 3.00, under: 1.40 },
+      { line: 2.5, over: 6.80, under: 1.18 },
+    ],
+  },
+
+  // ---------------------------------------------
+  // 8. TEAM GOALS – FIRST HALF (Each Team)
+  // ---------------------------------------------
+  firstHalfTeamTotalGoals: {
+    Arsenal: {
+      title: "Arsenal 1st Half Goals",
+      lines: [
+        { line: 0.5, over: 2.10, under: 1.65 },
+        { line: 1.5, over: 5.00, under: 1.20 },
+      ],
+    },
+    Liverpool: {
+      title: "Liverpool 1st Half Goals",
+      lines: [
+        { line: 0.5, over: 1.95, under: 1.75 },
+        { line: 1.5, over: 4.60, under: 1.25 },
+      ],
+    },
+  },
+
+  // ---------------------------------------------
+  // 9. RACE TO X GOALS
+  // ---------------------------------------------
+  raceToGoals: {
+    title: "Race To Goals",
+    options: [
+      { label: "First to 1 Goal", Arsenal: 1.80, Liverpool: 2.00, Neither: 8.0 },
+      { label: "First to 2 Goals", Arsenal: 2.80, Liverpool: 3.10, Neither: 1.45 },
+      { label: "First to 3 Goals", Arsenal: 6.50, Liverpool: 7.20, Neither: 1.10 },
+    ],
+  },
   },
   handicap: {
     asianHandicapFullTime: [ { line: -1.5, home: { value: 3.4 }, away: { value: 1.3 } }, { line: +1.5, home: { value: 1.2 }, away: { value: 4.0 } } ],

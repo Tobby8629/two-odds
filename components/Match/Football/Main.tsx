@@ -1,17 +1,16 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { MainMarkets } from '@/constants/options' 
+import { GoalsMarket, MainMarkets, Odd } from '@/constants/options' 
 import OptionInfo from '@/assets/SVGs/match/OptionInfo';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ThemedText';
+import { SubKeyName } from '@/constants/functions';
 
 interface MainProps {
-  option: MainMarkets;
+  option: MainMarkets | GoalsMarket
 }
 
 const Main = ({option}: MainProps) => {
- 
-
   return (
     <View>
       {Object.entries(option).map(([key, value], index) => (
@@ -48,41 +47,44 @@ export const Card = ({title, value, openTrayE}: {title: string, value: any, open
         return 'Winning Margin';
       case 'totalGoalsBands':
         return 'Total Goals Bands';
+        case 'teamTotalGoals':
+        return 'Team Total Goals';
+      case 'firstTeamToScore':
+        return 'First Team To Score';
+      case 'exactGoals':
+        return 'Exact Goals';
+      case 'asianHandicapFullTime':
+        return 'Asian Handicap Full Time';
+      case 'asianHandicap1stHalf':
+        return 'Asian Handicap 1st Half';
+      case 'firstHalf1X2':
+        return 'First Half 1X2';
+      case 'secondHalf1X2':
+        return 'Second Half 1X2';
+      case 'firstHalfOverUnder':
+        return 'First Half Over/Under';
+      case 'secondHalfOverUnder':
+        return 'Second Half Over/Under';
+      case 'bttsAndOverUnder':
+        return 'BTTS and Over/Under';
+      case 'doubleChanceAndBTTS':
+        return 'Double Chance and BTTS';
+      case 'cleanSheet':
+        return 'Clean Sheet';
+      case 'scoreInBothHalves':
+        return 'Score In Both Halves';
+      case 'toWinEitherHalf':
+        return 'To Win Either Half';
+      case 'anytimeGoalscorer':
+        return 'Anytime Goalscorer';
+      case 'firstGoalscorer':
+        return 'First Goalscorer';
+      case 'lastGoalscorer':
+        return 'Last Goalscorer'; 
       default:
         return key.charAt(0).toUpperCase() + key.slice(1);
     }
   };
-
-  const SubKeyName = (subKey: string) => {
-    switch (subKey) {
-      case 'home':
-        return '1';
-      case 'away':
-        return '2';
-      case 'draw':
-        return 'X'; 
-      case 'home_home':
-        return 'Home/Home';
-      case 'home_away':
-        return 'Home/Away';
-      case 'draw_home':
-        return 'Draw/Home';
-      case 'draw_away':
-        return 'Draw/Away';
-      case 'away_home':
-        return 'Away/Home';
-      case 'away_away':
-        return 'Away/Away';
-        case 'HomeorDraw':
-        return '1X';
-      case 'HomeorAway':
-        return '12';
-      case 'DraworAway':
-        return 'X2';  
-      default:
-        return subKey.charAt(0).toUpperCase() + subKey.slice(1);
-    }
-  };     
   return (
     <>
       <View className='flex-row justify-between'>
@@ -101,12 +103,25 @@ export const Card = ({title, value, openTrayE}: {title: string, value: any, open
       {openTray ? 
         typeof value === 'object' && !Array.isArray(value) ? (
           <View className='flex-row flex-wrap items-center justify-between'>
-            {Object.entries(value).map(([subKey, subValue]) => (
-              <View key={subKey} className='flex items-center flex-row gap-3 my-1'>
-                <ThemedText className='!text-black font-bold capitalize'>{SubKeyName(subKey)}</ThemedText>
-                <ThemedText className='!text-black bg-purple-200 rounded-lg text-center py-2 px-4'>{subValue.value} {subValue.suspended ? '(Suspended)' : ''}</ThemedText>
+            {Object.entries(value).map(([subKey, subValue], index) => { 
+              return (
+              Object.keys(value).length < 3 ?
+               <View
+                  key={subKey}
+                  className={`flex items-center w-[45%] flex-row gap-3 my-2 
+                    ${Object.keys(value).length < 3 && index === Object.keys(value).length - 1 ? "ml-auto" : ""}`}
+                >
+                  <ThemedText className='!text-black font-bold text-center capitalize'>
+                    {SubKeyName(subKey)}
+                  </ThemedText>
+                  <ThemedText className='!text-black bg-purple-200 rounded-lg w-[65%] text-center py-2 px-4'>{subValue.value} {subValue.suspended ? '(Suspended)' : ''}</ThemedText>
+                </View>
+              :
+              <View key={subKey} className='flex items-center flex-row w-1/3 gap-3 my-1'>
+                <ThemedText className='!text-black font-bold text-center capitalize'>{SubKeyName(subKey)}</ThemedText>
+                <ThemedText className='!text-black bg-purple-200 rounded-lg w-[62px] text-center py-2 px-4'>{subValue.value} {subValue.suspended ? '(Suspended)' : ''}</ThemedText>
               </View>
-            ))}
+            )})}
           </View>
         ) : Array.isArray(value) ? (
           value.map((item, index) => (

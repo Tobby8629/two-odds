@@ -3,6 +3,7 @@ import React from 'react'
 import Header from './Header'
 import Main from '../Football/Main';
 import { sampleFootballMarket } from '@/constants/options';
+import Goal from '../Football/Goal';
 interface TemplateProps {
   arr: string[];
 }
@@ -18,7 +19,8 @@ const [selected, setSelected] = React.useState<string>(arr[0]);
   />
 
   <ScrollView>
-    <Main option={sampleFootballMarket.main} />
+    {selected === 'main' && <Main option={sampleFootballMarket.main} />}
+    {selected === "over/under" && <Goal option={sampleFootballMarket.goals} />}
   </ScrollView>
 </View>
 
