@@ -8,7 +8,7 @@ import { useSport } from '@/store/useSports'
 import { sports } from '@/interface'
 import Template from '@/components/Match/reuseables/Template'
 import { router } from 'expo-router'
-import ManUtd from '@/assets/SVGs/match/manutd'
+import ManUtd from '@/assets/SVGs/match/Manutd'
 import Statistics from '@/assets/SVGs/match/Statistics'
 
 const marketSwitch = (selectedsport: sports) => { 
@@ -74,7 +74,9 @@ const EachMatch = () => {
       </View>
 
       {/***********  Betting Markets  ***********/ }
-      {marketSwitch(selectedsport as sports)}
+      <View className='flex-1 mt-4 relative'>
+        {marketSwitch(selectedsport as sports)}
+      </View>
        
     </View>
   )

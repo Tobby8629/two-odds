@@ -2,16 +2,16 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { GoalsMarket, MatchTotalGoalsSection } from '@/constants/options'
 import { FontAwesome6 } from '@expo/vector-icons'
-import { SubKeyName } from '@/constants/functions'
 import { ThemedText } from '@/components/ThemedText'
+import OptionInfo from '@/assets/SVGs/match/OptionInfo'
+import { Portal } from 'react-native-portalize';
 
 const Goal = ({option}: {option: GoalsMarket}) => {
    return (
-      <View>
+      <View className='flex-1'>
         {Object.entries(option).map(([key, value], index) => {
-          console.log("Goal Option Value:", value);
           return(
-          <View key={key} className='my-2 p-3 bg-light-blue rounded-lg  mx-6'>
+          <View key={key} className='my-2 p-3 bg-light-blue rounded-lg mx-6'>
             <Card title={key} value={value} openTrayE={index === 0 ? true : false} /> 
           </View>
         )})} 
@@ -25,19 +25,56 @@ const styles = StyleSheet.create({})
 
 const Card = ({title, value, openTrayE}: {title: string, value: any, openTrayE?: boolean}) => {
   const [openTray, setOPenTray] = React.useState(openTrayE); 
+  const [more, setMore ] = React.useState(false)
+
   return (
     <View>
-      <Pressable onPress={()=>setOPenTray(!openTray)} className='flex-row justify-between items-center mb-4'>
-        <Text className='text-black font-bold text-lg capitalize'>{title.replace(/([A-Z])/g, ' $1').trim()}</Text>
-        <FontAwesome6 name={openTray ? "angle-up" : "angle-down"} size={16} color="black" />
-      </Pressable>
-
+       <View className='flex-row justify-between'>
+        <View className='flex-row items-center gap-2'>
+          <ThemedText className='!text-black font-bold text-lg capitalize'>{title.replace(/([A-Z])/g, ' $1').trim()}</ThemedText>
+          <Pressable onPress={()=> setMore(!more)}>
+            <OptionInfo/>
+          </Pressable>
+        </View>
+        <Pressable onPress={()=> setOPenTray(!openTray)} className='p-2'>
+          {openTray ? 
+          <FontAwesome6 name="angle-up" size={16} color="black" />
+          :<FontAwesome6 name="angle-down" size={16} color="black" />
+          }
+        </Pressable>
+       </View>
       {openTray && (
         TraySwitch(title, value)      
       )}
-    </View>
-  )
-}
+      {more && (
+      <Portal>
+        <Pressable 
+          onPress={() => setMore(false)} 
+          className="absolute items-center inset-0 bg-black/30 z-50"
+        >
+          <Pressable
+            onPress={(e) => e.stopPropagation()}
+            className="absolute top-[40%] w-[85%] bg-light-blue p-4 h-44 justify-center rounded-lg shadow-lg"
+          >
+            <ThemedText className="!text-black font-bold text-center text-lg capitalize">
+              {title.replace(/([A-Z])/g, " $1").trim()}
+            </ThemedText>
+
+            <ThemedText className="!text-black text-center my-3">
+              Lorem ipsum dolor sit amet consectetur. Nunc.
+            </ThemedText>
+
+            <Pressable onPress={() => setMore(false)}>
+              <ThemedText className="!text-sec text-center">Ok</ThemedText>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Portal>
+)}
+
+      </View>
+    )
+  }
 
 const MatchTotalGoalsTray = (value: any) => { 
   return (

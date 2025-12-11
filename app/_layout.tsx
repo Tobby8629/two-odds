@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from './(Onboarding)/OnboardContext';
 import { useSport } from '@/store/useSports';
 import useBetslip from '@/store/useStore';
+import { Host } from 'react-native-portalize';
 // import betHistory from './bet-history';
 
 
@@ -50,6 +51,7 @@ export default function RootLayout() {
     <>
       <QueryClientProvider client={queryclient}>
         <UserProvider>
+          <Host>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <Stack screenOptions={{headerShown: false}}>
               <Stack.Screen name="index"  
@@ -61,6 +63,7 @@ export default function RootLayout() {
             </Stack>
           <StatusBar style="auto" />
           </ThemeProvider>
+          </Host>
         </UserProvider>
       </QueryClientProvider>
     </>

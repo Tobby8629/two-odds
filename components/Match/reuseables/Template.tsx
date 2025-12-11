@@ -11,14 +11,14 @@ interface TemplateProps {
 const Template = ({arr}: TemplateProps) => {
 const [selected, setSelected] = React.useState<string>(arr[0]);
   return (
-    <View className="flex-1 w-full">
+  <View className="flex-1 w-full">
   <Header
     headerArr={arr}
     selected={selected}
     setSelected={setSelected}
   />
 
-  <ScrollView>
+  <ScrollView className='flex-1'>
     {selected === 'main' && <Main option={sampleFootballMarket.main} />}
     {selected === "over/under" && <Goal option={sampleFootballMarket.goals} />}
   </ScrollView>
