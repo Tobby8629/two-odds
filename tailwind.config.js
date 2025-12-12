@@ -21,6 +21,9 @@ module.exports = {
       
       fontFamily: {
         sansitaBoldItalic: ["SansitaOneBoldItalic"],
+        noyhRegular: ["NoyhRegular"],
+        noyhBold: ["NoyhBold"],
+        noyhSemiBold: ["NoyhSemiBold"],
       }
     },
   },

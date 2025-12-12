@@ -56,7 +56,7 @@ const Card = ({title, value, openTrayE}: {title: string, value: any, openTrayE?:
             onPress={(e) => e.stopPropagation()}
             className="absolute top-[40%] w-[85%] bg-light-blue p-4 h-44 justify-center rounded-lg shadow-lg"
           >
-            <ThemedText className="!text-black font-bold text-center text-lg capitalize">
+            <ThemedText className="!text-black font-sansitaBoldItalic font-bold text-center text-lg capitalize">
               {title.replace(/([A-Z])/g, " $1").trim()}
             </ThemedText>
 

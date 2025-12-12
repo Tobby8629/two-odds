@@ -24,7 +24,10 @@ export default function RootLayout() {
   const { dataArry, updateDataArry, selectedsport } = useSport()
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    SansitaOneBoldItalic: require('../assets/fonts/Sansita/Sansita-BoldItalic.ttf')
+    SansitaOneBoldItalic: require('../assets/fonts/Sansita/Sansita-BoldItalic.ttf'),
+    NoyhRegular: require('../assets/fonts/Noyh-Geometric-Font-Family/Demo_Fonts/Fontspring-DEMO-noyhgeometric-black.otf'),
+    NoyhBold: require('../assets/fonts/Noyh-Geometric-Font-Family/Demo_Fonts/Fontspring-DEMO-noyhgeometric-bold.otf'),
+    
   });
 
   useEffect(() => {
