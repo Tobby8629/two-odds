@@ -1,15 +1,23 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, ScrollView, Animated, Easing } from 'react-native';
 import { useP2PStore } from '@/store/useP2PStore';
+import { useProfileStore } from '@/store/useProfileStore';
+import { AVATARS } from '@/constants/avatars';
 import Head from '@/components/Home/Head';
 import Button from '@/components/Reuseables/Button';
 import RadarAnimation from '@/components/Reuseables/Animations/RadarAnimation';
 
 export default function P2PSearching() {
   const { setScreen, fetchBets } = useP2PStore();
+  const { profile } = useProfileStore();
   const [isSearching, setIsSearching] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  // Get user's selected avatar or default to first avatar
+  const selectedAvatar =
+    AVATARS.find((item) => item.id === profile?.avatar) || AVATARS[0];
+  const AvatarComponent = selectedAvatar.component;
 
   const handleSearchAgain = () => {
     if (!isSearching) {
@@ -52,13 +60,16 @@ export default function P2PSearching() {
             marginBottom: 32,
           }}
         >
-          <Text className="text-white text-3xl text-center">
-            Waiting to Connect
+          <Text className="text-white font-normal text-3xl text-center">
+            Gaming Lobby
           </Text>
         </Animated.View>
 
-        {/* Radar Animation */}
-        <RadarAnimation isSearching={isSearching} />
+        {/* Radar Animation with Avatar in Center */}
+        <RadarAnimation 
+          isSearching={isSearching} 
+          centerAvatar={<AvatarComponent width={75} height={75} />}
+        />
 
         {/* Button */}
         <Button
