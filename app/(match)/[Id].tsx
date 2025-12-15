@@ -1,5 +1,5 @@
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { use } from 'react'
 import { FontAwesome6 } from '@expo/vector-icons'
 import MatchMore from '@/assets/SVGs/match/MatchMore'
 import { ThemedText } from '@/components/ThemedText'
@@ -10,6 +10,8 @@ import Template from '@/components/Match/reuseables/Template'
 import { router } from 'expo-router'
 import ManUtd from '@/assets/SVGs/match/Manutd'
 import Statistics from '@/assets/SVGs/match/Statistics'
+import { Portal } from 'react-native-portalize'
+import TeamFeatures from '@/components/Match/reuseables/TeamFeatures'
 
 const marketSwitch = (selectedsport: sports) => { 
   // match={match} markets={markets} setMarkets={setMarkets}
@@ -32,6 +34,7 @@ const marketSwitch = (selectedsport: sports) => {
 const EachMatch = () => {
   const isIos = Platform.OS === "ios";
   const { selectedsport } = useSport();
+
   return (
     <View className='bg-pry flex-1'>
 
@@ -48,31 +51,7 @@ const EachMatch = () => {
 
 
       {/***********  Match INFO  ***********/ }
-      <View className='flex-row items-center px-3 justify-between'>
-        <View className='w-[25%] flex-wrap items-center gap-3'>
-          <ManUtd />
-          <ThemedText className='text-center'>manchester united</ThemedText>
-        </View>
-
-        <View className='w-[35%] my-2 items-center gap-1'>
-          <ThemedText className='text-center my-0 text-xs'>VS</ThemedText>
-          <ThemedText className='text-center my-0 text-xs'>Time</ThemedText>
-          <Button 
-          className='!w-[85px] !h-[22px] !px-0 !py-0 gap-2 flex-row'
-          text='statistics'
-          textStyle=' !text-sm' 
-          onPress={()=>console.log("show statistic in match card")}
-          >
-          <Statistics />
-          </Button>
-        </View>
-
-         <View className='w-[25%] flex-wrap items-center gap-3'>
-          <ManUtd />
-          <ThemedText className='text-center'>manchester united</ThemedText>
-        </View>
-      </View>
-
+      <TeamFeatures />
       {/***********  Betting Markets  ***********/ }
       <View className='flex-1 mt-4 relative'>
         {marketSwitch(selectedsport as sports)}

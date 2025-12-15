@@ -5,6 +5,7 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import { ThemedText } from '@/components/ThemedText'
 import OptionInfo from '@/assets/SVGs/match/OptionInfo'
 import { Portal } from 'react-native-portalize';
+import MoreBtn from './MoreBtn'
 
 const Goal = ({option}: {option: GoalsMarket}) => {
    return (
@@ -47,31 +48,8 @@ const Card = ({title, value, openTrayE}: {title: string, value: any, openTrayE?:
         TraySwitch(title, value)      
       )}
       {more && (
-      <Portal>
-        <Pressable 
-          onPress={() => setMore(false)} 
-          className="absolute items-center inset-0 bg-black/30 z-50"
-        >
-          <Pressable
-            onPress={(e) => e.stopPropagation()}
-            className="absolute top-[40%] w-[85%] bg-light-blue p-4 h-44 justify-center rounded-lg shadow-lg"
-          >
-            <ThemedText className="!text-black font-sansitaBoldItalic font-bold text-center text-lg capitalize">
-              {title.replace(/([A-Z])/g, " $1").trim()}
-            </ThemedText>
-
-            <ThemedText className="!text-black text-center my-3">
-              Lorem ipsum dolor sit amet consectetur. Nunc.
-            </ThemedText>
-
-            <Pressable onPress={() => setMore(false)}>
-              <ThemedText className="!text-sec text-center">Ok</ThemedText>
-            </Pressable>
-          </Pressable>
-        </Pressable>
-      </Portal>
-)}
-
+        <MoreBtn title={title} setMore={setMore} />
+    )}
       </View>
     )
   }

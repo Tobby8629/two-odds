@@ -38,7 +38,7 @@ export const PopularHeader = ({
           {odds.map((o, i) => (
             <Text
               key={i}
-              className="text-2xl text-white text-left"
+              className="text-2xl text-white !text-center"
             >
               {o}
             </Text>
@@ -67,9 +67,12 @@ export const MatchCard = ({ data }: PopularProps) => {
   const isThreeWay = selectedsport === "football"; 
   // Change the condition to whatever matches your data model
 
+  console.log(isThreeWay)
+
   return (
     <View className="px-5 pt-2">
-      <Pressable onPress={() => navigateMatchDetails(data.id)} className="bg-[#E3F2FD] flex-row justify-between items-center p-3 mb-5 rounded-lg h-[95px]">
+      <Pressable onPress={() => navigateMatchDetails(data.id)} 
+      className="bg-[#E3F2FD] flex-row justify-between items-center p-3 mb-5 rounded-lg h-[95px]">
         
         {/* TEAMS */}
         <View className="gap-5 w-6/12">
@@ -85,7 +88,7 @@ export const MatchCard = ({ data }: PopularProps) => {
         </View>
 
         {/* ODDS BUTTONS */}
-        <View className={`flex-row items-center justify-between gap-2 w-6/12 ${isThreeWay ? " w-5/12" : "w-4/12" }`}>
+        <View className={`flex-row items-center justify-between gap-2 ${isThreeWay ? " w-6/12" : "" }`}>
 
           {/* HOME */}
           <TouchableOpacity

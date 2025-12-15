@@ -5,6 +5,7 @@ import OptionInfo from '@/assets/SVGs/match/OptionInfo';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ThemedText';
 import { SubKeyName } from '@/constants/functions';
+import MoreBtn from './MoreBtn';
 
 interface MainProps {
   option: MainMarkets | GoalsMarket
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({})
 
 export const Card = ({title, value, openTrayE}: {title: string, value: any, openTrayE?: boolean}) => {
   const [openTray, setOPenTray] = React.useState(openTrayE);  
+  const [more, setMore ] = React.useState(false)
   const headerText = (key: string) => {
     switch (key) {
       case 'oneXtwo':
@@ -90,7 +92,9 @@ export const Card = ({title, value, openTrayE}: {title: string, value: any, open
       <View className='flex-row justify-between'>
         <View className='flex-row items-center gap-2'>
           <ThemedText className='!text-black font-bold text-lg'>{headerText(title)}</ThemedText>
-          <OptionInfo />
+          <Pressable onPress={()=> setMore(!more)}>
+            <OptionInfo/>
+          </Pressable>
       </View>
       <Pressable onPress={()=> setOPenTray(!openTray)} className='p-2'>
         {openTray ? 
@@ -133,5 +137,8 @@ export const Card = ({title, value, openTrayE}: {title: string, value: any, open
         ) : null
       : null}
       </>
+      {more && (
+        <MoreBtn title={title} setMore={setMore} />
+      )}
     </>
 )}
