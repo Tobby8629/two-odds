@@ -6,11 +6,14 @@ import ManUtd from '@/assets/SVGs/match/Manutd'
 import Button from '@/components/Reuseables/Button'
 import Statistics from '@/assets/SVGs/match/Statistics'
 
+interface teamFeatures {
+  setStatistics: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const TeamFeatures = () => {
+
+const TeamFeatures = ({setStatistics}: teamFeatures) => {
   const [team, setTeam] = React.useState({teamOne: false, teamTwo: false}); 
-  const hasAnyTrue = Object.values(team).some(value => value === true);
-  const [statistics, setStatistics] = React.useState(false); 
+  const hasAnyTrue = Object.values(team).some(value => value === true); 
   
   const teamMap = {
   teamOne: "manutd",

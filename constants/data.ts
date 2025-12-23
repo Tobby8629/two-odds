@@ -445,3 +445,53 @@ export const securityRoutes: {
 ];
 
 
+export const manUtdVsChelsea = [
+  {
+    date: "08 Nov 2025",
+    competition: "Premier League",
+    matchday: "Matchday 12",
+    home: "Manchester United",
+    homeScore: 2,
+    awayScore: 1,
+    away: "Chelsea",
+  },
+  {
+    date: "08 Dec 2024",
+    competition: "Premier League",
+    matchday: "Matchday 16",
+    home: "Chelsea",
+    homeScore: 3,
+    awayScore: 1,
+    away: "Manchester United",
+  },
+  {
+    date: "08 Nov 2024",
+    competition: "FA Cup",
+    matchday: "Round 4",
+    home: "Manchester United",
+    homeScore: 2,
+    awayScore: 0,
+    away: "Chelsea",
+  },
+  {
+    date: "08 Aug 2024",
+    competition: "Premier League",
+    matchday: "Matchday 2",
+    home: "Manchester United",
+    homeScore: 1,
+    awayScore: 1,
+    away: "Chelsea",
+  },
+  {
+    date: "08 Mar 2024",
+    competition: "Premier League",
+    matchday: "Matchday 24",
+    home: "Chelsea",
+    homeScore: 2,
+    awayScore: 1,
+    away: "Manchester United",
+  },
+];
+
+
+

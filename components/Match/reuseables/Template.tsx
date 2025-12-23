@@ -1,15 +1,20 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
 import Header from './Header'
 import Main from '../Football/Main';
 import { sampleFootballMarket } from '@/constants/options';
 import Goal from '../Football/Goal';
+import Statistics from '../Football/Statistics';
+
+
+
 interface TemplateProps {
   arr: string[];
 }
 
 const Template = ({arr}: TemplateProps) => {
 const [selected, setSelected] = React.useState<string>(arr[0]);
+
   return (
   <View className="flex-1 w-full">
   <Header
