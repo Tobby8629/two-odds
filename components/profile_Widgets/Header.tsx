@@ -11,7 +11,7 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { useProfile } from '@/hooks/useProfile'
 import { useWalletBalance } from '@/hooks/useWalletBalance'
-import { formatNaira } from '@/constants/functions'
+import { formatCurrency } from '@/constants/functions'
 
 const Header = () => {
   const [visible, setVisible] = React.useState(false);
@@ -36,7 +36,7 @@ const Header = () => {
     ? "..."
     : isBalanceError
       ? "Unavailable"
-      : formatNaira(balance?.ngn?.balance);
+      : formatCurrency(balance?.ngn?.balance, "NGN");
 
   return (
     <View className='px-7 pt-[3.8rem] pb-8 bg-[#1F5079]'>

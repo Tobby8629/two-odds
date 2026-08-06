@@ -1,85 +1,41 @@
 
 import { create } from "zustand";
+import { LimitPeriod, WalletCurrency } from "@/types/wallet.types";
 
-type LimitPeriod = "daily" | "weekly" | "monthly";
-
-interface AccountLimits {
-  daily: number | null;
-  weekly: number | null;
-  monthly: number | null;
-}
-
+/**
+ * Form state for the deposit-limit screen only. The limits themselves are
+ * server-owned and live in React Query — see hooks/useDepositLimits.
+ */
 interface AccountLimitState {
-  limits: AccountLimits;
   selectedPeriod: LimitPeriod;
-  selectedChip: LimitPeriod;
+  selectedCurrency: WalletCurrency;
   amount: string;
-  isLoading: boolean;
   showInfoModal: boolean;
   error: string | null;
-  
 
-  // Actions
   setSelectedPeriod: (period: LimitPeriod) => void;
-  setSelectedChip: (chip: LimitPeriod) => void;
+  setSelectedCurrency: (currency: WalletCurrency) => void;
   setAmount: (value: string) => void;
   toggleInfoModal: (visible?: boolean) => void;
   setError: (error: string | null) => void;
-
-  // Limit updates
-  setLimit: (period: LimitPeriod, amount: number) => void;
-  clearLimit: (period: LimitPeriod) => void;
-  updateLimit: (period: LimitPeriod, amount: number) => Promise<void>;
 }
 
-// Mock initial data
-const initialLimits: AccountLimits = {
-  daily: null,
-  weekly: null,
-  monthly: null,
-};
-
-export const useAccountLimitStore = create<AccountLimitState>((set, get) => ({
-  limits: initialLimits,
+export const useAccountLimitStore = create<AccountLimitState>((set) => ({
   selectedPeriod: "daily",
-  selectedChip: "daily",
+  /*
+   * Naira is the primary wallet: deposits, withdrawals and bank details all
+   * run through Paystack. Held in state so a currency switcher can be added
+   * without touching the callers.
+   */
+  selectedCurrency: "NGN",
   amount: "",
-  isLoading: false,
   showInfoModal: false,
   error: null,
 
   setSelectedPeriod: (period) => set({ selectedPeriod: period }),
-  setSelectedChip: (chip) => set({ selectedChip: chip }),
+  setSelectedCurrency: (currency) => set({ selectedCurrency: currency }),
   setAmount: (value) => set({ amount: value }),
   toggleInfoModal: (visible) =>
     set((state) => ({ showInfoModal: visible ?? !state.showInfoModal })),
-
-  setLimit: (period, amount) =>
-    set((state) => ({
-      limits: { ...state.limits, [period]: amount },
-    })),
-
-  clearLimit: (period) =>
-    set((state) => ({
-      limits: { ...state.limits, [period]: null },
-    })),
-      setError: (error) => set({ error }), 
-
-  updateLimit: async (period, amount) => {
-    const { setLimit } = get();
-    set({ isLoading: true, error: null });
-
-    try {
-      // simulate API call
-      await new Promise((res) => setTimeout(res, 1000));
-
-      setLimit(period, amount);
-      set({ isLoading: false, amount: "" });
-    } catch (e) {
-      set({
-        isLoading: false,
-        error: "Failed to update deposit limit. Please try again.",
-      });
-    }
-  },
+  setError: (error) => set({ error }),
 }));

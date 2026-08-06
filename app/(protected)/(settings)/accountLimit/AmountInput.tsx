@@ -1,9 +1,13 @@
 import { useAccountLimitStore } from "@/store/accountLimitStore";
+import { CURRENCY_SYMBOLS } from "@/constants/functions";
 import React from "react";
 import { View, Text, TextInput } from "react-native";
 
 export const AmountInput: React.FC = () => {
-  const { amount, setAmount, error } = useAccountLimitStore();
+  const { amount, setAmount, error, selectedCurrency } =
+    useAccountLimitStore();
+
+  const symbol = CURRENCY_SYMBOLS[selectedCurrency];
 
   const handleChange = (text: string) => {
     // Allow only numbers and decimal points
@@ -24,8 +28,8 @@ export const AmountInput: React.FC = () => {
           borderColor: amount !== "" ? "#FFA500" : "#CCCCCC", // Gold border when typing
         }}
       >
-        {/* Dollar sign on left */}
-        <Text className="text-black text-lg mr-2">$</Text>
+        {/* Currency symbol on left */}
+        <Text className="text-black text-lg mr-2">{symbol}</Text>
 
         {/* Amount input */}
         <TextInput

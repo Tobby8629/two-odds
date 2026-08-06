@@ -139,16 +139,27 @@ export const verifying = (
 export const hasFalseValue = (checkvalue: verifyInt) =>  Object.values(checkvalue).some(value => value === false);
 
 
+export const CURRENCY_SYMBOLS = {
+  NGN: "₦",
+  USDT: "$",
+} as const;
+
 /**
- * Balances come off the wallet endpoints as fixed-point strings such as
+ * Wallet endpoints return amounts as fixed-point strings such as
  * "50000.00000000", which cannot go straight into the UI.
  */
-export const formatNaira = (balance: string | undefined) => {
-  const amount = Number(balance ?? "");
+export const formatCurrency = (
+  value: string | number | null | undefined,
+  currency: keyof typeof CURRENCY_SYMBOLS = "NGN"
+) => {
+  const symbol = CURRENCY_SYMBOLS[currency];
+  const amount = Number(value ?? "");
 
-  if (!Number.isFinite(amount)) return "₦0.00";
+  if (value === null || value === undefined || !Number.isFinite(amount)) {
+    return `${symbol}0.00`;
+  }
 
-  return `₦${amount.toLocaleString("en-NG", {
+  return `${symbol}${amount.toLocaleString("en-NG", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
