@@ -139,8 +139,24 @@ export const verifying = (
 export const hasFalseValue = (checkvalue: verifyInt) =>  Object.values(checkvalue).some(value => value === false);
 
 
+/**
+ * Balances come off the wallet endpoints as fixed-point strings such as
+ * "50000.00000000", which cannot go straight into the UI.
+ */
+export const formatNaira = (balance: string | undefined) => {
+  const amount = Number(balance ?? "");
+
+  if (!Number.isFinite(amount)) return "₦0.00";
+
+  return `₦${amount.toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+};
+
+
 // utils/dateFilter.ts
-export const filterByDate = (dateFilter: "all" | "7days" | "14days" | "30days", txnDate: string) => {
+export const filterByDate =(dateFilter: "all" | "7days" | "14days" | "30days", txnDate: string) => {
   if (dateFilter === "all") return true;
 
   const now = new Date();

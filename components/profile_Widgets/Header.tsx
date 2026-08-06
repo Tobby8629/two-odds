@@ -9,18 +9,43 @@ import Withdraw from '@/assets/SVGs/profile/Withdraw'
 import { FontAwesome5 } from '@expo/vector-icons'
 
 import { router } from 'expo-router'
+import { useProfile } from '@/hooks/useProfile'
+import { useWalletBalance } from '@/hooks/useWalletBalance'
+import { formatNaira } from '@/constants/functions'
 
 const Header = () => {
   const [visible, setVisible] = React.useState(false);
   const toggleVisibility = () => {
     setVisible(!visible);
   };
+
+  const { data: profile } = useProfile();
+
+  const {
+    data: balance,
+    isPending: isBalancePending,
+    isError: isBalanceError,
+  } = useWalletBalance();
+
+  /*
+   * The naira wallet is the primary one: deposits, withdrawals and bank
+   * details all run through Paystack. USDT is available on the same endpoint
+   * if a second row is ever added.
+   */
+  const balanceLabel = isBalancePending
+    ? "..."
+    : isBalanceError
+      ? "Unavailable"
+      : formatNaira(balance?.ngn?.balance);
+
   return (
     <View className='px-7 pt-[3.8rem] pb-8 bg-[#1F5079]'>
       <View className={`${flex} py-4`}>
-      <View className='flex-row items-center gap-2'>
+      <View className='flex-row items-center gap-2 flex-1 mr-4'>
           <UserLogo />
-          <Text className='text-white'>Profile ID</Text>
+          <Text numberOfLines={1} className='text-white flex-1'>
+            {profile?.id ? `Profile ID: ${profile.id}` : "Profile ID"}
+          </Text>
       </View>
       <Pressable onPress={()=> router.push("/(settings)")}>
         <SettingsIcon />
@@ -38,7 +63,7 @@ const Header = () => {
           <Text className="text-white">Total Balance</Text>
       </View>
       <Text className="text-white">
-          {visible ? '$20' : '****'}
+          {visible ? balanceLabel : '****'}
       </Text>
       </View>
       <View className={`${flexCenter} mt-5 gap-5`}>
