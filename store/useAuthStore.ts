@@ -58,11 +58,20 @@ interface AuthState {
 
 function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
+    /*
+     * Failures come back as { success: false, error: { code, message } }.
+     * The flat message is kept as a fallback in case an older route or a
+     * proxy responds in the shallower shape.
+     */
     const data = error.response?.data as
-      | { message?: string }
+      | {
+          error?: { code?: string; message?: string };
+          message?: string;
+        }
       | undefined;
 
     return (
+      data?.error?.message ??
       data?.message ??
       error.message ??
       "The request could not be completed."
