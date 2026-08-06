@@ -1,18 +1,28 @@
 import axios from "axios";
 import { create } from "zustand";
 import { tokenStorage } from "@/services/tokenStorage";
-import { axiosInstance, getRequest, publicApi } from "@/components/api/Axois";
+import { getRequest, publicApi } from "@/components/api/Axois";
 
-// export interface UserRes {
-//   data: User;
-// }
+/**
+ * Every endpoint wraps its payload as { success, data }, so responses are
+ * unwrapped once before the contents are used.
+ */
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+}
 
-
+/** Shape returned by GET /auth/me. */
 export interface User {
   id: string;
-  name: string;
   email: string;
+  username: string;
+  displayName: string;
+  walletAddress?: string;
   role?: string;
+  isEmailVerified?: boolean;
+  isActive?: boolean;
+  isPremium?: boolean;
 }
 
 interface LoginInput {
@@ -26,27 +36,18 @@ interface RegisterInput {
   password: string;
 }
 
-interface AuthResponseData{
+interface AuthResponseData {
   user: User;
   accessToken: string;
   refreshToken: string;
 }
 
-interface AuthResponse {
- data: AuthResponseData;
-}
+type AuthResponse = ApiResponse<AuthResponseData>;
 
-interface RefreshResponse {
-  data: {
-    accessToken: string;
-    refreshToken?: string;
-  };
-}
-
-// interface RefreshResponse {
-//   accessToken: string;
-//   refreshToken?: string;
-// }
+type RefreshResponse = ApiResponse<{
+  accessToken: string;
+  refreshToken?: string;
+}>;
 
 interface AuthState {
   user: User | null;
@@ -128,14 +129,25 @@ export const useAuthStore = create<AuthState>((set) => ({
         newRefreshToken ?? refreshToken
       );
       
-      const user = (await getRequest<User>("/auth/me", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })).data
+      const meResponse = await getRequest<ApiResponse<User>>(
+        "/auth/me",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const user = meResponse.data.data;
+
+      if (!user?.id) {
+        throw new Error(
+          "The /auth/me endpoint did not return a user."
+        );
+      }
 
       set({
-        user: user,
+        user,
         initialized: true,
         error: null,
       });
