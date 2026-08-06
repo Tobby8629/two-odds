@@ -4,29 +4,49 @@ import { useP2PStore } from '@/store/useP2PStore';
 import Head from '@/components/Home/Head';
 import Button from '@/components/Reuseables/Button';
 import RadarAnimation from '@/components/Reuseables/Animations/RadarAnimation';
+import { useOpenBets } from '@/hooks/useBets';
 
+/**
+ * The backend has no matchmaking: there is no queue, no lobby and no
+ * "searching" status. A P2P bet is posted open and sits in a public market
+ * until someone takes it. So this screen loads that market rather than
+ * pretending to pair two players up, and the radar covers the fetch.
+ */
 export default function P2PSearching() {
-  const { setScreen, fetchBets } = useP2PStore();
+  const { setScreen } = useP2PStore();
   const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
-  const handleSearchAgain = () => {
-    if (!isSearching) {
-      setIsSearching(true);
+  const { refetch } = useOpenBets({ category: 'CUSTOM' });
 
-      // Start fade out after 3 seconds and fetch bets
-      setTimeout(() => {
+  const handleSearchAgain = async () => {
+    if (isSearching) return;
+
+    setIsSearching(true);
+    setError(null);
+
+    try {
+      const result = await refetch();
+
+      if (result.isError) throw new Error('market unavailable');
+
+      await new Promise<void>((resolve) => {
         Animated.timing(fadeAnim, {
           toValue: 0,
           duration: 800,
           easing: Easing.ease,
           useNativeDriver: true,
-        }).start(async () => {
-          await fetchBets(); // loads mock bets and moves to "list"
-          fadeAnim.setValue(1); // reset animation
-        });
-      }, 3000);
+        }).start(() => resolve());
+      });
+
+      fadeAnim.setValue(1);
+      setScreen('list');
+    } catch {
+      setError('Could not reach the P2P market. Please try again.');
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -53,16 +73,22 @@ export default function P2PSearching() {
           }}
         >
           <Text className="text-white text-3xl text-center">
-            Waiting to Connect
+            {isSearching ? 'Finding Open Bets' : 'Waiting to Connect'}
           </Text>
         </Animated.View>
 
         {/* Radar Animation */}
         <RadarAnimation isSearching={isSearching} />
 
+        {error && (
+          <Text className="text-red-400 text-sm text-center px-8 mb-3">
+            {error}
+          </Text>
+        )}
+
         {/* Button */}
         <Button
-          text={isSearching ? 'Searching...' : 'Search for Player'}
+          text={isSearching ? 'Searching...' : 'Browse P2P Market'}
           onPress={handleSearchAgain}
         />
       </ScrollView>

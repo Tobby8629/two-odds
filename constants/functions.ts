@@ -166,6 +166,32 @@ export const formatCurrency = (
 };
 
 
+/**
+ * Gross return on a bet. The bets endpoints expose no payout, potential-return
+ * or fee field at all, so this is computed on the client from the stake and
+ * odds that were submitted.
+ *
+ * Caveat: the backend never documents whether its odds are decimal
+ * (stake x odds, return includes the stake) or fractional (stake x odds is
+ * profit only). Decimal is assumed here because the spec's example odds of 2.5
+ * only makes sense that way. Confirm against a real settlement before this
+ * figure is treated as authoritative.
+ */
+export const potentialReturn = (
+  stake: number | string | null | undefined,
+  odds: number | string | null | undefined
+) => {
+  const stakeValue = Number(stake ?? "");
+  const oddsValue = Number(odds ?? "");
+
+  if (!Number.isFinite(stakeValue) || !Number.isFinite(oddsValue)) {
+    return null;
+  }
+
+  return stakeValue * oddsValue;
+};
+
+
 // utils/dateFilter.ts
 export const filterByDate =(dateFilter: "all" | "7days" | "14days" | "30days", txnDate: string) => {
   if (dateFilter === "all") return true;

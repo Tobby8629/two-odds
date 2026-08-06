@@ -9,31 +9,39 @@ export interface P2PToggleProps {
   containerStyle?: ViewStyle; 
 }
 
+/*
+ * The track sits on the brand blue and the selected pill uses the lighter
+ * brand blue (p2p-active), which was defined in the theme but never wired up.
+ * The inactive label is dimmed so the selection reads without a colour change.
+ */
 export default function P2PToggle({ active, onChange, containerStyle }: P2PToggleProps) {
+  const tab = (label: string, value: ToggleTab, style: ViewStyle) => (
+    <Pressable
+      onPress={() => onChange(value)}
+      accessibilityRole="button"
+      accessibilityState={{ selected: active === value }}
+      className={`flex-1 rounded-[3px] items-center justify-center ${
+        active === value ? "bg-p2p-active" : "bg-transparent"
+      }`}
+      style={style}
+    >
+      <Text
+        className={`text-lg ${
+          active === value ? "text-white font-semibold" : "text-white/60"
+        }`}
+      >
+        {label}
+      </Text>
+    </Pressable>
+  );
+
   return (
     <View
-      className="mx-auto mt-4 w-[160px] h-[26px] rounded-[3px] bg-p2p-tab flex-row justify-between p-[2px] "
+      className="mx-auto mt-4 w-[160px] h-[26px] rounded-[3px] bg-pry flex-row justify-between p-[2px] "
       style={containerStyle}
     >
-      <Pressable
-        onPress={() => onChange("bets")}
-        className={`flex-1 mx-[1px] rounded-[3px] items-center justify-center ${
-          active === "bets" ? "bg-sec" : "bg-p2p-tab"
-        }`}
-        style={{ width: 30, height: 20 }}
-      >
-        <Text className="text-white text-lg">Bets</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={() => onChange("p2p")}
-        className={`flex-1 mx-[3px] rounded-[3px] items-center justify-center ${
-          active === "p2p" ? "bg-sec" : "bg-p2p-tab"
-        }`}
-        style={{ width: 32, height: 18 }}
-      >
-        <Text className="text-white text-lg">PTP</Text>
-      </Pressable>
+      {tab("Bets", "bets", { width: 30, height: 20, marginHorizontal: 1 })}
+      {tab("PTP", "p2p", { width: 32, height: 18, marginHorizontal: 3 })}
     </View>
   );
 }

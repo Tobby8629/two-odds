@@ -19,10 +19,10 @@ import Avatar_16 from "@/assets/SVGs/avatar/avatar_16";
 
 export interface AvatarItem {
   id: string;
-  Component: ComponentType<any>;
+  component: ComponentType<any>;
 }
 
-export const AVATARS = [
+export const AVATARS: AvatarItem[] = [
   { id: "1", component: Avatar_1 },
   { id: "2", component: Avatar_2 },
   { id: "3", component: Avatar_3 },
@@ -40,3 +40,25 @@ export const AVATARS = [
   { id: "15", component: Avatar_15 },
   { id: "16", component: Avatar_16 },
 ];
+
+/** Falls back to the first avatar so callers never have to null-check. */
+export const avatarById = (id: string | undefined): AvatarItem =>
+  AVATARS.find((a) => a.id === id) ?? AVATARS[0];
+
+/**
+ * Picks a stable avatar for an arbitrary id, so the same opponent always shows
+ * the same face. The backend has no avatar field and no endpoint to look up
+ * another user, so this is presentational only - it is derived from the id and
+ * is not a claim about who the person is.
+ */
+export const avatarForKey = (key: string | undefined): AvatarItem => {
+  if (!key) return AVATARS[0];
+
+  let hash = 0;
+
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) % 100003;
+  }
+
+  return AVATARS[hash % AVATARS.length];
+};
