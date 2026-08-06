@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import AngleRight from '@/assets/SVGs/Angle-right'
 import { flex } from '@/constants/style'
+import { RelativePathString, router } from 'expo-router'
 
 const OtherLinks = () => {
   const options = [
@@ -14,8 +15,8 @@ const OtherLinks = () => {
       link: "/(tabs)/customer-service",
     },
     {
-      name: "Change Password",
-      link: "/(tabs)/change-password",
+      name: "security",
+      link: "/(settings)/(security)/",
     },
     {
       name: "Biometric Login",
@@ -35,10 +36,10 @@ const OtherLinks = () => {
       {options.map((e, i) => (
         <Pressable
           key={i}
-          onPress={() => console.log("click")}
+          onPress={() => router.push(e.link as RelativePathString)}
           className={`${flex} items-center justify-between py-3 ${i+1 === options?.length ? "border-none" : "border-b"} border-[#1F5079]`}
         >
-          <Text className='text-white text-lg font-medium'>{e.name}</Text>
+          <Text className='text-white font-poppins text-base font-normal'>{e.name}</Text>
           {e?.name !== "Biometric Login" && 
           <View className='pr-7'>
             <AngleRight />

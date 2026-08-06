@@ -23,7 +23,7 @@ interface resetProps {
 
 export const validate = ({ email, password }: validateInput) => {
   // Allowed email providers
-  const allowedProviders = ["email", "gmail", "yahoo", "icloud", "example"];
+  const allowedProviders = ["email", "gmail", "yahoo", "davopa", "copawoke","icloud", "example"];
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // At least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char

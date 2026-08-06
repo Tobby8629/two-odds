@@ -24,6 +24,10 @@ module.exports = {
         noyhRegular: ["NoyhRegular"],
         noyhBold: ["NoyhBold"],
         noyhSemiBold: ["NoyhSemiBold"],
+        poppins: ["Poppins"],
+        poppinsBold: ["PoppinsBold"],
+        poppinsItalic: ["PoppinsItalic"],
+        poppinsSemiBold: ["PoppinsSemiBold"],
       }
     },
   },

@@ -5,22 +5,8 @@ import Swiper from 'react-native-swiper';
 import { load } from '@/constants/data';
 import Logo from '@/assets/SVGs/Logo';
 import Button from '@/components/Reuseables/Button';
-import { useAuth } from './(Onboarding)/OnboardContext';
 
 const Screens = () => {
-  // const { userId } = useAuth();
-  let userId = "tobby";
-  // console.log("userId", userId);
-
-  useEffect(() => {
-    if (userId) {
-      setTimeout(() => {
-        router.replace('/(tabs)' as RelativePathString);
-      }, 0);
-    }
-  }, [userId]);
-
-  // if (userId) return null;
 
   return (
     <View className="h-screen w-screen">
