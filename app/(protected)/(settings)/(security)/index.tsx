@@ -6,6 +6,7 @@ import { ToggleRightIcon } from 'lucide-react-native'
 import AngleRight from '@/assets/SVGs/Angle-right'
 import { flex, flexCenter } from '@/constants/style'
 import { RelativePathString, router } from 'expo-router'
+import ToggleButton from '@/components/Reuseables/ToggleBtn'
 
 interface MenuOption {
   name: string;
@@ -28,7 +29,7 @@ const Index = () => {
     },
     {
       name: "delete account",
-      link: "/(settings)/(security)/delete-account",
+      link: "/(settings)/(security)/delete_account",
     }
   ]
   return (
@@ -65,6 +66,7 @@ interface TwoFactorAuthProps {
 }
 
 const TwoFactorAuth = ({ e , i, menuOptions }: TwoFactorAuthProps) => {
+  const [twoFactorEnabled, setTwoFactorEnabled] = React.useState(false);
   return (
     <Pressable
       onPress={()=> router.push(e.link as RelativePathString)}
@@ -75,11 +77,16 @@ const TwoFactorAuth = ({ e , i, menuOptions }: TwoFactorAuthProps) => {
           <Text className='text-white font-poppins text-base font-normal'>{e.name}</Text>
           <QuestionMarkCircle className='absolute right-7 top-4' />
         </View>
-        <Text className='text-white text-xs font-poppins font-normal'>Disabled</Text>
+        <Text className='text-white text-xs font-poppins font-normal'>{twoFactorEnabled ? "Enabled" : "Disabled"}</Text>
       </View>
-      <View className='bg-[#1F5079] w-[100px] h-[50px]' >
-        <ToggleRightIcon width={"100%"} height={"100%"} />
-      </View>
+    
+        <ToggleButton 
+          value={twoFactorEnabled}
+          onValueChange={setTwoFactorEnabled}
+          activeColor="#F5AE00"
+          inactiveColor="#9A9A9A"
+        />
+    
     </Pressable>
   )
 } 

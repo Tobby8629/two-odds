@@ -1,4 +1,4 @@
-import { postQuery } from '@/components/api/QueryFn';
+import { deleteQuery, postQuery } from '@/components/api/QueryFn';
 import { useMutation } from '@tanstack/react-query';
 import { RelativePathString, router } from 'expo-router';
 
@@ -35,7 +35,19 @@ const useMutate = ({link, params}: redirect) => {
   return {
     ...mutation,
 };
-
 }
+
+export const useMutateDelete = ({link, params}: redirect) => {
+  const mutation = useMutation({
+    mutationFn: async ({ url, data }: MutateInput) => {
+      const response = await deleteQuery(url, data);
+      return response;
+    }
+  });
+
+  return {
+    ...mutation,
+  };
+};
 
 export default useMutate;

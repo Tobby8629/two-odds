@@ -39,6 +39,21 @@ const SignIn = () => {
     text: "",
   })
 
+  const loginErrors = (errMessage: any) => {
+    if (errMessage.includes("401")) {
+      setErr({
+        message: "Invalid email or password.",
+        status: true,
+      });
+    }
+    else if (errMessage.includes("403")) {
+      setErr({
+        message: "Email not verified or account suspended",
+        status: true,
+      });
+    }
+  } 
+
   const mutation = useMutation({
     mutationFn: async () => {
       await login({ email: data.email, password: data.password });
@@ -47,10 +62,7 @@ const SignIn = () => {
     //   router.replace('/(tabs)' as RelativePathString);
     // },
     onError: (error: any) => {
-      setErr({
-        message: error?.response?.data.message || "An error occurred.",
-        status: true,
-      });
+     loginErrors(error?.message);
     },
   })
 
@@ -100,18 +112,6 @@ const navigate = async () => {
  mutation.mutate()
 };
 
-
-  // useEffect(() => {
-  //   if (isSuccess && userData?.user) {
-  //     setUser(userData.user);
-  //   }
-  //   if (error) {
-  //     setErr({
-  //       message: error?.response?.data.message,
-  //       status: true
-  //     })
-  //   }
-  // }, [isSuccess, error, user]);
 
   useEffect(() => {
     if (user?.id) {
