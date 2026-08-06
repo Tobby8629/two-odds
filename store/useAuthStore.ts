@@ -59,6 +59,7 @@ interface AuthState {
   login: (input: LoginInput) => Promise<void>;
   register: (input: RegisterInput) => Promise<void>;
   logout: () => Promise<void>;
+  clearSession: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -297,6 +298,20 @@ export const useAuthStore = create<AuthState>((set) => ({
         error: null,
       });
     }
+  },
+
+  /*
+   * Drops the local session without calling the backend. Used after the
+   * account is already gone, where /auth/logout would only 401.
+   */
+  clearSession: async () => {
+    await tokenStorage.clearTokens();
+
+    set({
+      user: null,
+      isLoading: false,
+      error: null,
+    });
   },
 
   clearError: () => {

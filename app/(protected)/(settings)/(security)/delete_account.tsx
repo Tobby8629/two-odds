@@ -86,8 +86,8 @@ import { ThemedText } from "@/components/ThemedText";
 import Button from "@/components/Reuseables/Button";
 import { flex, flexNoJustify } from "@/constants/style";
 import Headset from "@/assets/SVGs/icons/Headset";
-import useMutate, { useMutateDelete } from "@/hooks/useMutate";
-import { RelativePathString } from "@/.expo/types/router";
+import { useMutateDelete } from "@/hooks/useMutate";
+import { useAuthStore } from "@/store/useAuthStore";
 
 type DELETE_ACCOUNT = "delete" | "exclusion";
 
@@ -180,9 +180,8 @@ const Exclusion = ({ setoption }: CompProps) => {
 };
 
 const Delete = ({ setoption }: CompProps) => {
-  const { mutateAsync } = useMutateDelete({
-    link: "/(Onboarding)/SignIn" as RelativePathString,
-  })
+  const { mutateAsync, isPending } = useMutateDelete({});
+  const clearSession = useAuthStore((state) => state.clearSession);
 
   const handleDeleteAccount = async () => {
     try {
@@ -190,8 +189,15 @@ const Delete = ({ setoption }: CompProps) => {
         url: "/auth/account",
         data: {},
       });
+
+      /*
+       * Dropping the session flips the root Stack.Protected guard, which
+       * sends the user back to the public routes on its own.
+       */
+      await clearSession();
     } catch (error) {
       console.error("Error deleting account:", error);
+      alert("We could not delete your account. Please try again.");
     }
   };
   return (
@@ -219,7 +225,7 @@ const Delete = ({ setoption }: CompProps) => {
         </ThemedText>
      
       <Button
-        text="Close Your Account"
+        text={isPending ? "Closing..." : "Close Your Account"}
         className=" w-[60%] mt-6 mx-auto"
         onPress={() => handleDeleteAccount()}
       />

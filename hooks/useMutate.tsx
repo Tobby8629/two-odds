@@ -42,7 +42,18 @@ export const useMutateDelete = ({link, params}: redirect) => {
     mutationFn: async ({ url, data }: MutateInput) => {
       const response = await deleteQuery(url, data);
       return response;
-    }
+    },
+    onSuccess: () => {
+      if (link) {
+        router.replace({
+          pathname: link,
+          params: params
+        });
+      }
+    },
+    onError: (error: any) => {
+      console.error("Delete failed:", error?.message || error);
+    },
   });
 
   return {
