@@ -1,58 +1,26 @@
-// store/useProfileStore.ts
+// store/useProfileStore.tsx
 import { create } from "zustand";
-import { UserProfile } from "@/types/profile.types";
 
+const DEFAULT_AVATAR_ID = "1";
+
+/**
+ * Avatar selection only. The backend has no avatar field, so the chosen
+ * avatar maps to a local SVG in constants/avatars and never leaves the app.
+ * Server-owned profile data lives in React Query — see hooks/useProfile.
+ *
+ * Note: this is in-memory, so the choice resets on app restart until a
+ * persistence layer (or a backend field) exists.
+ */
 interface ProfileState {
-  profile: UserProfile | null;
-  isLoading: boolean;
-  error: string | null;
-
-  // Actions
-  setProfile: (profile: UserProfile) => void;
-  updateAvatar: (avatarId: string) => void;
-  updateProfileField: (field: keyof UserProfile, value: any) => void;
-  clearProfile: () => void;
+  avatarId: string;
+  setAvatarId: (avatarId: string) => void;
+  resetAvatar: () => void;
 }
 
-// Mock profile data for development
-const MOCK_PROFILE: UserProfile = {
-  id: "1",
-  userId: "40678902",
-  firstName: "20odds",
-  lastName: "20odds",
-  email: "20odds@gmail.com",
-  phoneNumber: "08123457890",
-  address: "Lorem ipsum",
-  city: "Lorem ipsum",
-  state: "Lorem ipsum",
-  country: "Nigeria",
-  avatar: "1", // Default avatar ID
-};
-
 export const useProfileStore = create<ProfileState>((set) => ({
-  profile: MOCK_PROFILE, // Start with mock data
-  isLoading: false,
-  error: null,
+  avatarId: DEFAULT_AVATAR_ID,
 
-  // Set entire profile
-  setProfile: (profile) => set({ profile, error: null }),
+  setAvatarId: (avatarId) => set({ avatarId }),
 
-  // Update avatar (just updates local state)
-  updateAvatar: (avatarId: string) =>
-    set((state) =>
-      state.profile
-        ? { profile: { ...state.profile, avatar: avatarId } }
-        : state
-    ),
-
-  // Update any profile field
-  updateProfileField: (field, value) =>
-    set((state) =>
-      state.profile
-        ? { profile: { ...state.profile, [field]: value } }
-        : state
-    ),
-
-  // Clear profile (for logout)
-  clearProfile: () => set({ profile: null, error: null }),
+  resetAvatar: () => set({ avatarId: DEFAULT_AVATAR_ID }),
 }));

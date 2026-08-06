@@ -2,15 +2,7 @@ import axios from "axios";
 import { create } from "zustand";
 import { tokenStorage } from "@/services/tokenStorage";
 import { getRequest, publicApi } from "@/components/api/Axois";
-
-/**
- * Every endpoint wraps its payload as { success, data }, so responses are
- * unwrapped once before the contents are used.
- */
-interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-}
+import { ApiResponse } from "@/types/api.types";
 
 /** Shape returned by GET /auth/me. */
 export interface User {

@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  ActivityIndicator,
+
   Text,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,21 +15,19 @@ import { useProfileStore } from "@/store/useProfileStore";
 
 const AvatarScreen = () => {
   const router = useRouter();
-  const { profile, updateAvatar } = useProfileStore();
-  const [selectedId, setSelectedId] = useState(profile?.avatar || "1");
-  const [loading, setLoading] = useState(false);
+  const avatarId = useProfileStore((state) => state.avatarId);
+  const setAvatarId = useProfileStore((state) => state.setAvatarId);
+  const [selectedId, setSelectedId] = useState(avatarId);
 
-  const handleSave = async () => {
-    if (!selectedId || loading) return;
-    try {
-      setLoading(true);
-      await updateAvatar(selectedId);
-      router.back();
-    } catch (error) {
-      console.error("Failed to update avatar:", error);
-    } finally {
-      setLoading(false);
-    }
+  /*
+   * The avatar is a local SVG choice with no backend field, so saving is a
+   * synchronous store write — no request and no pending state.
+   */
+  const handleSave = () => {
+    if (!selectedId) return;
+
+    setAvatarId(selectedId);
+    router.back();
   };
 
   const renderAvatar = ({ item }: any) => {
@@ -67,15 +65,10 @@ const AvatarScreen = () => {
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={handleSave}
-            style={[styles.saveButton, loading && { opacity: 0.6 }]}
+            style={styles.saveButton}
             activeOpacity={0.8}
-            disabled={loading}
           >
-            {loading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text style={styles.saveText}>Save</Text>
-            )}
+            <Text style={styles.saveText}>Save</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
