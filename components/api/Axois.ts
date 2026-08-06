@@ -6,17 +6,26 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
-const API_URL =
-  "https://twoodds-backenddev.onrender.com/api/v1/";
+const API_URL = `${
+  process.env.EXPO_PUBLIC_API_URL ??
+  "https://twoodds-backenddev.onrender.com/api/v1"
+}/`;
 
 interface RetryRequestConfig
   extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
+/**
+ * The backend wraps every payload as { success, data }, so the tokens sit
+ * one level below the response body.
+ */
 interface RefreshResponse {
-  accessToken: string;
-  refreshToken?: string;
+  success: boolean;
+  data: {
+    accessToken: string;
+    refreshToken?: string;
+  };
 }
 
 const axiosInstance = axios.create({
@@ -86,7 +95,7 @@ async function refreshAccessToken(): Promise<string> {
   const {
     accessToken,
     refreshToken: rotatedRefreshToken,
-  } = response.data;
+  } = response.data.data;
 
   if (!accessToken) {
     throw new Error(
@@ -119,11 +128,6 @@ axiosInstance.interceptors.request.use(
         `Bearer ${accessToken}`
       );
     }
-
-    console.log(
-      "Authorization:",
-      config.headers.get("Authorization")
-    );
 
     return config;
   },
