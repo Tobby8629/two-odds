@@ -11,13 +11,29 @@ import Layout from "../Layout";
 import { useProfileStore } from "@/store/useProfileStore";
 import { ThemedText } from "@/components/ThemedText";
 import { UserProfile } from "@/types/profile.types";
-import { useProfile } from "@/hooks/useProfile";
+import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import ProfileField from "./ProfileField";
 import ProfileHeader from "./ProfileHeader";
 
 interface PROFILE {
   profile: UserProfile;
 }
+
+/*
+ * Mirrors the constraints PATCH /users/profile documents, so an invalid value
+ * is caught before it costs a round trip.
+ */
+const validateUsername = (value: string): string | null => {
+  if (value.length < 3) return "Username must be at least 3 characters.";
+  if (value.length > 30) return "Username must be 30 characters or fewer.";
+  return null;
+};
+
+const validateDisplayName = (value: string): string | null => {
+  if (value.length === 0) return "Display name cannot be empty.";
+  if (value.length > 50) return "Display name must be 50 characters or fewer.";
+  return null;
+};
 
 export function ProfileSection({ profile }: PROFILE) {
   const [isScrollable, setIsScrollable] = useState(false);
@@ -33,18 +49,38 @@ export function ProfileSection({ profile }: PROFILE) {
     setContentHeight(height);
   };
 
+  const { mutateAsync: updateProfile } = useUpdateProfile();
+
   /*
    * Only the fields the backend actually returns. The design also shows
    * first/last name, phone, address, city and state, but GET /users/profile
    * has no such fields, so rendering them would only ever show blanks.
+   *
+   * Username and display name are the only two PATCH accepts, so they are the
+   * only editable rows; id and email are read-only.
    */
   const Content = (
     <View
       className="bg-pry mx-4 mb-4 rounded-2xl mt-28"
     >
       <ProfileField label="User ID" value={profile.id} isFirst />
-      <ProfileField label="Username" value={profile.username} />
-      <ProfileField label="Display Name" value={profile.displayName} />
+
+      <ProfileField
+        label="Username"
+        value={profile.username}
+        onSave={(username) => updateProfile({ username })}
+        validate={validateUsername}
+        maxLength={30}
+      />
+
+      <ProfileField
+        label="Display Name"
+        value={profile.displayName}
+        onSave={(displayName) => updateProfile({ displayName })}
+        validate={validateDisplayName}
+        maxLength={50}
+      />
+
       <ProfileField label="Email" value={profile.email} />
     </View>
   );

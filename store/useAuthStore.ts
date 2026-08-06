@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { tokenStorage } from "@/services/tokenStorage";
 import { getRequest, publicApi } from "@/components/api/Axois";
 import { ApiResponse } from "@/types/api.types";
+import { useProfileStore } from "@/store/useProfileStore";
 
 /** Shape returned by GET /auth/me. */
 export interface User {
@@ -284,6 +285,12 @@ export const useAuthStore = create<AuthState>((set) => ({
     } finally {
       await tokenStorage.clearTokens();
 
+      /*
+       * The avatar is device-local, so it has to be dropped too or the next
+       * account to sign in on this device inherits it.
+       */
+      useProfileStore.getState().resetAvatar();
+
       set({
         user: null,
         isLoading: false,
@@ -298,6 +305,7 @@ export const useAuthStore = create<AuthState>((set) => ({
    */
   clearSession: async () => {
     await tokenStorage.clearTokens();
+    useProfileStore.getState().resetAvatar();
 
     set({
       user: null,
