@@ -56,6 +56,14 @@ const putRequest = <T = unknown>(
   return axiosInstance.put<T>(url, data, config);
 };
 
+const patchRequest = <T = unknown>(
+  url: string,
+  data: unknown,
+  config?: AxiosRequestConfig
+): Promise<AxiosResponse<T>> => {
+  return axiosInstance.patch<T>(url, data, config);
+};
+
 const deleteRequest = <T = unknown>(
   url: string,
   config?: AxiosRequestConfig
@@ -178,5 +186,6 @@ export {
   getRequest,
   postRequest,
   putRequest,
+  patchRequest,
   deleteRequest,
 };

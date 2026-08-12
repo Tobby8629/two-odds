@@ -106,7 +106,7 @@ type InputID = 'email' | 'password' | 'confirm_password' |
 'reset_code' | "address" | "amount" |
 "oldpassword" |
     "newpassword" |
-    "confirmpassword"
+    "confirmpassword" 
 ;
 
 interface register {

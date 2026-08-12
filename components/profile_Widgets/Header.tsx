@@ -9,8 +9,10 @@ import Withdraw from '@/assets/SVGs/profile/Withdraw'
 import { FontAwesome5 } from '@expo/vector-icons'
 
 import { router } from 'expo-router'
+import { useProfileStore } from '@/store/useProfileStore'
 
 const Header = () => {
+  const { profile } = useProfileStore();
   const [visible, setVisible] = React.useState(false);
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -20,7 +22,7 @@ const Header = () => {
       <View className={`${flex} py-4`}>
       <View className='flex-row items-center gap-2'>
           <UserLogo />
-          <Text className='text-white'>Profile ID</Text>
+          <Text className='text-white'>{profile?.displayName || "Profile ID"}</Text>
       </View>
       <Pressable onPress={()=> router.push("/(settings)")}>
         <SettingsIcon />

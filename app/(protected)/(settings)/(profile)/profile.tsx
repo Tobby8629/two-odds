@@ -34,14 +34,14 @@ export function ProfileSection({ profile }: PROFILE) {
     <View
       className="bg-pry mx-4 mb-4 rounded-2xl mt-28"
     >
-      <ProfileField label="User ID" value={profile.userId} isFirst />
-      <ProfileField label="First Name" value={profile.firstName} />
-      <ProfileField label="Last Name" value={profile.lastName} />
-      <ProfileField label="Email" value={profile.email} />
-      <ProfileField label="Phone Number" value={profile.phoneNumber} />
-      <ProfileField label="Address" value={profile.address} />
+      <ProfileField name="displayName" label="User ID" value={profile.displayName} isFirst />
+      <ProfileField name="firstName"  label="First Name" value={profile.firstName} editable={true} />
+      <ProfileField name="lastName" label="Last Name" value={profile.lastName} editable={true} />
+      <ProfileField name="email" label="Email" value={profile.email} editable={true} />
+      {/* <ProfileField label="Phone Number" value={profile.phoneNumber} />
+      {/* <ProfileField label="Address" value={profile.address} />
       <ProfileField label="City" value={profile.city} />
-      <ProfileField label="State" value={profile.state} />
+      <ProfileField label="State" value={profile.state} /> */}
     </View>
   );
 
