@@ -1,33 +1,28 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import {flexCenter } from '@/constants/style'
-import React, { use, useEffect } from 'react'
+import React from 'react'
 import Button from '@/components/Reuseables/Button'
 import Header from '@/components/profile_Widgets/Header'
 import SubHeader from '@/components/profile_Widgets/SubHeader'
 import OtherLinks from '@/components/profile_Widgets/OtherLinks'
-import useMutate from '@/hooks/useMutate'
-import { RelativePathString } from 'expo-router'
-import { useMutation } from '@tanstack/react-query'
-import { postQuery } from '@/components/api/QueryFn'
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import { useAuthStore } from '@/store/useAuthStore'
-import { tokenStorage } from '@/services/tokenStorage'
 
 const profile = () => {
-const { user, logout, isLoading} = useAuthStore();
+const { logout, isLoading} = useAuthStore();
 
-// useEffect(() => {
-//   const loadToken = async () => {
-//     const token = await tokenStorage.getAccessToken();
-//     setToken(token);
-//   };
+/*
+ * The tab bar is absolutely positioned on iOS, so the scroll view has to
+ * reserve its height or the last control - the logout button - sits underneath.
+ */
+const tabBarHeight = useBottomTabBarHeight();
 
-//   loadToken();
-// }, [user]);
-
- 
   return (
-    <ScrollView className='min-h-screen bg-[#1F5079]'>
-      <View className='bg-pry pb-20 h-full'>
+    <ScrollView
+      className='min-h-screen bg-[#1F5079]'
+      contentContainerStyle={{ paddingBottom: tabBarHeight + 24 }}
+    >
+      <View className='bg-pry h-full'>
         <Header />
         <SubHeader />
         <OtherLinks />

@@ -1,18 +1,21 @@
 import axios from "axios";
 import { create } from "zustand";
 import { tokenStorage } from "@/services/tokenStorage";
-import { axiosInstance, getRequest, publicApi } from "@/components/api/Axois";
+import { getRequest, publicApi } from "@/components/api/Axois";
+import { ApiResponse } from "@/types/api.types";
+import { useProfileStore } from "@/store/useProfileStore";
 
-// export interface UserRes {
-//   data: User;
-// }
-
-
+/** Shape returned by GET /auth/me. */
 export interface User {
   id: string;
-  name: string;
   email: string;
+  username: string;
+  displayName: string;
+  walletAddress?: string;
   role?: string;
+  isEmailVerified?: boolean;
+  isActive?: boolean;
+  isPremium?: boolean;
 }
 
 interface LoginInput {
@@ -26,27 +29,18 @@ interface RegisterInput {
   password: string;
 }
 
-interface AuthResponseData{
+interface AuthResponseData {
   user: User;
   accessToken: string;
   refreshToken: string;
 }
 
-interface AuthResponse {
- data: AuthResponseData;
-}
+type AuthResponse = ApiResponse<AuthResponseData>;
 
-interface RefreshResponse {
-  data: {
-    accessToken: string;
-    refreshToken?: string;
-  };
-}
-
-// interface RefreshResponse {
-//   accessToken: string;
-//   refreshToken?: string;
-// }
+type RefreshResponse = ApiResponse<{
+  accessToken: string;
+  refreshToken?: string;
+}>;
 
 interface AuthState {
   user: User | null;
@@ -58,16 +52,26 @@ interface AuthState {
   login: (input: LoginInput) => Promise<void>;
   register: (input: RegisterInput) => Promise<void>;
   logout: () => Promise<void>;
+  clearSession: () => Promise<void>;
   clearError: () => void;
 }
 
 function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
+    /*
+     * Failures come back as { success: false, error: { code, message } }.
+     * The flat message is kept as a fallback in case an older route or a
+     * proxy responds in the shallower shape.
+     */
     const data = error.response?.data as
-      | { message?: string }
+      | {
+          error?: { code?: string; message?: string };
+          message?: string;
+        }
       | undefined;
 
     return (
+      data?.error?.message ??
       data?.message ??
       error.message ??
       "The request could not be completed."
@@ -128,14 +132,25 @@ export const useAuthStore = create<AuthState>((set) => ({
         newRefreshToken ?? refreshToken
       );
       
-      const user = (await getRequest<User>("/auth/me", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })).data
+      const meResponse = await getRequest<ApiResponse<User>>(
+        "/auth/me",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const user = meResponse.data.data;
+
+      if (!user?.id) {
+        throw new Error(
+          "The /auth/me endpoint did not return a user."
+        );
+      }
 
       set({
-        user: user,
+        user,
         initialized: true,
         error: null,
       });
@@ -279,12 +294,33 @@ export const useAuthStore = create<AuthState>((set) => ({
     } finally {
       await tokenStorage.clearTokens();
 
+      /*
+       * The avatar is device-local, so it has to be dropped too or the next
+       * account to sign in on this device inherits it.
+       */
+      useProfileStore.getState().resetAvatar();
+
       set({
         user: null,
         isLoading: false,
         error: null,
       });
     }
+  },
+
+  /*
+   * Drops the local session without calling the backend. Used after the
+   * account is already gone, where /auth/logout would only 401.
+   */
+  clearSession: async () => {
+    await tokenStorage.clearTokens();
+    useProfileStore.getState().resetAvatar();
+
+    set({
+      user: null,
+      isLoading: false,
+      error: null,
+    });
   },
 
   clearError: () => {

@@ -7,10 +7,6 @@ import Layout from "../Layout";
 import Textinput from "@/components/Reuseables/Input/TextInput";
 import { InputID } from "@/interface";
 import useMutate from "@/hooks/useMutate";
-import { useAuthStore } from "@/store/useAuthStore";
-import { tokenStorage } from "@/services/tokenStorage";
-import { postQuery } from "@/components/api/QueryFn";
-import { postRequest } from "@/components/api/Axois";
 
 interface ChangePasswordForm {
   oldpassword: string;
@@ -46,12 +42,8 @@ export default function ChangePassword() {
   mutateAsync,
   isPending,
 } = useMutate({
-  link:
-    "(protected)/(settings)/(security)/" as RelativePathString,
+  link: "/(settings)/(security)" as RelativePathString,
 });
-
-  const  accessToken  = tokenStorage.getAccessToken()
-  // const [isPending, setIsPending] = useState(false);
 
   const handleSubmit = async () => {
   if (check) {
@@ -88,40 +80,6 @@ export default function ChangePassword() {
     );
   }
   };
-  // const handleSubmit = async () => {
-  //   if (check) {
-  //     alert("Please fill in all fields.");
-  //     return;
-  //   }
-  //   try {
-  //     if (data.newpassword !== data.confirmpassword) {
-  //       alert("New password and confirm password do not match.");
-  //       return;
-  //     }
-  //     setIsPending(true);
-
-  //     console.log("Access token before request:", accessToken);
-  //     console.log("Data being sent:", data.oldpassword);
-  //     console.log("Data being sent:", data.newpassword);
-  //     await postRequest("/auth/change-password", 
-  //       {
-  //         currentPassword: data.oldpassword,  
-  //         newPassword: data.newpassword
-  //       }, 
-  //     {
-  //     // headers: {
-  //     //   Authorization: `Bearer ${accessToken}`,
-  //     // },
-  //   })
-  //   } catch (error) {
-  //     console.error("Error changing password:", error);
-  //     alert("An error occurred while changing the password. Please try again.");
-  //   }
-  //   finally {
-  //     setIsPending(false);
-  //   }
-  // };
-
   return (
     <Layout header="Change Password">
       <View className="px-5 pt-4 mt-7">
@@ -181,18 +139,3 @@ export default function ChangePassword() {
     </Layout>
   );
 }
-
-
-
-
-
-
-
- {/* <TextInput
-            secureTextEntry
-            value={value}
-            onChangeText={(text) => handleChange(key as keyof ChangePasswordForm, text)}
-            placeholder={`Enter your ${key.replace("password", " password")}`}
-            placeholderTextColor="#ccc"
-            className="bg-[#1E3A5F] text-white rounded-xl px-4 py-3"
-          /> */}

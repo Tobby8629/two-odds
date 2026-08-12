@@ -6,6 +6,7 @@ import P2PLandingButton from '@/components/P2P/P2PLandingButton';
 import { useP2PStore } from '@/store/useP2PStore';
 import { useTabStore } from '@/store/useTabStore';
 import P2PToggle from './P2PToggle';
+import { RelativePathString, router } from 'expo-router';
 
 export default function P2PLanding() {
     const { setScreen} = useP2PStore();
@@ -13,8 +14,12 @@ export default function P2PLanding() {
     const handleFindPlayers = () => {
         setScreen('searching');
     };
-    const handleLearnMore = () => {
-        console.log('Learn More pressed')
+    /*
+     * "Learn More" had no destination and no screen exists for it, so the
+     * second button now opens the user's own P2P bets, which does.
+     */
+    const handleMyBets = () => {
+        router.push('/(p2p)/my-bets' as RelativePathString);
     };
 
   return (
@@ -54,8 +59,8 @@ export default function P2PLanding() {
             onPress={handleFindPlayers} 
           />
           <P2PLandingButton
-            text="Learn More"
-            onPress={handleLearnMore}
+            text="My P2P Bets"
+            onPress={handleMyBets}
             showArrow
           />
         </View>

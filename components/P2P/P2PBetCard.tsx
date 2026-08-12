@@ -1,153 +1,152 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { Star } from 'lucide-react-native';
-import { useP2PStore } from '@/store/useP2PStore';
+import React from "react";
+import {
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { avatarForKey } from "@/constants/avatars";
+import { formatCurrency, potentialReturn } from "@/constants/functions";
+import { Bet } from "@/types/bets.types";
 
-interface P2PBetCardProps {
-  bet: {
-    id: string;
-    playerName: string;
-    playerAvatarImage?: any;
-    rating?: number;
-    successRate: string;
-    totalBets: string;
-    preferredBets: string;
-    responseTime: string;
-    status: 'available' | 'accepted' | 'completed';
-  };
+export interface P2PBetCardProps {
+  bet: Bet;
+  /** Omitted for the user's own bets, which cannot be taken. */
+  onTake?: (bet: Bet) => void;
+  onCancel?: (bet: Bet) => void;
+  isBusy?: boolean;
 }
 
-export default function P2PBetCard({ bet }: P2PBetCardProps) {
-  const updateBetStatus = useP2PStore((state) => state.updateBetStatus);
+const STATUS_COLOURS: Record<string, string> = {
+  OPEN: "#E59A0B",
+  MATCHED: "#1c5789",
+  SETTLED_WIN: "#2E7D32",
+  SETTLED_LOSS: "#9E9E9E",
+  CANCELLED: "#9E9E9E",
+  EXPIRED: "#9E9E9E",
+  CASHED_OUT: "#2E7D32",
+};
 
-  const handlePress = () => {
-    if (bet.status === 'available') {
-      updateBetStatus(bet.id, 'accepted');
-    } else if (bet.status === 'accepted') {
-      updateBetStatus(bet.id, 'completed');
-    }
-  };
+const STATUS_LABELS: Record<string, string> = {
+  OPEN: "Waiting for Opponent",
+  MATCHED: "Matched",
+  SETTLED_WIN: "Won",
+  SETTLED_LOSS: "Lost",
+  CANCELLED: "Cancelled",
+  EXPIRED: "Expired",
+  CASHED_OUT: "Cashed Out",
+};
 
-  const getButtonLabel = () => {
-    switch (bet.status) {
-      case 'available':
-        return 'Connect';
-      case 'accepted':
-        return 'Start Bet';
-      case 'completed':
-        return 'Completed';
-      default:
-        return 'Connect';
-    }
-  };
+/** Turns { winner: "home" } into "Winner: home" without inventing labels. */
+const describePrediction = (bet: Bet) => {
+  const entries = Object.entries(bet.prediction ?? {});
 
-  const getButtonColor = () => {
-    switch (bet.status) {
-      case 'available':
-        return '#E59A0B';
-      case 'accepted':
-        return '#E59A0B';
-      case 'completed':
-        return '#9E9E9E'; // greyed out
-      default:
-        return '#E59A0B';
-    }
-  };
+  if (!entries.length) return bet.betType ?? "Custom bet";
+
+  return entries
+    .map(([key, value]) => `${key}: ${String(value)}`)
+    .join(", ");
+};
+
+const Metric = ({ label, value }: { label: string; value: string }) => (
+  <View className="flex-1">
+    <Text className="text-xs text-[#595959]">{label}</Text>
+    <Text className="text-sm text-black font-semibold">{value}</Text>
+  </View>
+);
+
+const P2PBetCard: React.FC<P2PBetCardProps> = ({
+  bet,
+  onTake,
+  onCancel,
+  isBusy,
+}) => {
+  /*
+   * The backend exposes no counterparty identity and no way to look another
+   * user up, so the avatar is derived from the bet id purely so each card has
+   * a stable face. It is not a claim about who created the bet.
+   */
+  const Avatar = avatarForKey(bet.creatorId ?? bet.id).component;
+
+  const status = bet.status ?? "OPEN";
+  const badgeColour = STATUS_COLOURS[status] ?? "#9E9E9E";
+  const currency = (bet.currency as "NGN" | "USDT") ?? "NGN";
+
+  const toWin = potentialReturn(bet.stake, bet.odds);
 
   return (
     <View
-      className="bg-[#E3F2FD] w-[330px] h-[206px] max-w-[360px] rounded-2xl shadow-md p-4 mb-4"
+      className="bg-light-blue w-[330px] max-w-[360px] rounded-2xl shadow-md p-4 mb-4"
       style={{
-        alignSelf: 'center',
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.15,
         shadowRadius: 4,
         elevation: 3,
       }}
     >
-      {/* Header Row */}
-      <View className="flex-row justify-between items-center mb-2">
-        <View className="flex-row items-center">
-          <Image
-            source={bet.playerAvatarImage || require('@/assets/images/user.png')}
-            className="w-10 h-10 rounded-full border-2 border-black mr-2"
-          />
-          <View>
-            <Text className="font-semibold text-[#000000] text-base">
-              {bet.playerName}
+      {/* Header: avatar, prediction, status */}
+      <View className="flex-row items-center justify-between mb-3">
+        <View className="flex-row items-center flex-1 mr-2">
+          <Avatar width={40} height={40} />
+
+          <View className="ml-2 flex-1">
+            <Text
+              numberOfLines={1}
+              className="text-black text-base font-semibold"
+            >
+              {describePrediction(bet)}
             </Text>
-            <View className="flex-row items-center">
-              <Star size={14} color="#FFC107" fill="#FFC107" />
-              <Text className="ml-1 text-xs text-[#000000]">
-                {bet.rating || '4.5'}
-              </Text>
-            </View>
+            <Text numberOfLines={1} className="text-xs text-[#595959]">
+              {bet.betType ?? "CUSTOM"}
+            </Text>
           </View>
         </View>
 
-        {/* Status Badge */}
         <View
-          className="px-3 py-1 rounded-full"
+          className="px-2 py-1 rounded-full"
+          style={{ backgroundColor: badgeColour }}
+        >
+          <Text className="text-white text-[10px] font-semibold">
+            {STATUS_LABELS[status] ?? status}
+          </Text>
+        </View>
+      </View>
+
+      {/* Figures */}
+      <View className="flex-row justify-between mb-4">
+        <Metric
+          label="Stake"
+          value={formatCurrency(bet.stake, currency)}
+        />
+        <Metric label="Odds" value={String(bet.odds ?? "-")} />
+        <Metric
+          label="To Win"
+          value={toWin !== null ? formatCurrency(toWin, currency) : "-"}
+        />
+      </View>
+
+      {(onTake || onCancel) && (
+        <TouchableOpacity
+          disabled={isBusy}
+          onPress={() => (onTake ? onTake(bet) : onCancel?.(bet))}
+          className="rounded-lg py-3 items-center"
           style={{
-            backgroundColor:
-              bet.status === 'completed'
-                ? '#9E9E9E'
-                : bet.status === 'accepted'
-                ? '#E59A0B'
-                : '#E59A0B',
+            backgroundColor: onTake ? "#E59A0B" : "#9E9E9E",
+            opacity: isBusy ? 0.6 : 1,
           }}
         >
-          <Text className="text-[#FFFFFF] text-xs font-medium">
-            {bet.status === 'completed'
-              ? 'Completed'
-              : bet.status === 'accepted'
-              ? 'Active'
-              : 'Online'}
-          </Text>
-        </View>
-      </View>
-
-      {/* Metrics Grid */}
-      <View className="flex-row justify-between flex-wrap mb-4">
-        <View className="w-[48%] mb-2">
-          <Text className="text-xs [#959595]-500">Success Rate</Text>
-          <Text className="text-[#00000]">{bet.successRate}</Text>
-        </View>
-        <View className="w-[48%] mb-2">
-          <Text className="text-xs [#959595]-500">Total Bets</Text>
-          <Text className="text-[#00000]">{bet.totalBets}</Text>
-        </View>
-        <View className="w-[48%] mb-2">
-          <Text className="text-xs [#959595]-500">Preferred Bets</Text>
-          <Text className="text-[#00000]">
-            {bet.preferredBets}
-          </Text>
-        </View>
-        <View className="w-[48%] mb-2">
-          <Text className="text-xs [#959595]-500">Response Time</Text>
-          <Text className="text-[#00000]">
-            {bet.responseTime}
-          </Text>
-        </View>
-      </View>
-
-      {/* CTA Button */}
-      <TouchableOpacity
-        onPress={handlePress}
-        disabled={bet.status === 'completed'}
-        style={{
-          backgroundColor: getButtonColor(),
-          opacity: bet.status === 'completed' ? 0.6 : 1,
-          borderRadius: 12,
-          paddingVertical: 12,
-          alignItems: 'center',
-        }}
-      >
-        <Text className="text-[#FFFFFF] font-semibold text-base">
-          {getButtonLabel()}
-        </Text>
-      </TouchableOpacity>
+          {isBusy ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text className="text-white font-semibold">
+              {onTake ? "Join Bet" : "Cancel Bet"}
+            </Text>
+          )}
+        </TouchableOpacity>
+      )}
     </View>
   );
-}
+};
+
+export default P2PBetCard;

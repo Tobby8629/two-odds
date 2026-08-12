@@ -15,39 +15,52 @@ import { InfoModal } from "./accountLimit/InfoModal";
 import Layout from "./Layout";
 import { Ionicons } from "@expo/vector-icons";
 import { useAccountLimitStore } from "@/store/accountLimitStore";
+import {
+  useDepositLimits,
+  useUpdateDepositLimits,
+} from "@/hooks/useDepositLimits";
+import { CURRENCY_SYMBOLS } from "@/constants/functions";
 
 export default function AccountLimitScreen() {
   const {
-    limits,
     selectedPeriod,
+    selectedCurrency,
     amount,
     setSelectedPeriod,
     setAmount,
-    setLimit,
     error,
     setError,
   } = useAccountLimitStore();
 
-  const [loading, setLoading] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
 
-  // Prefill amount when changing period
+  const { limits, isPending: isLoadingLimits } =
+    useDepositLimits(selectedCurrency);
+
+  const { mutateAsync: updateLimits, isPending: isSaving } =
+    useUpdateDepositLimits();
+
+  const symbol = CURRENCY_SYMBOLS[selectedCurrency];
+
+  /*
+   * Prefill from the saved limit whenever the period changes, and again once
+   * the limits finish loading, otherwise the first render prefills from an
+   * empty cache and the field stays blank.
+   */
   useEffect(() => {
-    if (selectedPeriod && limits[selectedPeriod] !== null) {
-      setAmount(String(limits[selectedPeriod]));
-    } else {
-      setAmount("");
-    }
-  }, [selectedPeriod]);
+    const saved = limits[selectedPeriod];
+
+    setAmount(saved !== null ? String(Number(saved)) : "");
+  }, [selectedPeriod, limits, setAmount]);
 
   const validate = () => {
-    if (!amount || Number(amount) < 5) {
-      setError("Minimum is $5");
+    if (!amount || isNaN(Number(amount))) {
+      setError("Invalid amount");
       return false;
     }
 
-    if (isNaN(Number(amount))) {
-      setError("Invalid amount");
+    if (Number(amount) < 5) {
+      setError(`Minimum is ${symbol}5`);
       return false;
     }
 
@@ -63,13 +76,20 @@ export default function AccountLimitScreen() {
   const handleSubmit = async () => {
     if (!validate()) return;
 
-    setLoading(true);
+    try {
+      /*
+       * Only the period being edited is sent. Including the others would
+       * resend stale values, and an explicit null removes a limit.
+       */
+      await updateLimits({
+        currency: selectedCurrency,
+        [selectedPeriod]: Number(amount),
+      });
 
-    setTimeout(() => {
-      setLimit(selectedPeriod, Number(amount)); // update Zustand store
-      setLoading(false);
-      setAmount(""); // reset form
-    }, 1000);
+      setError(null);
+    } catch {
+      setError("Could not update your deposit limit. Please try again.");
+    }
   };
 
   return (
@@ -145,16 +165,17 @@ export default function AccountLimitScreen() {
 
             {/* Submit Button */}
             <TouchableOpacity
-              disabled={loading}
+              disabled={isSaving || isLoadingLimits}
               onPress={handleSubmit}
               style={{
                 backgroundColor: "#FFA500",
                 borderRadius: 8,
                 paddingVertical: 12,
                 alignItems: "center",
+                opacity: isSaving || isLoadingLimits ? 0.6 : 1,
               }}
             >
-              {loading ? (
+              {isSaving ? (
                 <ActivityIndicator color="#000" />
               ) : (
                 <Text

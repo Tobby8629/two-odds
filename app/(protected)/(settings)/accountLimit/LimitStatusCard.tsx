@@ -1,18 +1,28 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, View, Text } from "react-native";
 import { useAccountLimitStore } from "@/store/accountLimitStore";
+import { useDepositLimits } from "@/hooks/useDepositLimits";
+import { formatCurrency } from "@/constants/functions";
+
 interface LimitStatusCardProps {
   onInfoPress: () => void;
 }
 
 export const LimitStatusCard: React.FC<LimitStatusCardProps> = ({ onInfoPress }) => {
-  const { limits } = useAccountLimitStore();
+  const selectedCurrency = useAccountLimitStore(
+    (state) => state.selectedCurrency
+  );
 
-  const renderLimit = (label: string, value: number | null) => (
+  const { limits, isPending, isError } =
+    useDepositLimits(selectedCurrency);
+
+  const renderLimit = (label: string, value: string | null) => (
     <View className="flex-row justify-between py-1">
       <Text className="text-black text-base font-medium">{label}</Text>
       <Text className="text-[#FFB500] text-base font-semibold">
-        {value ? `$${value.toFixed(2)}` : "No Limits"}
+        {value !== null
+          ? formatCurrency(value, selectedCurrency)
+          : "No Limits"}
       </Text>
     </View>
   );
@@ -24,8 +34,16 @@ export const LimitStatusCard: React.FC<LimitStatusCardProps> = ({ onInfoPress })
       {/* Header */}
       <View className="flex-row justify-between items-center mb-2">
         <View className="flex-row items-center space-x-1">
-          <Text className="text-black font-regular text-lg">No Active Deposit Limits</Text>
+          <Text className="text-black font-regular text-lg">
+            {isError
+              ? "Could not load deposit limits"
+              : allNull
+                ? "No Active Deposit Limits"
+                : "Active Deposit Limits"}
+          </Text>
         </View>
+
+        {isPending && <ActivityIndicator color="#FFB500" />}
       </View>
 
       {/* Limits */}

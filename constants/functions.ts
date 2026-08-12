@@ -139,8 +139,61 @@ export const verifying = (
 export const hasFalseValue = (checkvalue: verifyInt) =>  Object.values(checkvalue).some(value => value === false);
 
 
+export const CURRENCY_SYMBOLS = {
+  NGN: "₦",
+  USDT: "$",
+} as const;
+
+/**
+ * Wallet endpoints return amounts as fixed-point strings such as
+ * "50000.00000000", which cannot go straight into the UI.
+ */
+export const formatCurrency = (
+  value: string | number | null | undefined,
+  currency: keyof typeof CURRENCY_SYMBOLS = "NGN"
+) => {
+  const symbol = CURRENCY_SYMBOLS[currency];
+  const amount = Number(value ?? "");
+
+  if (value === null || value === undefined || !Number.isFinite(amount)) {
+    return `${symbol}0.00`;
+  }
+
+  return `${symbol}${amount.toLocaleString("en-NG", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+};
+
+
+/**
+ * Gross return on a bet. The bets endpoints expose no payout, potential-return
+ * or fee field at all, so this is computed on the client from the stake and
+ * odds that were submitted.
+ *
+ * Caveat: the backend never documents whether its odds are decimal
+ * (stake x odds, return includes the stake) or fractional (stake x odds is
+ * profit only). Decimal is assumed here because the spec's example odds of 2.5
+ * only makes sense that way. Confirm against a real settlement before this
+ * figure is treated as authoritative.
+ */
+export const potentialReturn = (
+  stake: number | string | null | undefined,
+  odds: number | string | null | undefined
+) => {
+  const stakeValue = Number(stake ?? "");
+  const oddsValue = Number(odds ?? "");
+
+  if (!Number.isFinite(stakeValue) || !Number.isFinite(oddsValue)) {
+    return null;
+  }
+
+  return stakeValue * oddsValue;
+};
+
+
 // utils/dateFilter.ts
-export const filterByDate = (dateFilter: "all" | "7days" | "14days" | "30days", txnDate: string) => {
+export const filterByDate =(dateFilter: "all" | "7days" | "14days" | "30days", txnDate: string) => {
   if (dateFilter === "all") return true;
 
   const now = new Date();
