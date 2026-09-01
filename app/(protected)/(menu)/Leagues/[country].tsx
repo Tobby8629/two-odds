@@ -1,20 +1,31 @@
 import { Pressable, StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import StaticLayout from '@/components/Reuseables/StaticLayout';
-import { router, useLocalSearchParams } from 'expo-router';
+import { RelativePathString, router, useLocalSearchParams } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useSport } from '@/store/useSports';
 import Layout from '../Layout';
+import { useCountryLeagues } from '@/hooks';
 
 const Country = () => {
   const { country } = useLocalSearchParams<{ country?: string }>();
-  const { menuSelectedsport, dataArry } = useSport();
-  const leagues = dataArry.find(e => e.country === country)?.leagues;
-  const update = (name: string) => {
-    router.push(`/(menu)/Leagues/matches/${name}`);
-  };
- 
+  const { menuSelectedsport } = useSport();
+
+  const {data: leagues, refetch} = useCountryLeagues(country as string, menuSelectedsport)
+  
+   const update = (name: string, id: string ) => {
+  router.push({
+    pathname: `/(menu)/Leagues/matches/${name}` as RelativePathString,
+    params: {
+      country,
+      id
+    },
+  });
+};
+  useEffect(()=>{
+    refetch()
+  },[menuSelectedsport])
 
   return (
     <StaticLayout className="!pt-0">
@@ -23,9 +34,9 @@ const Country = () => {
         handleClick={() => router.push("/(tabs)/menu")}
       >
         <View className="px-6 py-10">
-          {leagues?.map((e, idx) => (
+          {leagues?.data?.map((e, idx) => (
             <Pressable
-              onPress={() => update(e.name)}
+              onPress={() => update(e.name, e.id)}
               key={e.name}
               className={`py-5 border-b border-gray-400 flex-row items-center justify-between`}
             >

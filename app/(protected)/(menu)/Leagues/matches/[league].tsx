@@ -10,13 +10,12 @@ import interfaceSwitch from '@/components/gameInterfaces/InterfaceSwitch'
 import useBetslip from '@/store/useStore'
 import { useEffect, useState } from 'react'
 import { getMarketsBySport } from './data'
+import { useMatches } from '@/hooks'
 
 
 const league = () => {
-  const { dataArry, menuSelectedsport } = useSport()
-  const { league } = useLocalSearchParams<{ league?: string; country?: string }>()
-  const country = dataArry.find((e) => e.leagues.some((l) => l.name === league))?.country
-  // const matches = dataArry.map((e) => e.leagues).flat().find((e) => e.name === league)?.matches
+  const { menuSelectedsport } = useSport()
+  const { league, country, id } = useLocalSearchParams<{ league?: string; country?: string; id: string }>()
   const { match} = useBetslip();
   const [markets, setMarkets] = useState<BettingMarket[]>([]);
 
@@ -42,7 +41,7 @@ const league = () => {
         </View>
 
         {/* InterfaceSwitch now renders a FlatList safely inside Layout */}
-        {interfaceSwitch({ selectedsport: menuSelectedsport as sports, markets: markets, setMarkets: setMarkets })}
+        {interfaceSwitch({ markets: markets, setMarkets: setMarkets, id })}
       </Layout>
     // </StaticLayout>
   )

@@ -22,13 +22,15 @@ import P2PBetsList from "@/components/P2P/P2PBetsList";
 import { useSport } from "@/store/useSports";
 import { useFocusEffect } from "expo-router";
 import { tokenStorage } from "@/services/tokenStorage";
+import { useMatches } from "@/hooks";
+import SolidRoundSpinner from "@/components/Reuseables/SolidSpinner";
 
 export default function HomeScreen() {
   // const { match,setMatches } = useBetslip();
   const [isSticky, setIsSticky] = useState(false);
   const { activeTab, setActiveTab } = useTabStore();
   const { currentScreen } = useP2PStore();
-  const { handleSelect, dataArry, selectedsport, updateDataArry} = useSport()
+  const { handleSelect, dataArry, selectedsport} = useSport()
   useFocusEffect(
     useCallback(() => {
       handleSelect(selectedsport);
@@ -39,15 +41,21 @@ export default function HomeScreen() {
     const scrollY = e.nativeEvent.contentOffset.y;
     setIsSticky(scrollY > 520);
   };
-const match = dataArry.flatMap((e)=>e.leagues.flatMap((e)=>e.matches))
-// console.log(match)
-const combinedData: CombiSportItem[] = ["header", ...match];
+
+  const selectedleague = "cmsuhhp0k000d1fq9cdq0w0bi"
+
+  const match = useMatches(selectedleague).data?.data
+  const {isLoading} = useMatches(selectedleague)
+ 
+const combinedData: CombiSportItem[] = ["header", ...match!];
 if(activeTab === "p2p") {
   // Render P2P related components or screens
   if (currentScreen === "landing") return <P2PLanding />;
   if (currentScreen === "searching") return <P2PSearching />;
   if (currentScreen === "list") return <P2PBetsList />;
 }
+
+
 
 return (
     <FlatList<CombiSportItem>

@@ -34,7 +34,7 @@ export default function RootLayout() {
 
   const setMatches = useBetslip((state) => state.setMatches);
 
-  const dataArry = useSport((state) => state.dataArry);
+  // const dataArry = useSport((state) => state.dataArry);
 
   const user = useAuthStore((state) => state.user);
   
@@ -97,14 +97,14 @@ export default function RootLayout() {
   /*
    * Update matches whenever sports data changes.
    */
-  useEffect(() => {
-    const matches = dataArry.flatMap((sport) =>
-      sport.leagues?.flatMap((league) => league.matches ?? []) ??
-      []
-    );
+  // useEffect(() => {
+  //   const matches = dataArry.flatMap((sport) =>
+  //     sport.leagues?.flatMap((league) => league.matches ?? []) ??
+  //     []
+  //   );
 
-    setMatches(matches);
-  }, [dataArry, setMatches]);
+  //   setMatches(matches);
+  // }, [dataArry, setMatches]);
 
   /*
    * Keep showing the splash screen until:

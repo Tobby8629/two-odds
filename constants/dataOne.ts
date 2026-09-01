@@ -13,7 +13,7 @@ export interface League {
 }
 
 export interface Match {
-  id: number;
+  id: string;
   live: boolean;
   selected: {id: string, option: "Home" | "Away" | "Draw"}[];
   result: string;
@@ -265,7 +265,7 @@ export const footballData: CountryLeagues[] = [
         popular: true,
         matches: [
           {
-            id: 1,
+            id: "1",
             live: false,
             selected: [],
             result: "",
@@ -292,7 +292,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 2,
+            id: "2",            
             live: true,
             selected: [],
             result: "",
@@ -315,7 +315,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 3,
+            id: "3",           
             live: false,
             selected: [],
             result: "",
@@ -338,7 +338,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 4,
+            id: "4",
             live: false,
             selected: [],
             result: "",
@@ -361,7 +361,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 5,
+            id: "5",            
             live: false,
             selected: [],
             result: "",
@@ -384,7 +384,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 6,
+            id: "6",
             live: true,
             selected: [],
             result: "",
@@ -407,7 +407,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 7,
+            id: "7",            
             live: false,
             selected: [],
             result: "",
@@ -430,7 +430,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 8,
+            id: "8",         
             live: false,
             selected: [],
             result: "",
@@ -453,7 +453,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 9,
+            id: "9",            
             live: true,
             selected: [],
             result: "",
@@ -476,7 +476,7 @@ export const footballData: CountryLeagues[] = [
           },
 
           {
-            id: 10,
+            id: "10",
             live: false,
             selected: [],
             result: "",
@@ -514,7 +514,7 @@ export const basketballData: CountryLeagues[] = [
         popular: true,
         matches: [
           {
-            id: 101,
+            id: "101",
             live: false,
             selected: [],
             result: "",
@@ -543,7 +543,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 102,
+            id: "102",
             live: true,
             selected: [],
             result: "",
@@ -570,7 +570,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 103,
+            id: "103",
             live: false,
             selected: [],
             result: "",
@@ -595,7 +595,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 104,
+            id: "104",
             live: false,
             selected: [],
             result: "",
@@ -621,7 +621,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 105,
+            id: "105",
             live: true,
             selected: [],
             result: "",
@@ -645,7 +645,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 106,
+            id: "106",
             live: false,
             selected: [],
             result: "",
@@ -669,7 +669,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 107,
+            id: "107",
             live: false,
             selected: [],
             result: "",
@@ -693,7 +693,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 108,
+            id: "108",
             live: false,
             selected: [],
             result: "",
@@ -717,7 +717,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 109,
+            id: "109",
             live: true,
             selected: [],
             result: "",
@@ -741,7 +741,7 @@ export const basketballData: CountryLeagues[] = [
           },
 
           {
-            id: 110,
+            id: "110",
             live: false,
             selected: [],
             result: "",

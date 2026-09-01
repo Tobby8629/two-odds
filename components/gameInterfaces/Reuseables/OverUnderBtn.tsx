@@ -7,7 +7,7 @@ import React, { useEffect, useMemo } from "react";
 import GoalsDD from "./GoalsDD";
 
 interface Props {
-  match: Match;
+  match: any;
   generalGoal: string; 
 }
 

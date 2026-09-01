@@ -3,7 +3,7 @@ import { select } from './store/useStore';
 import { identity } from './node_modules/zod-to-json-schema/dist-test-v3/cjs/node_modules/zod/v3/helpers/util.d';
 import { validate } from '@/constants/data';
 import React, { Dispatch } from "react"
-import { Match } from './constants/dataOne';
+import { Match } from "@/hooks/matchInterface/matchInterface"
 
 interface validateInput {
   email?: string
@@ -23,7 +23,7 @@ interface MatchProps {
     homeOdds:string,
     awayOdds:string,
     drawOdds:string,
-    selected: {id: string, option: "Home" | "Away" | "Draw"}[],
+    selected: {id: string, option: "homeTeam" | "awayTeam" | "Draw"}[],
 }
 
 interface League {
@@ -54,15 +54,15 @@ interface MatchProps {
     homeOdds:string,
     awayOdds:string,
     drawOdds:string,
-    selected: {id: string, option: "Home" | "Away" | "Draw"}[],
+    selected: {id: string, option: "homeTeam" | "awayTeam" | "Draw"}[],
   }
 
   interface SelectedOption {
     id: string;
-    option: "Home" | "Away" | "Draw" | `Over ${string}` | `Under ${string}`;
+    option: "homeTeam" | "awayTeam" | "Draw" | `Over ${string}` | `Under ${string}`;
   }
   
-  type Option = "Home" | "Away" | "Draw" | "Over" | "Under";
+  type Option = "homeTeam" | "awayTeam" | "Draw" | "Over" | "Under";
   
   type OddsKey = 
     | "homeOdds"
@@ -72,11 +72,10 @@ interface MatchProps {
     | "underOdds";
 
   interface MatchPropsBetslip {
-  // matchID: string;
-  id: number;
-  home: string;
-  away: string;
-  selected: SelectedOption;
+    id: string;
+    match: Match;
+    matchId: string;
+    option: "homeTeam" | "awayTeam" | "Draw" | `Over ${string}` | `Under ${string}`;
 }
 
 
@@ -169,8 +168,8 @@ export interface OVERHEADER {
 }
 
 interface OVERUNDER { 
-  selectGame: (option: {id: number, option: "Home" | "Away" | "Draw"}) => void; 
-  checkSelected: (arr: {id: string, option: "Home" | "Away" | "Draw"}[], 
+  selectGame: (option: {id: number, option: "homeTeam" | "awayTeam" | "Draw"}) => void; 
+  checkSelected: (arr: {id: string, option: "homeTeam" | "awayTeam" | "Draw"}[], 
     option: string) => boolean; match: MatchProps;
 } 
 

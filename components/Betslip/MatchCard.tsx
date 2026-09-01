@@ -21,18 +21,18 @@ const MatchCard = () => {
       {selectedGames.map((e, index)=>(
         <View key={index} className={`${flex} mb-5`}>
           <View className={`${flexNoJustify} gap-3 min-w-[80%]`}>
-            <Pressable onPress={() => removeMatch(e.selected.id)}>
+            <Pressable onPress={() => removeMatch(e.id)}>
               <GoldX />
             </Pressable>
             <View className='gap-2'>
               <View className={`${flexNoJustify} gap-2`}>
                 <Ball />
-                <ThemedText className=' font-semibold !text-white text-2xl capitalize'>{e?.selected?.option}</ThemedText>
+                <ThemedText className=' font-semibold !text-white text-2xl capitalize'>{e?.option === "homeTeam" ? "Home" : e?.option === "awayTeam" ? "Away" : "Draw"}</ThemedText>
               </View>
               <View className={`${flexNoJustify} gap-1 w-full`}  >
-              <ThemedText className=' font-base text-lg'>{e.home}</ThemedText>
+              <ThemedText className=' font-base text-lg'>{e.match?.homeTeam}</ThemedText>
               <ThemedText className=' font-base text-lg'> - </ThemedText>
-              <ThemedText className=' font-base text-lg'>{e.away}</ThemedText>
+              <ThemedText className=' font-base text-lg'>{e.match?.awayTeam}</ThemedText>
               </View>
 
               <ThemedText className='capitalize pr-3'>{e.id}</ThemedText>

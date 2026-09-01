@@ -1,13 +1,16 @@
-import { Match } from '@/constants/dataOne';
+
+import { Match } from '@/hooks/matchInterface/matchInterface';
 import { MatchProps, MatchPropsBetslip } from '@/interface'
 import { useSport } from '@/store/useSports';
 import useBetslip from '@/store/useStore'
 import { router } from 'expo-router';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 interface PopularProps {
   data: Match
 }
+
 
 
 export const PopularHeader = ({
@@ -52,14 +55,28 @@ export const PopularHeader = ({
 
 
 export const MatchCard = ({ data }: PopularProps) => {
+
+  type type = "homeTeam" | "awayTeam" | "Draw";
   const { selectGame, selectedsport, selectedGames } = useSport();
   const game = data;
+  
   const Check = selectedGames.filter((e)=>e.id === data.id)
 
-  const isHomeSelected = Check?.find?.((e)=> e.selected?.option?.includes("Home"));
+  const matchWinner = game.markets.find((e)=> e.betType === "MATCH_WINNER")
+
+  const getOddsValue = (type: type) => {
+    return type === "homeTeam"
+      ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "home")
+      : type === "Draw"
+      ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "draw")
+      : matchWinner?.outcomes.find((e)=>e.prediction.winner === "away");
+  }
+  
+
+  const isHomeSelected = Check?.find?.((e)=> e.selected?.option?.includes("homeTeam"));
   const isDrawSelected = Check?.find?.((e)=> e.selected?.option?.includes("Draw"));
-  const isAwaySelected = Check?.find?.((e)=> e.selected?.option?.includes("Away"));
-  const navigateMatchDetails = (id: number) => {
+  const isAwaySelected = Check?.find?.((e)=> e.selected?.option?.includes("awayTeam"));
+  const navigateMatchDetails = (id: string) => {
     router.push(`/(match)/${id}`);
   };
 
@@ -78,12 +95,12 @@ export const MatchCard = ({ data }: PopularProps) => {
         <View className="gap-5 w-6/12">
           <View className="flex-row items-center gap-3">
             <View className="w-3 h-3 rounded-full bg-slate-500" />
-            <Text className="text-lg capitalize">{game.home}</Text>
+            <Text className="text-lg capitalize">{game.homeTeam}</Text>
           </View>
 
           <View className="flex-row items-center gap-3">
             <View className="w-3 h-3 rounded-full bg-slate-500" />
-            <Text className="text-lg capitalize">{game.away}</Text>
+            <Text className="text-lg capitalize">{game.awayTeam}</Text>
           </View>
         </View>
 
@@ -92,11 +109,11 @@ export const MatchCard = ({ data }: PopularProps) => {
 
           {/* HOME */}
           <TouchableOpacity
-            onPress={() => selectGame({ id: game.id, option: "Home" })}
+            onPress={() => selectGame({ id: game.id, option: "homeTeam" })}
             className={`${isHomeSelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">
-              {game?.odds?.home}
+              {getOddsValue("homeTeam")?.price?.toFixed(2)}
             </Text>
           </TouchableOpacity>
 
@@ -108,18 +125,18 @@ export const MatchCard = ({ data }: PopularProps) => {
               className={`${isDrawSelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
             >
               <Text className="text-lg text-black p-2 text-center">
-                {game?.odds?.draw}
+                {getOddsValue("Draw")?.price?.toFixed(2)}
               </Text>
             </TouchableOpacity>
           )}
 
           {/* AWAY */}
           <TouchableOpacity
-            onPress={() => selectGame({ id: game.id, option: "Away" })}
+            onPress={() => selectGame({ id: game.id, option: "awayTeam" })}
             className={`${isAwaySelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">
-              {game?.odds?.away}
+              {getOddsValue("awayTeam")?.price?.toFixed(2)}
             </Text>
           </TouchableOpacity>
 

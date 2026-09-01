@@ -1,210 +1,165 @@
-import { basketballData, CountryLeagues, footballData } from "@/constants/dataOne";
-import { sports as availsport, MatchPropsBetslip, sports } from "@/interface";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { create } from "zustand";
+import {
+  createJSONStorage,
+  persist,
+} from "zustand/middleware";
 
-export interface select {
-  id: number;
+import {
+  basketballData,
+  CountryLeagues,
+  footballData,
+} from "@/constants/dataOne";
+
+import { Match } from "@/hooks/matchInterface/matchInterface";
+
+import {
+  sports as AvailableSport,
+  MatchPropsBetslip,
+} from "@/interface";
+
+export interface Select {
+  id: string;
+
   option:
-    | "Home"
-    | "Away"
+    | "homeTeam"
+    | "awayTeam"
     | "Draw"
     | `Over ${string}`
     | `Under ${string}`;
+
+  match: Match;
 }
 
-
-interface USESPORTPROPS {
+interface UseSportProps {
   dataArry: CountryLeagues[];
+
   footballData: CountryLeagues[];
+
   basketballData: CountryLeagues[];
-  selectedsport: availsport | "";
-  menuSelectedsport: availsport | "";
-  selectGame: ({id, option}:select) => void;
+
+  selectedsport: string;
+
+  menuSelectedsport: string;
+
   selectedGames: MatchPropsBetslip[];
+
+  selectGame: (
+    id: string,
+    option: Select["option"],
+    match: Match
+  ) => void;
+
   removeMatch: (id: string) => void;
+
   clearBetslip: () => void;
-  updateDataArry: (sport: sports) => CountryLeagues[];
-  handleSelect: (sport: availsport | "") => void;
-  menuhandleSelect: (sport: availsport | "") => void;
-  switchAndSelect: (sport: availsport) => void;
+
+  handleSelect: (sport: string) => void;
+
+  menuhandleSelect: (sport: string) => void;
+
+  switchAndSelect: (sport: AvailableSport) => void;
 }
 
-export const useSport = create<USESPORTPROPS>((set, get) => ({
-  dataArry: footballData, 
-  footballData: footballData,
-  basketballData: basketballData,
-  selectedsport: "football",
-  selectedGames: [],
-  menuSelectedsport: "football",
+export const useSport = create<UseSportProps>()(
+  persist(
+    (set) => ({
+      dataArry: footballData,
 
-  updateDataArry: (sport: sports) => {
-    const { footballData, basketballData } = get();
-    switch (sport) {
-      case "basketball":
-        return basketballData;
+      footballData,
 
-      case "football":
-        return footballData;
+      basketballData,
 
-      default:
-        return footballData; // safe fallback
-    }
+      selectedsport: "football",
+
+      menuSelectedsport: "football",
+
+      selectedGames: [],
+
+      handleSelect: (sport) => {
+        set({
+          selectedsport: sport,
+        });
+      },
+
+      menuhandleSelect: (sport) => {
+        set({
+          menuSelectedsport: sport,
+        });
+      },
+
+      switchAndSelect: (sport) => {
+        set({
+          menuSelectedsport: sport,
+        });
+
+        router.push("/(tabs)/menu");
+      },
+
+     selectGame: (id, option, match) => {
+    set((state) => {
+      const alreadySelected = state.selectedGames.some(
+        (game) =>
+          game.matchId === id &&
+          game.option === option
+      );
+
+      if (alreadySelected) {
+        return {
+          selectedGames: state.selectedGames.filter(
+            (game) =>
+              !(
+                game.matchId === id &&
+                game.option === option
+              )
+          ),
+        };
+      }
+
+      const newSelection: MatchPropsBetslip = {
+        id: String(Date.now()),
+        matchId: id,
+        option,
+        match,
+      };
+
+      return {
+        selectedGames: [
+          ...state.selectedGames,
+          newSelection,
+        ],
+      };
+    });
   },
 
-  handleSelect: (sport: availsport | "") =>
+  removeMatch: (id) => {
     set((state) => ({
-      selectedsport: sport,
-      dataArry: state.updateDataArry(sport as sports),
-  })),
-
-  menuhandleSelect: (sport: availsport | "") =>
-    set((state) => ({
-      menuSelectedsport: sport,
-      dataArry: state.updateDataArry(sport as sports),
-    })),
-
-  switchAndSelect: (sport: availsport) => {
-    router.push("/(tabs)/menu");
-    set((state) => ({
-      menuSelectedsport: sport,
-      dataArry: state.updateDataArry(sport),
+      selectedGames: state.selectedGames.filter(
+        (game) => game.id !== id
+      ),
     }));
   },
 
-  // selectGame: ({ id, option }) =>
-  // set((state) => {
-  //   let newSelectedGames = [...state.selectedGames];
-
-  //   const updatedDataArry = state.dataArry.map((country) => ({
-  //     ...country,
-  //     leagues: country.leagues.map((league) => ({
-  //       ...league,
-  //       matches: league.matches.map((match) => {
-  //         if (match.id !== id) return match;
-
-  //         // const alreadySelected = match.selected.some(
-  //         //   (opt) => opt.option === option
-  //         // );
-
-  //         const alreadySelected = 
-
-  //         if (alreadySelected) {
-  //           // Get the option id
-  //           const optionId = match.selected.find(
-  //             (opt) => opt.option === option
-  //           )?.id;
-
-  //           // Remove from match
-  //           const newSelected = match.selected.filter(
-  //             (opt) => opt.option !== option
-  //           );
-
-  //           // Remove from selectedGames
-  //           newSelectedGames = newSelectedGames.filter(
-  //             (g) => g.selected.id !== optionId
-  //           );
-
-  //           return { ...match, selected: newSelected };
-  //         } else {
-  //           const newOption = { id: String(Date.now()), option };
-  //           const newSelected = [...match.selected, newOption];
-
-  //           // Add to selectedGames
-  //           newSelectedGames.push({
-  //             id: match.id,
-  //             home: match.home,
-  //             away: match.away,
-  //             selected: newOption,
-  //           });
-
-  //           return { ...match, selected: newSelected };
-  //         }
-  //       }),
-  //     })),
-  //   }));
-
-  //   return {
-  //     dataArry: updatedDataArry,
-  //     selectedGames: newSelectedGames,
-  //   };
-  // }),
- 
-
-
- selectGame: ({ id, option }) =>
-  set((state) => {
-    let newSelectedGames = [...state.selectedGames];
-
-    // 1. Check if already selected
-    const existing = newSelectedGames.find(
-      (g) => g.id === id && g.selected.option === option
-    );
-
-    if (existing) {
-      // REMOVE the selection
-      newSelectedGames = newSelectedGames.filter(
-        (g) => !(g.id === id && g.selected.option === option)
-      );
-
-      return { selectedGames: newSelectedGames };
-    }
-
-    // 2. Not selected yet — ADD selection
-    // We must retrieve match details (home, away) from dataArry
-    const match = state.dataArry
-      .flatMap((c) => c.leagues)
-      .flatMap((l) => l.matches)
-      .find((m) => m.id === id);
-
-    if (!match) return { selectedGames: newSelectedGames }; // failsafe
-
-    const newOption = { id: String(Date.now()), option };
-
-    newSelectedGames.push({
-      id: match.id,
-      home: match.home,
-      away: match.away,
-      selected: newOption,
-    });
-
-    return { selectedGames: newSelectedGames };
-  }),
-
-
-
-removeMatch: (id: string) =>
-  set((state) => ({
-    dataArry: state.dataArry.map((country) => ({
-      ...country,
-      leagues: country.leagues.map((league) => ({
-        ...league,
-        matches: league.matches.map((match) =>
-          match.selected.some((opt) => opt.id === id)
-            ? { ...match, selected: match.selected.filter((opt) => opt.id !== id) }
-            : match
-        ),
-      })),
-    })),
-
-    selectedGames: state.selectedGames.filter(
-      (g) => g.selected.id !== id
-    ),
-  })),
-
-
-  clearBetslip: () =>
-    set((state) => ({
-       dataArry: state.dataArry.map((country) => ({
-      ...country,
-      leagues: country.leagues.map((league) => ({
-        ...league,
-        matches: league.matches.map((e) =>
-        e.selected.length > 0 ? { ...e, selected: [] } : e
-      ),
+  clearBetslip: () => {
+    set({
       selectedGames: [],
-    })),
-  }))
-  }))
-}))
+    });
+  },
+    }),
+    {
+      name: "two-odds-sport-store",
 
+      storage: createJSONStorage(
+        () => AsyncStorage
+      ),
+
+      partialize: (state) => ({
+        selectedGames: state.selectedGames,
+        selectedsport: state.selectedsport,
+        menuSelectedsport:
+          state.menuSelectedsport,
+      }),
+    }
+  )
+);

@@ -5,6 +5,7 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import { Link, RelativePathString, router } from 'expo-router'
 import { useSport } from '@/store/useSports'
 import { CountryLeagues } from '@/interface'
+import { useSportCountries } from '@/hooks'
 
 interface TEMPLATE {
   // subHeader: 2,
@@ -31,15 +32,17 @@ export function LeagueTemplate ({ sport}: TEMPLATE) {
   }
 
   const {selectedsport, dataArry} = useSport()
+  const { data, isLoading } = useSportCountries()
 
-  const firstArr = popular(dataArry)
-  const secArr = regular(dataArry)
+
+  // const firstArr = popular(dataArry)
+  // const secArr = regular(dataArry)
   return (
     <View className='flex-1'>
-      {firstArr &&
+      {data &&
           <>
             <View className='bg-pry-light py-3 px-6 flex-row items-center justify-between'>
-              <ThemedText className='capitalize text-lg font-medium'>popular Leagues</ThemedText>
+              <ThemedText className='capitalize text-lg font-medium'>All Leagues</ThemedText>
               <View className='flex-row gap-1'>
                 {sport}
                 <ThemedText>All live</ThemedText>
@@ -47,34 +50,34 @@ export function LeagueTemplate ({ sport}: TEMPLATE) {
             </View>
           
             <View className='px-6'>
-              {firstArr.map((item, idx) => (
+              {data.data.map((item, idx) => (
                 <Pressable
-                onPress={()=>update(item.country)}
+                onPress={()=>update(item)}
                 key={idx} 
-                className={`py-5 ${idx === firstArr.length - 1 ? "" : "border-b"} border-gray-400 flex-row items-center justify-between`}
+                className={`py-5 ${idx === data.data.length - 1 ? "" : "border-b"} border-gray-400 flex-row items-center justify-between`}
                 >
-                  <ThemedText>{item.country}</ThemedText>
+                  <ThemedText>{item}</ThemedText>
                   <FontAwesome6 name="angle-right" color={"white"} />
                 </Pressable>
               ))}
             </View>
           </>
         }
-        <View className='bg-pry-light py-3 px-6 flex-row items-center justify-between'>
+        {/* <View className='bg-pry-light py-3 px-6 flex-row items-center justify-between'>
           <ThemedText className='capitalize text-lg font-medium'>All Leagues</ThemedText>
         </View>
         <View className='px-6'>
-          {secArr.map((item, idx) => (
+          {data?.data.map((item, idx) => (
             <Pressable
-            onPress={()=>update(item.country)}
+            onPress={()=>update(item)}
             key={idx} 
             className={`py-5 ${idx === dataArry.length - 1 ? "" : "border-b"} border-gray-400 flex-row items-center justify-between`}
             >
-              <ThemedText>{item.country}</ThemedText>
+              <ThemedText>{item}</ThemedText>
               <FontAwesome6 name="angle-right" color={"white"} />
             </Pressable>
           ))}
-        </View>
+        </View> */}
     </View>
   )
 }

@@ -23,7 +23,6 @@ const menu = () => {
      menuhandleSelect(menuSelectedsport)
     }, [sport, menuhandleSelect, menuSelectedsport])
   );
-
   
   return (
     <StaticLayout>

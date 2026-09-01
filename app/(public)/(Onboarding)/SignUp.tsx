@@ -76,7 +76,6 @@ const Signup = () => {
   useEffect(() => {
     if (isSuccess && data?.user?._id) {
       setUser(data.user);
-      console.log("data", data);
     }
     if (error) {
       setErr({

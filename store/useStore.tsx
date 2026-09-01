@@ -3,10 +3,30 @@ import {  Match } from "@/constants/dataOne";
 import { betProps,  MatchPropsBetslip } from "@/interface";
 import { create } from "zustand";
 import { useSport } from "./useSports";
+import { getRequest } from "@/components/api/Axois";
 
 export interface select {
   id: number,
   option: "Home" | "Away" | "Draw"
+}
+
+interface sportDetail {
+    id:string,
+    name:string,
+    slug:string,
+    isActive: boolean
+}
+
+interface sportFetch {
+  success: boolean,
+  data: sportDetail[]
+}
+
+interface sport {
+  sports: sportDetail[],
+  fetchSport: () => Promise<void>,
+  isLoading: boolean,
+  error: string | null,
 }
 
 interface Betslip {
@@ -136,5 +156,43 @@ export const useWithdrawal = create<withdrawal>((set, get)=>({
     withdrawInfo: val
   }))))
 }))
+
+
+export const useSports = create<sport>((set)=>({
+ sports: [],
+ isLoading: false,
+ error: null,
+ fetchSport: async () => {
+  set({
+    isLoading: true,
+    error: null,
+  });
+
+  try {
+    const res = await getRequest<sportFetch>("/sports");
+
+    if (!res?.data) {
+      throw new Error("Couldn't fetch sports");
+    }
+
+    set({
+      sports: res.data.data,
+      error: null,
+    });
+  } catch (error) {
+    set({
+      error:
+        error instanceof Error
+          ? error.message
+          : "Couldn't fetch sports",
+    });
+  } finally {
+    set({
+      isLoading: false,
+    });
+  }
+},
+}))
+
 
 export default useBetslip;
