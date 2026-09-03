@@ -1,10 +1,9 @@
 import { View, Pressable } from "react-native";
 import { flex } from "@/constants/style";
 import { ThemedText } from "@/components/ThemedText";
-import { Match } from "@/constants/dataOne";
-import { useSport } from "@/store/useSports";
 import React, { useEffect, useMemo } from "react";
 import GoalsDD from "./GoalsDD";
+import { useSport } from "@/store/useStore";
 
 interface Props {
   match: any;
@@ -32,7 +31,7 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
 
   // --------- GET CURRENT LINE DATA ----------
   const selectedLineData = useMemo(() => {
-    return overUnder.find(g => g.line === value);
+    return overUnder.find(( g) => g.line === value);
   }, [value, match.id]);
 
   const line = selectedLineData?.line;
@@ -43,8 +42,8 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
   // --------- CHECK SELECTED ----------
   const matchSelected = selectedGames?.filter(g => g.id === match.id);
 
-  const checkOver = matchSelected?.some((e)=> e.selected?.option === `Over ${line}`);
-  const checkUnder = matchSelected?.some((e)=> e.selected?.option === `Under ${line}`);
+  const checkOver = matchSelected?.some((e)=> e.option === `Over ${line}`);
+  const checkUnder = matchSelected?.some((e)=> e.option === `Under ${line}`);
 
   // --------- HANDLE SELECT LINE ----------
   const updateGoalSelection = (line: string) => {
@@ -64,7 +63,7 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
 
       {/* Over Button */}
       <Pressable
-        onPress={() => selectGame({ id: match.id, option: `Over ${line}` })}
+        onPress={() => selectGame( match.id,  `Over ${line}`, match )}
         className={`${checkOver ? "bg-sec" : "bg-cus-purple"} px-3 py-3 rounded-xl`}
       >
         <ThemedText className="text-center text-black">{over}</ThemedText>
@@ -72,7 +71,7 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
 
       {/* Under Button */}
       <Pressable
-        onPress={() => selectGame({ id: match.id, option: `Under ${line}` })}
+        onPress={() => selectGame( match.id,  `Under ${line}`, match )}
         className={`${checkUnder ? "bg-sec" : "bg-cus-purple"} px-3 py-3 rounded-xl`}
       >
         <ThemedText className="text-center text-black">{under}</ThemedText>

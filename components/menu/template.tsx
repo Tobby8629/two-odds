@@ -31,7 +31,6 @@ export function LeagueTemplate ({ sport}: TEMPLATE) {
     return list
   }
 
-  const {selectedsport, dataArry} = useSport()
   const { data, isLoading } = useSportCountries()
 
 

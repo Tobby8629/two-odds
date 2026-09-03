@@ -4,7 +4,6 @@ import { FontAwesome6 } from '@expo/vector-icons'
 import MatchMore from '@/assets/SVGs/match/MatchMore'
 import { ThemedText } from '@/components/ThemedText'
 import Button from '@/components/Reuseables/Button'
-import { useSport } from '@/store/useSports'
 import { sports } from '@/interface'
 import Template from '@/components/Match/reuseables/Template'
 import { router } from 'expo-router'
@@ -13,6 +12,7 @@ import { Animated, Dimensions } from "react-native";
 import { useEffect, useRef } from "react";
 import Statistics from '@/components/Match/Football/Statistics'
 import Bar from '@/assets/SVGs/Bar'
+import { useSport } from '@/store/useStore'
 
 
 
