@@ -41,7 +41,7 @@ type Status = "UPCOMING" | "LIVE" | "FINISHED" | "POSTPONED";
 
 
 
-export const useSport = () => {
+export const useSportFetch = () => {
   return useQuery({
     queryKey: ["sportsFetch"],
     queryFn: () => getQuery<fetch<sportDetail>>('/sports'),
@@ -64,11 +64,6 @@ export const useCountryLeagues = (country: string, sportId: string) => {
      staleTime: 5 * 60 * 1000, 
   })
 } 
-
-
-
-
-
 
 
 export const useMatches = ( leagueId: string, status?: Status) => {

@@ -3,9 +3,9 @@ import React, { ReactNode } from 'react'
 import { ThemedText } from '../ThemedText'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { Link, RelativePathString, router } from 'expo-router'
-import { useSport } from '@/store/useSports'
 import { CountryLeagues } from '@/interface'
 import { useSportCountries } from '@/hooks'
+import { useSport } from '@/store/useStore'
 
 interface TEMPLATE {
   // subHeader: 2,

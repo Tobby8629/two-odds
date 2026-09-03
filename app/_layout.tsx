@@ -15,9 +15,6 @@ import "../global.css";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuthStore } from "@/store/useAuthStore";
-import { useSport } from "@/store/useSports";
-import useBetslip from "@/store/useStore";
-
 import { UserProvider } from "./(public)/(Onboarding)/OnboardContext";
 import SplashScreen from "./SplashScreen";
 
@@ -32,7 +29,7 @@ export default function RootLayout() {
 
   const [showSplash, setShowSplash] = useState(true);
 
-  const setMatches = useBetslip((state) => state.setMatches);
+  // const setMatches = useBetslip ((state) => state.setMatches);
 
   // const dataArry = useSport((state) => state.dataArry);
 

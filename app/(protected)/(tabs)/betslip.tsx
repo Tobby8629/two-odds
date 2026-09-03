@@ -4,14 +4,14 @@ import { flex, flexNoJustify } from '@/constants/style';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Dropdown, { ItemProp } from '@/components/Reuseables/dropdown';
 import  { useState } from 'react';
-import useBetslip from '@/store/useStore';
 import EmptyState from '@/components/Reuseables/EmptyState';
 import AnimatedPopup from '@/components/Reuseables/Animations/Popup';
 import MatchCard from '@/components/Betslip/MatchCard';
 import Footer from '@/components/Betslip/Footer';
 import PopupD from '@/components/Betslip/PopupD';
 import Error from '@/components/Reuseables/Error';
-import { useSport } from '@/store/useSports';
+import { useSport } from '@/store/useStore';
+
 
 export default function TabTwoScreen() {
  

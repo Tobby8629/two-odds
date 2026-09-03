@@ -2,13 +2,14 @@ import { BettingMarket, sports } from "@/interface";
 import BasketBall from "./BasketBall";
 import AmericaFootball from "./AmericaFootball";
 import Football from "./Football";
-import { useSport } from "@/store/useSports";
+
 import { SportId } from "@/hooks/idCheck";
 import { useMatches } from "@/hooks";
 import SolidRoundSpinner from "../Reuseables/SolidSpinner";
 import { Match as Matchh } from "@/constants/dataOne";
 import { useEffect } from "react";
 import { Match } from "@/hooks/matchInterface/matchInterface";
+import { useSport } from "@/store/useStore";
 
 
 interface InterfaceSwitchProps {

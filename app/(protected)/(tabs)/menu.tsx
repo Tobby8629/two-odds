@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native'
 import Head from '@/components/Home/Head'
 import Sport from '@/components/Home/Sport'
 import { useCallback } from 'react'
-import { useSport } from '@/store/useSports'
 import {  useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { LeagueTemplate } from '@/components/menu/template'
 import { FontAwesome6 } from '@expo/vector-icons'
@@ -10,6 +9,7 @@ import { logo } from '@/constants/functions'
 import { updateDataArry } from '@/constants/dataOne'
 import { sports } from '@/interface'
 import StaticLayout from '@/components/Reuseables/StaticLayout'
+import { useSport } from '@/store/useStore'
 
 const menu = () => {
   const { menuhandleSelect, menuSelectedsport} = useSport();

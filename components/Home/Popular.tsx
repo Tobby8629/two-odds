@@ -1,8 +1,7 @@
 
 import { Match } from '@/hooks/matchInterface/matchInterface';
 import { MatchProps, MatchPropsBetslip } from '@/interface'
-import { useSport } from '@/store/useSports';
-import useBetslip from '@/store/useStore'
+import { useSport } from '@/store/useStore';
 import { router } from 'expo-router';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
@@ -73,9 +72,9 @@ export const MatchCard = ({ data }: PopularProps) => {
   }
   
 
-  const isHomeSelected = Check?.find?.((e)=> e.selected?.option?.includes("homeTeam"));
-  const isDrawSelected = Check?.find?.((e)=> e.selected?.option?.includes("Draw"));
-  const isAwaySelected = Check?.find?.((e)=> e.selected?.option?.includes("awayTeam"));
+  const isHomeSelected = Check?.find?.((e)=> e?.option?.includes("homeTeam"));
+  const isDrawSelected = Check?.find?.((e)=> e?.option?.includes("Draw"));
+  const isAwaySelected = Check?.find?.((e)=> e?.option?.includes("awayTeam"));
   const navigateMatchDetails = (id: string) => {
     router.push(`/(match)/${id}`);
   };
@@ -109,7 +108,7 @@ export const MatchCard = ({ data }: PopularProps) => {
 
           {/* HOME */}
           <TouchableOpacity
-            onPress={() => selectGame({ id: game.id, option: "homeTeam" })}
+            onPress={() => selectGame( game.id,"homeTeam",game )}
             className={`${isHomeSelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">
@@ -121,7 +120,7 @@ export const MatchCard = ({ data }: PopularProps) => {
           {/* DRAW — only for 3-way sports */}
           {isThreeWay && (
             <TouchableOpacity
-              onPress={() => selectGame({ id: game.id, option: "Draw" })}
+              onPress={() => selectGame(game.id, "Draw", game)}
               className={`${isDrawSelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
             >
               <Text className="text-lg text-black p-2 text-center">
@@ -132,7 +131,7 @@ export const MatchCard = ({ data }: PopularProps) => {
 
           {/* AWAY */}
           <TouchableOpacity
-            onPress={() => selectGame({ id: game.id, option: "awayTeam" })}
+            onPress={() => selectGame( game.id,"awayTeam",game )}
             className={`${isAwaySelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">

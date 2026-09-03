@@ -4,9 +4,9 @@ import StaticLayout from '@/components/Reuseables/StaticLayout';
 import { RelativePathString, router, useLocalSearchParams } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { useSport } from '@/store/useSports';
 import Layout from '../Layout';
 import { useCountryLeagues } from '@/hooks';
+import { useSport } from '@/store/useStore';
 
 const Country = () => {
   const { country } = useLocalSearchParams<{ country?: string }>();

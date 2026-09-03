@@ -11,7 +11,6 @@ import Quickpick from "@/components/Home/Quickpick";
 import LiveBets from "@/components/Home/LiveBets";
 import { MatchCard, PopularHeader } from "@/components/Home/Popular";
 import WithdrawModal from "@/components/Home/WithdrawModal";
-import useBetslip from "@/store/useStore";
 import { CombinedItem, CombiSportItem, MatchProps } from "@/interface";
 import { useTabStore } from "@/store/useTabStore";
 import { useP2PStore } from "@/store/useP2PStore";
@@ -19,14 +18,11 @@ import P2PToggle from "@/components/P2P/P2PToggle";
 import P2PLanding from "@/components/P2P/P2PLanding";
 import P2PSearching from "@/components/P2P/P2PSearching";
 import P2PBetsList from "@/components/P2P/P2PBetsList";
-import { useSport } from "@/store/useSports";
 import { useFocusEffect } from "expo-router";
-import { tokenStorage } from "@/services/tokenStorage";
 import { useMatches } from "@/hooks";
-import SolidRoundSpinner from "@/components/Reuseables/SolidSpinner";
+import { useSport } from "@/store/useStore";
 
 export default function HomeScreen() {
-  // const { match,setMatches } = useBetslip();
   const [isSticky, setIsSticky] = useState(false);
   const { activeTab, setActiveTab } = useTabStore();
   const { currentScreen } = useP2PStore();

@@ -1,22 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native'
 import Layout from '../../Layout'
 import { router, useLocalSearchParams } from 'expo-router'
-import { useSport } from '@/store/useSports'
 import { ThemedText } from '@/components/ThemedText'
 import { FontAwesome6 } from '@expo/vector-icons'
 import { logo } from '@/constants/functions'
 import { BettingMarket, MatchProps, sports } from '@/interface'
 import interfaceSwitch from '@/components/gameInterfaces/InterfaceSwitch'
-import useBetslip from '@/store/useStore'
+
 import { useEffect, useState } from 'react'
 import { getMarketsBySport } from './data'
-import { useMatches } from '@/hooks'
+import { useSport } from '@/store/useStore'
 
 
 const league = () => {
   const { menuSelectedsport } = useSport()
   const { league, country, id } = useLocalSearchParams<{ league?: string; country?: string; id: string }>()
-  const { match} = useBetslip();
+  // const { match} = useBetslip();
   const [markets, setMarkets] = useState<BettingMarket[]>([]);
 
   useEffect(() => {

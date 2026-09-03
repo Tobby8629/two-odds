@@ -1,15 +1,16 @@
 import { ThemedText } from "@/components/ThemedText";
-import { Select, useSport } from "@/store/useSports";
 import { Pressable } from "react-native";
 import React from "react";
 import { Match } from "@/hooks/matchInterface/matchInterface";
+import { useSport } from "@/store/useStore";
+import { SelectedOption } from "@/interface";
 
 
 interface Props {
   match: Match;
   type: "homeTeam" | "awayTeam" | "Draw";
   className?: string;
-  selectGame: (id: string, option: Select['option'], match: Match) => void;
+  selectGame: (id: string, option: SelectedOption['option'], match: Match) => void;
 }
 
 const OddsButton = ({ match, type, selectGame, className }: Props) => {

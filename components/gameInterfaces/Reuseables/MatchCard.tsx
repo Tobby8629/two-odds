@@ -4,8 +4,9 @@ import OverUnderButtons from "./OverUnderBtn";
 import OddsButton from "./OddsBTN";
 import { ThemedText } from "@/components/ThemedText";
 import { BettingMarket} from "@/interface";
-import { useSport } from "@/store/useSports";
+
 import { Match } from "@/hooks/matchInterface/matchInterface";
+import { useSport } from "@/store/useStore";
 
 
 interface Props {

@@ -61,10 +61,8 @@ import {
   Text,
   View,
 } from "react-native";
-import { sports as availsport } from "@/interface";
-import { useSports } from "@/store/useStore";
 import SolidRoundSpinner from "../Reuseables/SolidSpinner";
-import { useSport } from "@/hooks";
+import { useSportFetch } from "@/hooks";
 
 interface ctrl {
   handlePress: (sport: string) => void;
@@ -72,7 +70,7 @@ interface ctrl {
 }
 
 const Sport = ({ handlePress, selectSport }: ctrl) => {
-const { data: sports , isLoading, error } = useSport()
+const { data: sports , isLoading, error } = useSportFetch()
 
 
   if (isLoading) {
