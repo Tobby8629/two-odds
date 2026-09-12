@@ -19,6 +19,8 @@ interface FieldProps {
   inputHeight?: number;
   gap?: number;
   className?: string;
+  /** Android tints autofilled fields yellow; off by default here. */
+  autoFill?: boolean;
 }
 
 const Field = ({
@@ -36,6 +38,7 @@ const Field = ({
   inputHeight,
   gap = 7,
   className,
+  autoFill = false,
 }: FieldProps) => {
   const outline = variant === "outline";
   const height = inputHeight ?? (multiline ? 74 : 44);
@@ -56,6 +59,9 @@ const Field = ({
         maxLength={maxLength}
         multiline={multiline}
         autoCapitalize={keyboardType === "email-address" ? "none" : "sentences"}
+        autoComplete={autoFill ? undefined : "off"}
+        importantForAutofill={autoFill ? "auto" : "no"}
+        selectionColor="#0A3A5C"
         className={`rounded-md px-3 ${outline ? "text-white" : "bg-white text-black"}`}
         style={{
           height,
