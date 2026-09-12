@@ -1,6 +1,5 @@
 import React from "react";
 import { Pressable, Text, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import Field from "./Field";
 import UploadBox from "./UploadBox";
 import { useKycFormStore } from "@/store/kycFormStore";
@@ -38,7 +37,7 @@ const TypeChooser = () => {
               borderColor: selected ? "#FFA500" : "transparent",
             }}
           >
-            <MaterialIcons name={option.icon} size={22} color="#0A3A5C" />
+            <option.icon />
 
             <View className="flex-1 ml-3">
               <Text className="text-black text-sm font-semibold">
