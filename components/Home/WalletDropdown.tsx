@@ -12,8 +12,16 @@ import { useProfile } from "@/hooks/useProfile";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import { WalletCurrency } from "@/types/wallet.types";
 
+export interface WalletAnchor {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 interface WalletDropdownProps {
-  visible: boolean;
+  /** Screen position of the wallet icon; null keeps the preview closed. */
+  anchor: WalletAnchor | null;
   onClose: () => void;
 }
 
@@ -22,7 +30,7 @@ const CURRENCY_LABELS: Record<WalletCurrency, string> = {
   USDT: "USD",
 };
 
-const WalletDropdown = ({ visible, onClose }: WalletDropdownProps) => {
+const WalletDropdown = ({ anchor, onClose }: WalletDropdownProps) => {
   const [showBalance, setShowBalance] = useState(true);
   const [currency, setCurrency] = useState<WalletCurrency>("NGN");
 
@@ -36,19 +44,28 @@ const WalletDropdown = ({ visible, onClose }: WalletDropdownProps) => {
     ? "Unavailable"
     : formatCurrency(amount, currency);
 
+  const cardTop = (anchor?.y ?? 0) + (anchor?.height ?? 0) + 12;
+  const tailLeft = (anchor?.x ?? 0) + (anchor?.width ?? 0) / 2 - 11;
+
   const go = (path: "/(transactions)/deposit" | "/(transactions)/withdraw") => {
     onClose();
     router.push(path);
   };
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal visible={Boolean(anchor)} transparent animationType="fade" onRequestClose={onClose}>
       {/* Tapping anywhere outside dismisses the preview. */}
       <Pressable style={styles.backdrop} onPress={onClose}>
         {/* Speech-bubble tail pointing back at the wallet icon. */}
-        <View pointerEvents="none" style={styles.tail} />
+        <View
+          pointerEvents="none"
+          style={[styles.tail, { top: cardTop - 13, left: tailLeft }]}
+        />
 
-        <Pressable style={styles.card} onPress={(e) => e.stopPropagation()}>
+        <Pressable
+          style={[styles.card, { top: cardTop }]}
+          onPress={(e) => e.stopPropagation()}
+        >
           <View pointerEvents="none" style={styles.logo}>
             <WalletLogo width={150} height={148} opacity={0.9} />
           </View>
@@ -135,7 +152,6 @@ const styles = StyleSheet.create({
   },
   card: {
     position: "absolute",
-    top: 92,
     left: 16,
     right: 16,
     backgroundColor: "#001C34",
@@ -153,8 +169,6 @@ const styles = StyleSheet.create({
   },
   tail: {
     position: "absolute",
-    top: 78,
-    right: 30,
     width: 0,
     height: 0,
     borderLeftWidth: 11,

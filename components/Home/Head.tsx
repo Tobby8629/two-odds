@@ -1,13 +1,21 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import SmallLogo from '@/assets/SVGs/SmallLogo'
 import { Link } from 'expo-router'
 import WalletProfile from '@/assets/SVGs/WalletProfile'
 import { flex, flexCenter } from '@/constants/style'
-import WalletDropdown from './WalletDropdown'
+import WalletDropdown, { WalletAnchor } from './WalletDropdown'
 
 const Head = () => {
-  const [walletOpen, setWalletOpen] = useState(false)
+  const [anchor, setAnchor] = useState<WalletAnchor | null>(null)
+  const walletRef = useRef<View>(null)
+
+  /* Measure the icon so the preview can sit directly beneath it. */
+  const openWallet = () => {
+    walletRef.current?.measureInWindow((x, y, width, height) => {
+      setAnchor({ x, y, width, height })
+    })
+  }
 
   return (
     <>
@@ -22,17 +30,15 @@ const Head = () => {
 
         {/* Opens the balance preview rather than navigating away. */}
         <Pressable
-          onPress={() => setWalletOpen(true)}
+          ref={walletRef}
+          onPress={openWallet}
           className={`${flexCenter} bg-white w-[35] h-[35] rounded-full py-1`}
         >
           <WalletProfile width={25} height={25} />
         </Pressable>
       </View>
 
-      <WalletDropdown
-        visible={walletOpen}
-        onClose={() => setWalletOpen(false)}
-      />
+      <WalletDropdown anchor={anchor} onClose={() => setAnchor(null)} />
     </>
   )
 }
