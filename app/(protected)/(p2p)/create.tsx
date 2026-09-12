@@ -25,6 +25,12 @@ import { Match, MarketOutcome } from "@/types/sports.types";
 const FIELD_WIDTH = 358;
 
 /* Local sport names differ from the provider's, so match them loosely. */
+const PLACEHOLDER_PREDICTIONS = [
+  "Team A to Win",
+  "Team B to Win",
+  "Draw",
+];
+
 const SPORT_ALIASES: Record<string, string[]> = {
   football: ["football", "soccer"],
   basketball: ["basketball"],
@@ -78,6 +84,8 @@ export default function CreateP2PBetScreen() {
       return aliases.some((a) => name.includes(a));
     });
   }, [matches, sport]);
+
+  const hasOdds = Boolean(match && market && market.outcomes.length);
 
   const selectedOutcome =
     outcomeIndex !== null ? market?.outcomes?.[outcomeIndex] : undefined;
@@ -149,21 +157,15 @@ export default function CreateP2PBetScreen() {
 
           <Text style={styles.sectionLabel}>Your Prediction</Text>
 
-          {!match ? (
-            <Text style={styles.hint}>Choose a match to see its odds.</Text>
-          ) : !market || !market.outcomes.length ? (
-            <Text style={styles.hint}>
-              Odds have not synced for this match yet.
-            </Text>
-          ) : (
-            market.outcomes.map((outcome, i) => (
+          {hasOdds ? (
+            market!.outcomes.map((outcome, i) => (
               <Pressable
                 key={i}
                 onPress={() => setOutcomeIndex(i)}
                 style={[styles.field, styles.row]}
               >
                 <Text numberOfLines={1} style={styles.value}>
-                  {outcomeLabel(match, outcome)}
+                  {outcomeLabel(match!, outcome)}
                 </Text>
 
                 <View style={styles.rowEnd}>
@@ -177,6 +179,24 @@ export default function CreateP2PBetScreen() {
                 </View>
               </Pressable>
             ))
+          ) : (
+            <>
+              {/* Inert rows so the layout reads the same before odds load. */}
+              {PLACEHOLDER_PREDICTIONS.map((label) => (
+                <View key={label} style={[styles.field, styles.row]}>
+                  <Text numberOfLines={1} style={styles.placeholder}>
+                    {label}
+                  </Text>
+                  <View style={styles.radio} />
+                </View>
+              ))}
+
+              <Text style={styles.hint}>
+                {match
+                  ? "Odds have not synced for this match yet."
+                  : "Choose a match to load its odds."}
+              </Text>
+            </>
           )}
 
           <Text style={styles.sectionLabel}>Stake</Text>
