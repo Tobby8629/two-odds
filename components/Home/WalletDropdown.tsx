@@ -76,12 +76,12 @@ const WalletDropdown = ({ anchor, onClose }: WalletDropdownProps) => {
                 onPress={() =>
                   setCurrency((c) => (c === "NGN" ? "USDT" : "NGN"))
                 }
-                className="flex-row items-center bg-white/10 rounded-md px-2 py-1"
+                className="flex-row items-center bg-white rounded-md px-2 py-1"
               >
-                <Text className="text-white text-xs mr-1">
+                <Text className="text-black text-xs italic font-semibold mr-1">
                   {CURRENCY_LABELS[currency]}
                 </Text>
-                <Ionicons name="chevron-down" size={12} color="#FFFFFF" />
+                <Ionicons name="chevron-down" size={12} color="#000000" />
               </Pressable>
 
               <Pressable onPress={() => setShowBalance((v) => !v)}>
@@ -180,8 +180,8 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    marginTop: 4,
-    backgroundColor: "#0B3253",
+    marginTop: 22,
+    backgroundColor: "#FFFFFF",
   },
   betIdBar: {
     backgroundColor: "#000000",
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   pillOutlined: {
     borderWidth: 1,
-    borderColor: "#FFFFFF",
+    borderColor: "#000000",
   },
   pillTextDark: {
     color: "#000000",
