@@ -44,7 +44,7 @@ const WalletDropdown = ({ anchor, onClose }: WalletDropdownProps) => {
     ? "Unavailable"
     : formatCurrency(amount, currency);
 
-  const cardTop = (anchor?.y ?? 0) + (anchor?.height ?? 0) + 12;
+  const cardTop = (anchor?.y ?? 0) + (anchor?.height ?? 0) + 24;
   const tailLeft = (anchor?.x ?? 0) + (anchor?.width ?? 0) / 2 - 11;
 
   const go = (path: "/(transactions)/deposit" | "/(transactions)/withdraw") => {
@@ -108,7 +108,7 @@ const WalletDropdown = ({ anchor, onClose }: WalletDropdownProps) => {
 
             <View style={styles.divider} />
 
-            <View className={`${flexNoJustify} gap-4 mt-4 mb-4`}>
+            <View className={`${flex} mt-4 mb-4`}>
               <Pressable
                 onPress={() => go("/(transactions)/deposit")}
                 style={[styles.pill, styles.pillFilled]}
