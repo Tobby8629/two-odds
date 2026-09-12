@@ -1,6 +1,17 @@
 import { useCallback } from "react";
 import { Alert } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+
+/*
+ * Loaded defensively so the app still runs on a dev client built before
+ * expo-image-picker was added. Remove the guard once everyone has rebuilt.
+ */
+let ImagePicker: typeof import("expo-image-picker") | null = null;
+
+try {
+  ImagePicker = require("expo-image-picker");
+} catch {
+  ImagePicker = null;
+}
 
 export interface PickedImage {
   uri: string;
@@ -10,9 +21,20 @@ export interface PickedImage {
 /** Keeps a base64 selfie small enough to post as JSON. */
 const QUALITY = 0.6;
 
+const warnMissing = () =>
+  Alert.alert(
+    "Rebuild required",
+    "Photo uploads need a new build of the app. Run: npx expo install expo-image-picker, then rebuild the dev client."
+  );
+
 export const useImagePicker = () => {
   const pickFromLibrary = useCallback(
     async (withBase64 = false): Promise<PickedImage | null> => {
+      if (!ImagePicker) {
+        warnMissing();
+        return null;
+      }
+
       const permission =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -40,6 +62,11 @@ export const useImagePicker = () => {
 
   const takePhoto = useCallback(
     async (withBase64 = false): Promise<PickedImage | null> => {
+      if (!ImagePicker) {
+        warnMissing();
+        return null;
+      }
+
       const permission = await ImagePicker.requestCameraPermissionsAsync();
 
       if (!permission.granted) {
