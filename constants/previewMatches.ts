@@ -20,6 +20,7 @@ export const previewMatches: Match[] = footballData
           id: league.name,
           name: league.name,
           country: country.country,
+          sport: { id: "football", name: "Football" },
         },
         markets: [
           {

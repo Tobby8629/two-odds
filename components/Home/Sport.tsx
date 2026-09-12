@@ -6,9 +6,11 @@ import { sports as availsport } from '@/interface';
 interface ctrl {
   handlePress: (sport: availsport) => void
   selectSport: string
+  /** Defaults to the home heading. */
+  title?: string
 }
 
-const Sport = ({handlePress, selectSport}: ctrl) => {
+const Sport = ({handlePress, selectSport, title = "Sports"}: ctrl) => {
 
   return (
     <View className="py-5">

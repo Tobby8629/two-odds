@@ -15,11 +15,23 @@ import { router } from "expo-router";
 import Layout from "../(settings)/Layout";
 import Loading from "@/components/Reuseables/Loading";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
-import { useMatches, useSports } from "@/hooks/useMatches";
+import { useMatches } from "@/hooks/useMatches";
+import Sport from "@/components/Home/Sport";
+import { previewMatches } from "@/constants/previewMatches";
+import { sports as SportName } from "@/interface";
 import { useCreateCustomBet } from "@/hooks/useBets";
 import { Match, MarketOutcome } from "@/types/sports.types";
 
 const FIELD_WIDTH = 358;
+
+/* Local sport names differ from the provider's, so match them loosely. */
+const SPORT_ALIASES: Record<string, string[]> = {
+  football: ["football", "soccer"],
+  basketball: ["basketball"],
+  tennis: ["tennis"],
+  volleyball: ["volleyball"],
+  americafootball: ["american", "nfl"],
+};
 
 /** Turns { winner: "home" } into a readable row label. */
 const outcomeLabel = (match: Match, outcome: MarketOutcome) => {
@@ -33,14 +45,13 @@ const outcomeLabel = (match: Match, outcome: MarketOutcome) => {
 };
 
 export default function CreateP2PBetScreen() {
-  const [sportId, setSportId] = useState<string | undefined>();
+  const [sport, setSport] = useState<SportName | "">("");
   const [match, setMatch] = useState<Match | null>(null);
   const [outcomeIndex, setOutcomeIndex] = useState<number | null>(null);
   const [stake, setStake] = useState("");
   const [pickerOpen, setPickerOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { data: sports } = useSports();
   const { data: matches, isPending: loadingMatches } = useMatches({
     status: "UPCOMING",
     limit: 50,
@@ -55,11 +66,18 @@ export default function CreateP2PBetScreen() {
   );
 
   const visibleMatches = useMemo(() => {
-    if (!matches) return [];
-    if (!sportId) return matches;
+    /* TEMP: local fixtures until the sports API returns matches. */
+    const source = matches && matches.length ? matches : previewMatches;
 
-    return matches.filter((m) => m.league?.sport?.id === sportId);
-  }, [matches, sportId]);
+    if (!sport) return source;
+
+    const aliases = SPORT_ALIASES[sport] ?? [sport];
+
+    return source.filter((m) => {
+      const name = (m.league?.sport?.name ?? "").toLowerCase();
+      return aliases.some((a) => name.includes(a));
+    });
+  }, [matches, sport]);
 
   const selectedOutcome =
     outcomeIndex !== null ? market?.outcomes?.[outcomeIndex] : undefined;
@@ -106,36 +124,15 @@ export default function CreateP2PBetScreen() {
           contentContainerStyle={styles.page}
           showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.sectionLabel}>Select Sport</Text>
-
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={{ marginBottom: 8 }}
-          >
-            {(sports ?? []).map((sport) => {
-              const active = sport.id === sportId;
-
-              return (
-                <Pressable
-                  key={sport.id}
-                  onPress={() => {
-                    setSportId(active ? undefined : sport.id);
-                    setMatch(null);
-                    setOutcomeIndex(null);
-                  }}
-                  style={[styles.sportChip, active ? styles.sportChipOn : null]}
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={active ? styles.sportTextOn : styles.sportText}
-                  >
-                    {sport.name}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
+          <Sport
+            title="Select Sport"
+            selectSport={sport}
+            handlePress={(next) => {
+              setSport(next === sport ? "" : next);
+              setMatch(null);
+              setOutcomeIndex(null);
+            }}
+          />
 
           <Pressable
             onPress={() => setPickerOpen(true)}
@@ -260,8 +257,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   field: {
-    width: FIELD_WIDTH,
-    maxWidth: "100%",
+    width: "100%",
+    maxWidth: FIELD_WIDTH,
     minWidth: 160,
     height: 56,
     borderRadius: 8,
@@ -290,21 +287,12 @@ const styles = StyleSheet.create({
   },
   radioOn: { borderColor: "#FFA500", backgroundColor: "#FFA500" },
   hint: { color: "#B9CBD9", fontSize: 12, marginBottom: 12 },
-  sportChip: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: "#012645",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 10,
-    paddingHorizontal: 4,
-  },
-  sportChipOn: { backgroundColor: "#FFA500" },
-  sportText: { color: "#B9CBD9", fontSize: 9, textAlign: "center" },
-  sportTextOn: { color: "#000000", fontSize: 9, textAlign: "center" },
+  
+  
+  
+  
   action: {
-    width: FIELD_WIDTH,
+    width: "100%",
     maxWidth: 480,
     minWidth: 84,
     height: 48,
