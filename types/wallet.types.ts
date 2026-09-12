@@ -39,3 +39,20 @@ export interface UpdateDepositLimitsInput {
   weekly?: number | null;
   monthly?: number | null;
 }
+
+/** POST /wallet/pin/set — 4 digits, server pattern ^\d{4}$. */
+export interface SetPinInput {
+  pin: string;
+}
+
+/** POST /wallet/pin/change */
+export interface ChangePinInput {
+  currentPin: string;
+  newPin: string;
+}
+
+/** POST /wallet/pin/reset — code comes from /pin/forgot by email. */
+export interface ResetPinInput {
+  code: string;
+  newPin: string;
+}
