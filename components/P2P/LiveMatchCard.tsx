@@ -61,7 +61,7 @@ const LiveMatchCard = ({ match }: { match: Match }) => {
         <Team name={match.homeTeam} />
 
         <View style={{ width: 56, alignItems: "center" }}>
-          <VsMark width={46} height={36} />
+          <VsMark width={46} height={36} color="#64748B" />
         </View>
 
         <Team name={match.awayTeam} />
