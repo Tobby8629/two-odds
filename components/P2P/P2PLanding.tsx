@@ -1,75 +1,123 @@
 import React from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
-import Logo from '@/assets/SVGs/Logo';
+import { FlatList, Image, Pressable, Text, View } from 'react-native';
 import Head from '@/components/Home/Head';
-import P2PLandingButton from '@/components/P2P/P2PLandingButton';
+import P2PToggle from './P2PToggle';
+import LiveMatchCard from './LiveMatchCard';
+import VsMark from '@/assets/SVGs/icons/VsMark';
+import Loading from '@/components/Reuseables/Loading';
 import { useP2PStore } from '@/store/useP2PStore';
 import { useTabStore } from '@/store/useTabStore';
-import P2PToggle from './P2PToggle';
+import { useLiveMatches } from '@/hooks/useMatches';
 import { RelativePathString, router } from 'expo-router';
+import { StyleSheet } from 'react-native';
+
+const PLAYER_ONE = require('@/assets/images/p2pPlayerOne.png');
+const PLAYER_TWO = require('@/assets/images/p2pPlayerTwo.png');
 
 export default function P2PLanding() {
-    const { setScreen} = useP2PStore();
-    const { activeTab, setActiveTab } = useTabStore();
-    const handleFindPlayers = () => {
-        setScreen('searching');
-    };
-    /*
-     * "Learn More" had no destination and no screen exists for it, so the
-     * second button now opens the user's own P2P bets, which does.
-     */
-    const handleMyBets = () => {
-        router.push('/(p2p)/my-bets' as RelativePathString);
-    };
+  const { setScreen } = useP2PStore();
+  const { activeTab, setActiveTab } = useTabStore();
+
+  const { data: matches, isPending, isError, refetch, isRefetching } =
+    useLiveMatches();
+
+  const liveMatches = matches ?? [];
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1, paddingVertical: 52 }}
-      className="bg-[#123456]"
-      showsVerticalScrollIndicator={false}
-    >
-      <P2PToggle active={activeTab} onChange={setActiveTab} />
-      <Head />
-
-      <View className="items-center justify-center px-6 mb-8 mt-8">
-
-        <Logo width={75} height={75} />
-
-        <Text className="text-white text-lg text-center mt-8 mb-2">
-          Player To Player Bets
-        </Text>
-
-        <Text className="text-white text-3xl text-center mb-8">
-          Connect. Bet. Win.
-        </Text>
-
-        <Image
-          source={require('../../assets/images/user.png')}
-          className="w-62 h-62 rounded-full mb-8"
-          resizeMode="contain"
-        />
-
-        <Text className="text-white/80 text-center text-base leading-7 px-4 mb-8">
-          Connect with other players, set your stakes, and place bets directly with each other.
-        </Text>
-
-        <View className="flex-row justify-center items-center mb-10 space-x-4">
-          <P2PLandingButton
-            text="Find Players"
-            onPress={handleFindPlayers} 
-          />
-          <P2PLandingButton
-            text="My P2P Bets"
-            onPress={handleMyBets}
-            showArrow
-          />
+    <FlatList
+      style={styles.list}
+      data={liveMatches}
+      keyExtractor={(m) => m.id}
+      renderItem={({ item }) => (
+        <View className="items-center mb-4">
+          <LiveMatchCard match={item} />
         </View>
+      )}
+      showsVerticalScrollIndicator={false}
+      onRefresh={refetch}
+      refreshing={isRefetching}
+      contentContainerStyle={styles.container}
+      ListHeaderComponent={
+        <View>
+          <P2PToggle active={activeTab} onChange={setActiveTab} />
 
-        <Text className="text-white text-2xl text-center mt-6">
-          Why Choose 2Odds P2P?
-        </Text>
+          <Head />
 
-      </View>
-    </ScrollView>
+          {/* Players facing off */}
+          <View className="flex-row items-center justify-center mt-6 mb-4">
+            <Image source={PLAYER_ONE} style={{ width: 82, height: 83, borderRadius: 20 }} />
+
+            <View className="mx-2">
+              <VsMark width={60} height={47} />
+            </View>
+
+            <Image source={PLAYER_TWO} style={{ width: 96, height: 82, borderRadius: 20 }} />
+          </View>
+
+          <Text className="text-white text-xl font-semibold text-center">
+            PTP Bets
+          </Text>
+          <Text className="text-[#B9CBD9] text-xs text-center mt-1">
+            Create or join bets
+          </Text>
+          <Text className="text-[#B9CBD9] text-xs text-center">
+            Bet against friends or the community
+          </Text>
+
+          <View className="flex-row items-center justify-center gap-4 mt-4 mb-6">
+            <Pressable
+              onPress={() => setScreen('searching')}
+              className="bg-sec rounded-md items-center justify-center"
+              style={{ width: 110, height: 32 }}
+            >
+              <Text className="text-black text-sm font-semibold">Lobby</Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => router.push('/(p2p)/create' as RelativePathString)}
+              className="bg-sec rounded-md items-center justify-center"
+              style={{ width: 110, height: 32 }}
+            >
+              <Text className="text-black text-sm font-semibold">Create Bet</Text>
+            </Pressable>
+          </View>
+
+          <View className="flex-row items-center px-5 mb-4">
+            <Text className="text-white text-lg font-semibold mr-2">
+              Live Matches
+            </Text>
+            <View className="w-2 h-2 rounded-full bg-[#E53935]" />
+          </View>
+
+          {isPending && (
+            <View className="py-10">
+              <Loading inline size={56} />
+            </View>
+          )}
+        </View>
+      }
+      ListEmptyComponent={
+        isPending ? null : (
+          <Text className="text-[#B9CBD9] text-center px-8 mt-4">
+            {isError
+              ? 'Could not load live matches. Pull down to try again.'
+              : 'No live matches right now.'}
+          </Text>
+        )
+      }
+    />
   );
 }
+
+const styles = StyleSheet.create({
+  list: {
+    flex: 1,
+    backgroundColor: "#123456",
+  },
+  container: {
+    flexGrow: 1,
+    backgroundColor: "#123456",
+    paddingTop: 56,
+    paddingBottom: 40,
+  },
+});
