@@ -17,7 +17,6 @@ import Loading from "@/components/Reuseables/Loading";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
 import { useMatches } from "@/hooks/useMatches";
 import Sport from "@/components/Home/Sport";
-import { previewMatches } from "@/constants/previewMatches";
 import { sports as SportName } from "@/interface";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { Match, MarketOutcome } from "@/types/sports.types";
@@ -39,16 +38,39 @@ const SPORT_ALIASES: Record<string, string[]> = {
   americafootball: ["american", "nfl"],
 };
 
-/** Turns { winner: "home" } into a readable row label. */
+/** Predictions arrive in several shapes depending on the market. */
 const outcomeLabel = (match: Match, outcome: MarketOutcome) => {
-  const value = String(Object.values(outcome.prediction ?? {})[0] ?? "");
+  const p = (outcome.prediction ?? {}) as Record<string, unknown>;
 
-  if (value === "home") return match.homeTeam + " to Win";
-  if (value === "away") return match.awayTeam + " to Win";
-  if (value === "draw") return "Draw";
+  const side = (t: unknown) =>
+    t === "home" ? match.homeTeam : t === "away" ? match.awayTeam : String(t);
 
-  return value || "Outcome";
+  if (p.winner !== undefined) {
+    if (p.winner === "draw") return "Draw";
+    return side(p.winner) + " to Win";
+  }
+
+  if (p.line !== undefined && p.type !== undefined) {
+    const who = p.team !== undefined ? side(p.team) + " " : "";
+    return who + String(p.type).replace(/^./, (c) => c.toUpperCase()) + " " + p.line;
+  }
+
+  if (p.line !== undefined && p.team !== undefined) {
+    const line = Number(p.line);
+    return side(p.team) + " " + (line > 0 ? "+" : "") + line;
+  }
+
+  const first = Object.values(p)[0];
+  return first !== undefined ? String(first) : "Outcome";
 };
+
+/** Human labels for the market headings. */
+const marketLabel = (betType: string) =>
+  betType
+    .toLowerCase()
+    .split("_")
+    .map((w) => w.replace(/^./, (c) => c.toUpperCase()))
+    .join(" ");
 
 export default function CreateP2PBetScreen() {
   const [sport, setSport] = useState<SportName | "">("");
@@ -65,15 +87,20 @@ export default function CreateP2PBetScreen() {
 
   const setDraft = useBetDraftStore((state) => state.setDraft);
 
-  /* Only MATCH_WINNER is offered, matching the three rows in the design. */
-  const market = useMemo(
-    () => match?.markets?.find((m) => m.betType === "MATCH_WINNER"),
-    [match]
-  );
+  /*
+   * Only 14 of 20 matches carry MATCH_WINNER, so fall back to the first
+   * market the provider actually sent rather than showing nothing.
+   */
+  const market = useMemo(() => {
+    const markets = match?.markets ?? [];
+
+    return (
+      markets.find((m) => m.betType === "MATCH_WINNER") ?? markets[0]
+    );
+  }, [match]);
 
   const visibleMatches = useMemo(() => {
-    /* TEMP: local fixtures until the sports API returns matches. */
-    const source = matches && matches.length ? matches : previewMatches;
+    const source = matches ?? [];
 
     if (!sport) return source;
 
@@ -110,7 +137,7 @@ export default function CreateP2PBetScreen() {
       match,
       outcome: selectedOutcome,
       outcomeLabel: outcomeLabel(match, selectedOutcome),
-      betType: "MATCH_WINNER",
+      betType: market!.betType,
       stake: Number(stake),
     });
 
@@ -152,7 +179,10 @@ export default function CreateP2PBetScreen() {
             <Ionicons name="chevron-expand" size={18} color="#B9CBD9" />
           </Pressable>
 
-          <Text style={styles.sectionLabel}>Your Prediction</Text>
+          <Text style={styles.sectionLabel}>
+            Your Prediction
+            {hasOdds ? "  ·  " + marketLabel(market!.betType) : ""}
+          </Text>
 
           {hasOdds ? (
             market!.outcomes.map((outcome, i) => (
@@ -172,7 +202,11 @@ export default function CreateP2PBetScreen() {
                       styles.radio,
                       outcomeIndex === i ? styles.radioOn : null,
                     ]}
-                  />
+                  >
+                    {outcomeIndex === i ? (
+                      <Ionicons name="checkmark" size={12} color="#FFFFFF" />
+                    ) : null}
+                  </View>
                 </View>
               </Pressable>
             ))
@@ -292,11 +326,13 @@ const styles = StyleSheet.create({
   input: { color: "#FFFFFF", fontSize: 14 },
   odds: { color: "#FFA500", fontSize: 12, marginRight: 10 },
   radio: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     borderWidth: 2,
     borderColor: "#B9CBD9",
+    alignItems: "center",
+    justifyContent: "center",
   },
   radioOn: { borderColor: "#FFA500", backgroundColor: "#FFA500" },
   hint: { color: "#B9CBD9", fontSize: 12, marginBottom: 12 },
