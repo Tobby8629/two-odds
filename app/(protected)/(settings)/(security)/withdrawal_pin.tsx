@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,6 +12,7 @@ import Layout from "../Layout";
 import { ThemedText } from "@/components/ThemedText";
 import OTPInput from "@/components/ui/Otp";
 import Button from "@/components/Reuseables/Button";
+import AlertBanner from "@/components/Reuseables/AlertBanner";
 import {
   pinErrorMessage,
   useChangePin,
@@ -40,6 +40,7 @@ const WithdrawalPin = () => {
   const [newPin, setNewPin] = useState<string[]>(empty);
   const [error, setError] = useState<string | null>(null);
   const [needsFirstPin, setNeedsFirstPin] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const setPin = useSetPin();
   const changePin = useChangePin();
@@ -70,6 +71,22 @@ const WithdrawalPin = () => {
         ? "Enter the 4-digit code we sent to your email."
         : "Enter your current 4-digit withdrawal PIN to continue.";
 
+  /* Let the banner read, then return to Security. */
+  useEffect(() => {
+    if (!success) return;
+
+    const timer = setTimeout(() => {
+      if (success.startsWith("Reset code")) {
+        setSuccess(null);
+        return;
+      }
+
+      router.back();
+    }, 1600);
+
+    return () => clearTimeout(timer);
+  }, [success]);
+
   const handleConfirm = async () => {
     if (!complete || isPending) return;
 
@@ -95,12 +112,8 @@ const WithdrawalPin = () => {
         });
       }
 
-      Alert.alert(
-        mode === "set" ? "Withdrawal PIN created" : "Withdrawal PIN updated",
-        undefined,
-        [
-          { text: "OK", onPress: () => router.back() },
-        ]
+      setSuccess(
+        mode === "set" ? "Withdrawal Pin Created" : "Withdrawal Pin Updated"
       );
     } catch (e) {
       const message = pinErrorMessage(
@@ -140,7 +153,7 @@ const WithdrawalPin = () => {
       setStep("first");
       setFirst(empty());
       setNewPin(empty());
-      Alert.alert("Reset code sent", "Check your email for a 4-digit code.");
+      setSuccess("Reset code sent to your email");
     } catch (e) {
       setError(pinErrorMessage(e, "Could not send a reset code."));
     }
@@ -148,6 +161,8 @@ const WithdrawalPin = () => {
 
   return (
     <Layout header="Withdrawal Pin" navigator="xmark">
+      {success && <AlertBanner message={success} variant="success" />}
+
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : undefined}
