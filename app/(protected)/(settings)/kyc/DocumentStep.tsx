@@ -17,8 +17,9 @@ const Heading = () => (
 );
 
 /** Radio list shown until a document type is picked. */
-const TypeChooser = () => {
+const TypeChooser = ({ showErrors }: { showErrors: boolean }) => {
   const { docType, setDocType } = useKycFormStore();
+  const unpicked = showErrors && !docType;
 
   return (
     <View>
@@ -33,8 +34,12 @@ const TypeChooser = () => {
             onPress={() => setDocType(option.type)}
             className="bg-white rounded-lg px-3 py-3 mb-3 flex-row items-center"
             style={{
-              borderWidth: selected ? 2 : 0,
-              borderColor: selected ? "#FFA500" : "transparent",
+              borderWidth: selected || unpicked ? 2 : 0,
+              borderColor: selected
+                ? "#FFA500"
+                : unpicked
+                  ? "#E53935"
+                  : "transparent",
             }}
           >
             <option.icon />
@@ -69,7 +74,7 @@ const TypeChooser = () => {
 
 /** Title plus the type chip and "Change type" link. */
 const SelectedHeader = ({ title }: { title: string }) => {
-  const { docType, setDocType } = useKycFormStore();
+  const { docType, setDocSubStep } = useKycFormStore();
 
   return (
     <View className="items-center mb-6">
@@ -82,7 +87,7 @@ const SelectedHeader = ({ title }: { title: string }) => {
           </Text>
         </View>
 
-        <Pressable onPress={() => setDocType(null)} className="ml-3">
+        <Pressable onPress={() => setDocSubStep("choose")} className="ml-3">
           <Text className="text-[#B9CBD9] text-xs">Change type</Text>
         </Pressable>
       </View>
@@ -91,10 +96,12 @@ const SelectedHeader = ({ title }: { title: string }) => {
 };
 
 const DocumentStep = ({ showErrors }: { showErrors: boolean }) => {
-  const { docType, idNumber, setIdNumber, uploads, setUpload } =
+  const { docType, docSubStep, idNumber, setIdNumber, uploads, setUpload } =
     useKycFormStore();
 
-  if (!docType) return <TypeChooser />;
+  if (docSubStep === "choose" || !docType) return <TypeChooser showErrors={showErrors} />;
+
+
 
   const missingId = showErrors && !idNumber.trim();
 

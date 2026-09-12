@@ -35,6 +35,8 @@ export default function KycScreen() {
     setStep,
     personal,
     docType,
+    docSubStep,
+    setDocSubStep,
     idNumber,
     address,
     showRequiredAlert,
@@ -54,7 +56,7 @@ export default function KycScreen() {
     }
 
     if (step === 1) {
-      if (!docType) return false;
+      if (docSubStep === "choose") return Boolean(docType);
       /* Licence and voter's card carry no number field in the design. */
       if (docType === "nin" || docType === "bvn") return idNumber.trim().length > 0;
       return true;
@@ -72,7 +74,23 @@ export default function KycScreen() {
     }
 
     setShowRequiredAlert(false);
+
+    /* Picking a type advances within the document step, not past it. */
+    if (step === 1 && docSubStep === "choose") {
+      setDocSubStep("form");
+      return;
+    }
+
     setStep((step + 1) as 0 | 1 | 2);
+  };
+
+  const handlePrevious = () => {
+    if (step === 1 && docSubStep === "form") {
+      setDocSubStep("choose");
+      return;
+    }
+
+    setStep((step - 1) as 0 | 1 | 2);
   };
 
   const handleSubmit = async () => {
@@ -184,7 +202,7 @@ export default function KycScreen() {
               className="!bg-transparent !w-auto"
               textStyle="!text-base !font-normal"
               disable={step === 0}
-              onPress={() => setStep((step - 1) as 0 | 1 | 2)}
+              onPress={handlePrevious}
             />
 
             <Button

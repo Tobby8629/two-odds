@@ -6,6 +6,9 @@ export type KycDocType = KycIdType | "drivers_licence" | "voters_card";
 
 export type KycStep = 0 | 1 | 2;
 
+/** The document step is two screens: pick a type, then fill it in. */
+export type KycDocSubStep = "choose" | "form";
+
 export interface KycPersonalInfo {
   firstName: string;
   lastName: string;
@@ -26,6 +29,7 @@ interface KycFormState {
   step: KycStep;
   personal: KycPersonalInfo;
   docType: KycDocType | null;
+  docSubStep: KycDocSubStep;
   idNumber: string;
   /** Local file uris, kept separate from the base64 the API wants. */
   uploads: Record<string, string | undefined>;
@@ -35,6 +39,7 @@ interface KycFormState {
   setStep: (step: KycStep) => void;
   setPersonal: (field: keyof KycPersonalInfo, value: string) => void;
   setDocType: (type: KycDocType | null) => void;
+  setDocSubStep: (sub: KycDocSubStep) => void;
   setIdNumber: (value: string) => void;
   setUpload: (slot: string, uri: string | undefined) => void;
   setAddress: (field: keyof KycAddress, value: string) => void;
@@ -62,6 +67,7 @@ export const useKycFormStore = create<KycFormState>((set) => ({
   step: 0,
   personal: emptyPersonal,
   docType: null,
+  docSubStep: "choose",
   idNumber: "",
   uploads: {},
   address: emptyAddress,
@@ -70,7 +76,13 @@ export const useKycFormStore = create<KycFormState>((set) => ({
   setStep: (step) => set({ step, showRequiredAlert: false }),
   setPersonal: (field, value) =>
     set((s) => ({ personal: { ...s.personal, [field]: value } })),
-  setDocType: (docType) => set({ docType, idNumber: "", uploads: {} }),
+  setDocType: (docType) =>
+    set((s) =>
+      s.docType === docType
+        ? { docType }
+        : { docType, idNumber: "", uploads: {} }
+    ),
+  setDocSubStep: (docSubStep) => set({ docSubStep }),
   setIdNumber: (idNumber) => set({ idNumber }),
   setUpload: (slot, uri) =>
     set((s) => ({ uploads: { ...s.uploads, [slot]: uri } })),
@@ -83,6 +95,7 @@ export const useKycFormStore = create<KycFormState>((set) => ({
       step: 0,
       personal: emptyPersonal,
       docType: null,
+      docSubStep: "choose",
       idNumber: "",
       uploads: {},
       address: emptyAddress,
