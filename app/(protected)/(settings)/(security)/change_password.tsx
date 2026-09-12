@@ -111,8 +111,9 @@ export default function ChangePassword() {
                 secure={!showPassword[key as keyof ChangePasswordForm]}
                 onChangeText={handleChange}
                 placeholder={`Enter your ${key.replace("password", " password")}`}
-                className="flex-1 text-white"
-                inputStyle=" !bg-transparent !h-[30px]"
+                className="flex-1"
+                placeholderTextColor="#9AA8B5"
+                inputStyle=" !bg-transparent !h-[30px] !text-black"
               />
 
               <Pressable onPress={() => toggleVisibility(key as keyof ChangePasswordForm)}>
@@ -123,7 +124,7 @@ export default function ChangePassword() {
                       : "eye-slash"
                   }
                   size={18}
-                  color="#ccc"
+                  color="#0A3A5C"
                 />
               </Pressable>
             </View>
