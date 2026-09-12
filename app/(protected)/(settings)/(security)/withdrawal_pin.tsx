@@ -34,6 +34,7 @@ const WithdrawalPin = () => {
   const [first, setFirst] = useState<string[]>(empty);
   const [newPin, setNewPin] = useState<string[]>(empty);
   const [error, setError] = useState<string | null>(null);
+  const [needsFirstPin, setNeedsFirstPin] = useState(false);
 
   const setPin = useSetPin();
   const changePin = useChangePin();
@@ -97,7 +98,19 @@ const WithdrawalPin = () => {
         ]
       );
     } catch (e) {
-      setError(pinErrorMessage(e, "Something went wrong. Please try again."));
+      const message = pinErrorMessage(
+        e,
+        "Something went wrong. Please try again."
+      );
+
+      /* The backend only tells us the account has no PIN by rejecting. */
+      if (mode === "change" && /no pin/i.test(message)) {
+        setNeedsFirstPin(true);
+        setError(null);
+      } else {
+        setError(message);
+      }
+
       setStep("first");
       setFirst(empty());
       setNewPin(empty());
@@ -150,6 +163,28 @@ const WithdrawalPin = () => {
             </Text>
           )}
 
+          {needsFirstPin && (
+            <View className="items-center mt-6">
+              <Text className="text-gray-300 text-xs text-center">
+                You haven't set a withdrawal PIN yet.
+              </Text>
+
+              <Button
+                text="create pin"
+                textStyle="lowercase !text-base !font-normal"
+                className="mt-3 !w-[200px] !h-[38px] rounded-md !bg-sec"
+                onPress={() => {
+                  setNeedsFirstPin(false);
+                  setError(null);
+                  setFirst(empty());
+                  setNewPin(empty());
+                  setMode("set");
+                  setStep("first");
+                }}
+              />
+            </View>
+          )}
+
           <Button
             text={isPending ? "please wait" : "confirm"}
             disable={!complete || isPending}
@@ -167,27 +202,6 @@ const WithdrawalPin = () => {
             </Pressable>
           )}
 
-          {/*
-           * No endpoint reports whether a PIN exists, so first-time users need
-           * a way past the current-PIN screen. Drop this once the API says.
-           */}
-          {step === "first" && (
-            <Pressable
-              onPress={() => {
-                setError(null);
-                setFirst(empty());
-                setNewPin(empty());
-                setMode(mode === "set" ? "change" : "set");
-              }}
-              disabled={isPending}
-            >
-              <Text className="text-gray-400 mt-5 text-[11px] underline">
-                {mode === "set"
-                  ? "Already have a PIN? Change it"
-                  : "Haven't set a PIN yet? Create one"}
-              </Text>
-            </Pressable>
-          )}
         </View>
       </KeyboardAvoidingView>
     </Layout>
