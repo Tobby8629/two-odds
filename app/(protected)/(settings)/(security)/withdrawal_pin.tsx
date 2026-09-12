@@ -18,10 +18,11 @@ import {
   useChangePin,
   useForgotPin,
   useResetPin,
+  useSetPin,
 } from "@/hooks/useWithdrawalPin";
 
-/** change = current PIN then new PIN. reset = emailed code then new PIN. */
-type PinMode = "change" | "reset";
+/** change = current PIN then new PIN. reset = emailed code then new PIN. set = first PIN only. */
+type PinMode = "change" | "reset" | "set";
 type PinStep = "first" | "second";
 
 const empty = () => Array(4).fill("");
@@ -34,27 +35,31 @@ const WithdrawalPin = () => {
   const [newPin, setNewPin] = useState<string[]>(empty);
   const [error, setError] = useState<string | null>(null);
 
+  const setPin = useSetPin();
   const changePin = useChangePin();
   const forgotPin = useForgotPin();
   const resetPin = useResetPin();
 
   const isPending =
-    changePin.isPending || forgotPin.isPending || resetPin.isPending;
+    setPin.isPending ||
+    changePin.isPending ||
+    forgotPin.isPending ||
+    resetPin.isPending;
 
   const value = step === "first" ? first : newPin;
   const setValue = step === "first" ? setFirst : setNewPin;
   const complete = /^\d{4}$/.test(value.join(""));
 
   const title =
-    step === "second"
+    step === "second" || mode === "set"
       ? "Create New Pin"
       : mode === "reset"
         ? "Enter Reset Code"
         : "Enter Withdrawal Pin";
 
   const blurb =
-    step === "second"
-      ? "Choose a new 4-digit PIN. You will use it to approve withdrawals."
+    step === "second" || mode === "set"
+      ? "Choose a 4-digit PIN. You will use it to approve withdrawals."
       : mode === "reset"
         ? "Enter the 4-digit code we sent to your email."
         : "Enter your current 4-digit withdrawal PIN to continue.";
@@ -64,13 +69,15 @@ const WithdrawalPin = () => {
 
     setError(null);
 
-    if (step === "first") {
+    if (step === "first" && mode !== "set") {
       setStep("second");
       return;
     }
 
     try {
-      if (mode === "change") {
+      if (mode === "set") {
+        await setPin.mutateAsync({ pin: value.join("") });
+      } else if (mode === "change") {
         await changePin.mutateAsync({
           currentPin: first.join(""),
           newPin: newPin.join(""),
@@ -82,9 +89,13 @@ const WithdrawalPin = () => {
         });
       }
 
-      Alert.alert("Withdrawal PIN updated", undefined, [
-        { text: "OK", onPress: () => router.back() },
-      ]);
+      Alert.alert(
+        mode === "set" ? "Withdrawal PIN created" : "Withdrawal PIN updated",
+        undefined,
+        [
+          { text: "OK", onPress: () => router.back() },
+        ]
+      );
     } catch (e) {
       setError(pinErrorMessage(e, "Something went wrong. Please try again."));
       setStep("first");
@@ -153,6 +164,28 @@ const WithdrawalPin = () => {
           {step === "first" && mode === "change" && (
             <Pressable onPress={handleForgot} disabled={isPending}>
               <Text className="text-sec mt-4 text-xs">Forgot Pin?</Text>
+            </Pressable>
+          )}
+
+          {/*
+           * No endpoint reports whether a PIN exists, so first-time users need
+           * a way past the current-PIN screen. Drop this once the API says.
+           */}
+          {step === "first" && (
+            <Pressable
+              onPress={() => {
+                setError(null);
+                setFirst(empty());
+                setNewPin(empty());
+                setMode(mode === "set" ? "change" : "set");
+              }}
+              disabled={isPending}
+            >
+              <Text className="text-gray-400 mt-5 text-[11px] underline">
+                {mode === "set"
+                  ? "Already have a PIN? Change it"
+                  : "Haven't set a PIN yet? Create one"}
+              </Text>
             </Pressable>
           )}
         </View>
