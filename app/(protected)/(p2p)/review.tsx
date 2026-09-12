@@ -155,7 +155,7 @@ export default function ReviewBetScreen() {
           ) : (
             <View style={styles.rowStart}>
               <Text style={styles.actionText}>Post Bet to P2P Market</Text>
-              <Rocket width={17} height={17} color="#000000" style={{ marginLeft: 8 }} />
+              <Rocket width={17} height={17} color="#FFFFFF" style={{ marginLeft: 8 }} />
             </View>
           )}
         </Pressable>
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   feeRow: { paddingVertical: 6 },
   feeLabel: { color: "#B9CBD9", fontSize: 12 },
   feeValue: { color: "#FFFFFF", fontSize: 12 },
-  feeFree: { color: "#4CAF50", fontSize: 12, fontFamily: "PoppinsSemiBold" },
+  feeFree: { color: "#FFFFFF", fontSize: 12, fontFamily: "PoppinsSemiBold" },
   divider: { height: 1, backgroundColor: "#1F5079", marginVertical: 4 },
   netLabel: { color: "#FFFFFF", fontSize: 13, fontFamily: "PoppinsSemiBold" },
   netValue: { color: "#FFC107", fontSize: 13, fontFamily: "PoppinsSemiBold" },
