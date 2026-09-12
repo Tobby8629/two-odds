@@ -7,12 +7,14 @@ interface layoutInterface {
   header: string;
   children: React.ReactNode;
   navigator?: string;
+  /** False when a header above already provides the status-bar inset. */
+  topInset?: boolean;
 }
 
-const Layout = ({header, children, navigator}: layoutInterface) => {
+const Layout = ({header, children, navigator, topInset = true}: layoutInterface) => {
   return (
       <View className='bg-pry flex-1'>
-      <View className={`flex-row items-center pb-5 pt-20 bg-[#1F5079] px-6`}>
+      <View className={`flex-row items-center pb-5 ${topInset ? 'pt-20' : 'pt-5'} bg-[#1F5079] px-6`}>
         <Pressable onPress={()=> router.back()}>
           <FontAwesome6 name={navigator || "angle-left"} size={24} color="white" />
         </Pressable>

@@ -18,6 +18,8 @@ import AlertBanner from "@/components/Reuseables/AlertBanner";
 import { useMatches } from "@/hooks/useMatches";
 import Sport from "@/components/Home/Sport";
 import Head from "@/components/Home/Head";
+import { DEMO_MODE } from "@/constants/demo";
+import { previewMatches } from "@/constants/previewMatches";
 import { sports as SportName } from "@/interface";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { Match, MarketOutcome } from "@/types/sports.types";
@@ -101,7 +103,7 @@ export default function CreateP2PBetScreen() {
   }, [match]);
 
   const visibleMatches = useMemo(() => {
-    const source = matches ?? [];
+    const source = DEMO_MODE ? previewMatches : matches ?? [];
 
     if (!sport) return source;
 
@@ -146,8 +148,10 @@ export default function CreateP2PBetScreen() {
   };
 
   return (
-    <Layout header="Create P2P Bet">
+    <View style={styles.screen}>
       <Head compact />
+
+      <Layout header="Create P2P Bet" topInset={false}>
 
       {error ? <AlertBanner message={error} /> : null}
 
@@ -293,11 +297,13 @@ export default function CreateP2PBetScreen() {
           </View>
         </Pressable>
       </Modal>
-    </Layout>
+      </Layout>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: "#003C6F" },
   page: { paddingHorizontal: 16, paddingBottom: 40 },
   sectionLabel: {
     color: "#FFFFFF",

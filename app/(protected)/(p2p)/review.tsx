@@ -12,6 +12,7 @@ import { router } from "expo-router";
 import Layout from "../(settings)/Layout";
 import Loading from "@/components/Reuseables/Loading";
 import Head from "@/components/Home/Head";
+import { DEMO_MODE } from "@/constants/demo";
 import Rocket from "@/assets/SVGs/icons/Rocket";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
@@ -30,12 +31,6 @@ import {
  */
 const PLATFORM_FEE_RATE = 0.05;
 
-/**
- * TEMPORARY. Set to true to see the Bet Created screen without a real post,
- * for design review while the test account has no balance. Must be false
- * before this branch is reviewed.
- */
-const PREVIEW_SUCCESS = false;
 
 export default function ReviewBetScreen() {
   const { match, outcome, outcomeLabel, betType, stake, clearDraft } =
@@ -49,13 +44,17 @@ export default function ReviewBetScreen() {
 
   if (!match || !outcome) {
     return (
-      <Layout header="Review Bet">
-        <View style={styles.empty}>
-          <Text style={styles.hint}>
-            Nothing to review. Go back and build your bet.
-          </Text>
-        </View>
-      </Layout>
+      <View style={styles.screen}>
+        <Head compact />
+
+        <Layout header="Review Bet" topInset={false}>
+          <View style={styles.empty}>
+            <Text style={styles.hint}>
+              Nothing to review. Go back and build your bet.
+            </Text>
+          </View>
+        </Layout>
+      </View>
     );
   }
 
@@ -66,7 +65,7 @@ export default function ReviewBetScreen() {
   const handlePost = async () => {
     setError(null);
 
-    if (PREVIEW_SUCCESS) {
+    if (DEMO_MODE) {
       setCreated(true);
       return;
     }
@@ -76,7 +75,7 @@ export default function ReviewBetScreen() {
         matchId: match.id,
         betType,
         prediction: outcome.prediction,
-        odds: outcome.price,
+        odds: Number(outcome.price.toFixed(2)),
         stake,
       });
 
@@ -94,8 +93,10 @@ export default function ReviewBetScreen() {
   };
 
   return (
-    <Layout header="Review Bet">
+    <View style={styles.screen}>
       <Head compact />
+
+      <Layout header="Review Bet" topInset={false}>
 
       {error ? <AlertBanner message={error} /> : null}
 
@@ -227,11 +228,13 @@ export default function ReviewBetScreen() {
           </View>
         </View>
       </Modal>
-    </Layout>
+      </Layout>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: "#003C6F" },
   page: { paddingHorizontal: 16, paddingBottom: 40, paddingTop: 12 },
   empty: { flex: 1, alignItems: "center", justifyContent: "center", padding: 32 },
   banner: {
