@@ -44,7 +44,7 @@ const WalletDropdown = ({ anchor, onClose }: WalletDropdownProps) => {
     ? "Unavailable"
     : formatCurrency(amount, currency);
 
-  const cardTop = (anchor?.y ?? 0) + (anchor?.height ?? 0) + 40;
+  const cardTop = (anchor?.y ?? 0) + (anchor?.height ?? 0) + 56;
   const tailLeft = (anchor?.x ?? 0) + (anchor?.width ?? 0) / 2 - 11;
 
   const go = (path: "/(transactions)/deposit" | "/(transactions)/withdraw") => {
