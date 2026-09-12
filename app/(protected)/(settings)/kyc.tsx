@@ -16,6 +16,7 @@ import SubmittedScreen from "./kyc/SubmittedScreen";
 import { useKycFormStore } from "@/store/kycFormStore";
 import { useKycStatus, useSubmitKyc } from "@/hooks/useKyc";
 import { SubmitKycInput } from "@/types/kyc.types";
+import { KYC_ALERT_RED } from "@/constants/kyc";
 import Loading from "@/components/Reuseables/Loading";
 
 /** Figma shows mm/dd/yy; the API wants ISO. */
@@ -160,8 +161,16 @@ export default function KycScreen() {
   return (
     <Layout header="KYC">
       {showRequiredAlert && (
-        <View className="bg-[#E53935] py-3">
-          <Text className="text-white text-center text-sm font-semibold">
+        <View
+          className="w-full items-center justify-center"
+          style={{
+            height: 75,
+            backgroundColor: KYC_ALERT_RED,
+            borderBottomLeftRadius: 16,
+            borderBottomRightRadius: 16,
+          }}
+        >
+          <Text className="text-white text-center text-base font-semibold">
             Fill in all required fields
           </Text>
         </View>

@@ -6,6 +6,9 @@ import BvnIcon from "@/assets/SVGs/icons/BvnIcon";
 import DriversLicenceIcon from "@/assets/SVGs/icons/DriversLicenceIcon";
 import VotersCardIcon from "@/assets/SVGs/icons/VotersCardIcon";
 
+/** Required-field red, shared by the alert banner and invalid inputs. */
+export const KYC_ALERT_RED = "#F00000";
+
 export const COUNTRIES = [
   "Nigeria", "Ghana", "Kenya", "South Africa", "United Kingdom", "United States",
 ];

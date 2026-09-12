@@ -3,7 +3,7 @@ import { Pressable, Text, View } from "react-native";
 import Field from "./Field";
 import UploadBox from "./UploadBox";
 import { useKycFormStore } from "@/store/kycFormStore";
-import { KYC_DOC_LABELS, KYC_DOC_OPTIONS } from "@/constants/kyc";
+import { KYC_ALERT_RED, KYC_DOC_LABELS, KYC_DOC_OPTIONS } from "@/constants/kyc";
 
 const Heading = () => (
   <>
@@ -38,7 +38,7 @@ const TypeChooser = ({ showErrors }: { showErrors: boolean }) => {
               borderColor: selected
                 ? "#FFA500"
                 : unpicked
-                  ? "#E53935"
+                  ? KYC_ALERT_RED
                   : "transparent",
             }}
           >

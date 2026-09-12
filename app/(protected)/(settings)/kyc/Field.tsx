@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, TextInput, View } from "react-native";
+import { KYC_ALERT_RED } from "@/constants/kyc";
 
 interface FieldProps {
   label: string;
@@ -63,7 +64,7 @@ const Field = ({
           paddingTop: multiline ? 10 : 0,
           backgroundColor: outline ? "transparent" : "#fff",
           borderWidth: outline || invalid ? 1 : 0,
-          borderColor: invalid ? "#E53935" : outline ? "#FFFFFF" : "transparent",
+          borderColor: invalid ? KYC_ALERT_RED : outline ? "#FFFFFF" : "transparent",
         }}
       />
     </View>

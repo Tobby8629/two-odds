@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { KYC_ALERT_RED } from "@/constants/kyc";
 
 interface SelectFieldProps {
   label: string;
@@ -46,7 +47,7 @@ const SelectField = ({
           width: width ?? undefined,
           backgroundColor: outline ? "transparent" : "#fff",
           borderWidth: outline || invalid ? 1 : 0,
-          borderColor: invalid ? "#E53935" : outline ? "#FFFFFF" : "transparent",
+          borderColor: invalid ? KYC_ALERT_RED : outline ? "#FFFFFF" : "transparent",
         }}
       >
         <Text

@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { KYC_ALERT_RED } from "@/constants/kyc";
 
 interface UploadBoxProps {
   label: string;
@@ -30,7 +31,7 @@ const UploadBox = ({
         height: 86,
         borderWidth: 1,
         borderStyle: "dashed",
-        borderColor: invalid ? "#E53935" : "#6E90AC",
+        borderColor: invalid ? KYC_ALERT_RED : "#6E90AC",
       }}
     >
       <MaterialIcons
