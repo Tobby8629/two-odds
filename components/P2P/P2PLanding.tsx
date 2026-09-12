@@ -45,13 +45,13 @@ export default function P2PLanding() {
 
           {/* Players facing off */}
           <View className="flex-row items-center justify-center mt-6 mb-4">
-            <Image source={PLAYER_ONE} style={{ width: 82, height: 83, borderRadius: 20 }} />
+            <Image source={PLAYER_ONE} style={styles.player} />
 
             <View className="mx-2">
               <VsMark width={89} height={72} />
             </View>
 
-            <Image source={PLAYER_TWO} style={{ width: 96, height: 82, borderRadius: 20 }} />
+            <Image source={PLAYER_TWO} style={styles.player} />
           </View>
 
           <Text
@@ -119,6 +119,13 @@ export default function P2PLanding() {
 }
 
 const styles = StyleSheet.create({
+  player: {
+    width: 96,
+    height: 82,
+    borderRadius: 22,
+    borderWidth: 4,
+    borderColor: "#000055",
+  },
   actionButton: {
     width: 93,
     height: 30,
