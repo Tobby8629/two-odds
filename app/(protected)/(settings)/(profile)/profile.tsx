@@ -3,9 +3,8 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  ActivityIndicator,
   Pressable,
-  useWindowDimensions,
+  useWindowDimensions
 } from "react-native";
 import Layout from "../Layout";
 import { useProfileStore } from "@/store/useProfileStore";
@@ -14,6 +13,7 @@ import { UserProfile } from "@/types/profile.types";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import ProfileField from "./ProfileField";
 import ProfileHeader from "./ProfileHeader";
+import Loading from "@/components/Reuseables/Loading";
 
 interface PROFILE {
   profile: UserProfile;
@@ -89,7 +89,7 @@ export function ProfileSection({ profile }: PROFILE) {
     <ScrollView
       onContentSizeChange={handleContentSizeChange}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 20, }}
+      contentContainerStyle={{ paddingBottom: 20 }}
     >
       {Content}
     </ScrollView>
@@ -113,14 +113,14 @@ export default function MyProfileScreen() {
     isPending,
     isError,
     refetch,
-    isRefetching,
+    isRefetching
   } = useProfile();
 
   if (isPending) {
     return (
       <Layout header="Profile">
         <View style={styles.centered}>
-          <ActivityIndicator size="large" color="#FFA500" />
+          <Loading inline size={72} />
         </View>
       </Layout>
     );
@@ -168,12 +168,12 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 10,
+    zIndex: 10
   },
   centered: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 32,
-  },
+    paddingHorizontal: 32
+  }
 });

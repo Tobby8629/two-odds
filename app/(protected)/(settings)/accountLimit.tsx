@@ -4,9 +4,8 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  ActivityIndicator,
   KeyboardAvoidingView,
-  Platform,
+  Platform
 } from "react-native";
 import { LimitStatusCard } from "./accountLimit/LimitStatusCard";
 import { TimePeriodDropdown } from "./accountLimit/TimePeriodDropdown";
@@ -17,9 +16,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAccountLimitStore } from "@/store/accountLimitStore";
 import {
   useDepositLimits,
-  useUpdateDepositLimits,
+  useUpdateDepositLimits
 } from "@/hooks/useDepositLimits";
 import { CURRENCY_SYMBOLS } from "@/constants/functions";
+import Loading from "@/components/Reuseables/Loading";
 
 export default function AccountLimitScreen() {
   const {
@@ -29,7 +29,7 @@ export default function AccountLimitScreen() {
     setSelectedPeriod,
     setAmount,
     error,
-    setError,
+    setError
   } = useAccountLimitStore();
 
   const [showInfo, setShowInfo] = useState(false);
@@ -83,7 +83,7 @@ export default function AccountLimitScreen() {
        */
       await updateLimits({
         currency: selectedCurrency,
-        [selectedPeriod]: Number(amount),
+        [selectedPeriod]: Number(amount)
       });
 
       setError(null);
@@ -113,7 +113,7 @@ export default function AccountLimitScreen() {
               borderBottomWidth: 1,
               borderBottomColor: "#9CA3AF",
               paddingBottom: 8,
-              marginBottom: 16,
+              marginBottom: 16
             }}
           >
             <Text
@@ -121,7 +121,7 @@ export default function AccountLimitScreen() {
                 color: "#FFFFFF",
                 fontSize: 16,
                 fontWeight: "400",
-                marginRight: 6,
+                marginRight: 6
               }}
             >
               Deposit Limits
@@ -137,7 +137,7 @@ export default function AccountLimitScreen() {
               width: 342,
               borderBottomWidth: 1,
               borderBottomColor: "#9CA3AF",
-              marginBottom: 24,
+              marginBottom: 24
               
             }}
           >
@@ -154,7 +154,7 @@ export default function AccountLimitScreen() {
               paddingLeft: 15,
               paddingBottom: 25,
               gap: 5,
-              backgroundColor: "#E3F2FD",
+              backgroundColor: "#E3F2FD"
             }}
           >
             {/* Time Period Dropdown */}
@@ -172,11 +172,11 @@ export default function AccountLimitScreen() {
                 borderRadius: 8,
                 paddingVertical: 12,
                 alignItems: "center",
-                opacity: isSaving || isLoadingLimits ? 0.6 : 1,
+                opacity: isSaving || isLoadingLimits ? 0.6 : 1
               }}
             >
               {isSaving ? (
-                <ActivityIndicator color="#000" />
+                <Loading inline size={28} />
               ) : (
                 <Text
                   style={{ color: "#FFFFFF", fontSize: 14, fontWeight: "400" }}

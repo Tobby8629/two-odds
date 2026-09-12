@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   Text,
-  View,
+  View
 } from "react-native";
 import Layout from "./Layout";
 import Button from "@/components/Reuseables/Button";
@@ -17,6 +16,7 @@ import SubmittedScreen from "./kyc/SubmittedScreen";
 import { useKycFormStore } from "@/store/kycFormStore";
 import { useKycStatus, useSubmitKyc } from "@/hooks/useKyc";
 import { SubmitKycInput } from "@/types/kyc.types";
+import Loading from "@/components/Reuseables/Loading";
 
 /** Figma shows mm/dd/yy; the API wants ISO. */
 const toIsoDate = (input: string) => {
@@ -39,7 +39,7 @@ export default function KycScreen() {
     address,
     showRequiredAlert,
     setShowRequiredAlert,
-    reset,
+    reset
   } = useKycFormStore();
 
   const [submitted, setSubmitted] = useState(false);
@@ -87,7 +87,7 @@ export default function KycScreen() {
     const payload: SubmitKycInput = {
       dateOfBirth: toIsoDate(personal.dateOfBirth),
       ...(docType === "bvn" ? { bvn: idNumber } : {}),
-      ...(docType === "nin" ? { nin: idNumber } : {}),
+      ...(docType === "nin" ? { nin: idNumber } : {})
     };
 
     if (!payload.bvn && !payload.nin) {
@@ -114,7 +114,7 @@ export default function KycScreen() {
     return (
       <Layout header="KYC">
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#FFC107" />
+          <Loading inline size={72} />
         </View>
       </Layout>
     );

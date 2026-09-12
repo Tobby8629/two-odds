@@ -1,8 +1,9 @@
 import React from "react";
-import { ActivityIndicator, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { useAccountLimitStore } from "@/store/accountLimitStore";
 import { useDepositLimits } from "@/hooks/useDepositLimits";
 import { formatCurrency } from "@/constants/functions";
+import Loading from "@/components/Reuseables/Loading";
 
 interface LimitStatusCardProps {
   onInfoPress: () => void;
@@ -43,7 +44,7 @@ export const LimitStatusCard: React.FC<LimitStatusCardProps> = ({ onInfoPress })
           </Text>
         </View>
 
-        {isPending && <ActivityIndicator color="#FFB500" />}
+        {isPending && <Loading inline size={28} />}
       </View>
 
       {/* Limits */}

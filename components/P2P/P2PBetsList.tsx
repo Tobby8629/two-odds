@@ -1,17 +1,17 @@
 import React from "react";
 import {
-  ActivityIndicator,
   Pressable,
   RefreshControl,
   ScrollView,
   Text,
-  View,
+  View
 } from "react-native";
 import Head from "@/components/Home/Head";
 import P2PBetCard from "./P2PBetCard";
 import { useOpenBets, useTakeBet } from "@/hooks/useBets";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Bet } from "@/types/bets.types";
+import Loading from "@/components/Reuseables/Loading";
 
 const P2PBetsList = () => {
   const user = useAuthStore((state) => state.user);
@@ -21,7 +21,7 @@ const P2PBetsList = () => {
     isPending,
     isError,
     refetch,
-    isRefetching,
+    isRefetching
   } = useOpenBets({ category: "CUSTOM" });
 
   const { mutateAsync: takeBet, isPending: isTaking } = useTakeBet();
@@ -56,7 +56,7 @@ const P2PBetsList = () => {
 
       {isPending ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#FFC107" />
+          <Loading inline size={72} />
         </View>
       ) : isError ? (
         <View className="flex-1 items-center justify-center px-8">
