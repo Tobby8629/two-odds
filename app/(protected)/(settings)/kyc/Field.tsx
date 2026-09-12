@@ -13,6 +13,8 @@ interface FieldProps {
   optional?: boolean;
   /** Turns the border red when the field is required and empty. */
   invalid?: boolean;
+  /** Message shown under the field. */
+  error?: string;
   /** "outline" is the white-border, white-text style used on the address step. */
   variant?: "filled" | "outline";
   width?: number;
@@ -33,6 +35,7 @@ const Field = ({
   maxLength,
   optional,
   invalid,
+  error,
   variant = "filled",
   width,
   inputHeight,
@@ -42,6 +45,7 @@ const Field = ({
 }: FieldProps) => {
   const outline = variant === "outline";
   const height = inputHeight ?? (multiline ? 74 : 44);
+  const showError = Boolean(invalid || error);
 
   return (
     <View className={`mb-4 ${className ?? ""}`} style={width ? { width } : undefined}>
@@ -69,10 +73,14 @@ const Field = ({
           textAlignVertical: multiline ? "top" : "center",
           paddingTop: multiline ? 10 : 0,
           backgroundColor: outline ? "transparent" : "#fff",
-          borderWidth: outline || invalid ? 1 : 0,
-          borderColor: invalid ? KYC_ALERT_RED : outline ? "#FFFFFF" : "transparent",
+          borderWidth: outline || showError ? 1 : 0,
+          borderColor: showError ? KYC_ALERT_RED : outline ? "#FFFFFF" : "transparent",
         }}
       />
+
+      {error && (
+        <Text className="text-red-400 text-[10px] mt-1">{error}</Text>
+      )}
     </View>
   );
 };

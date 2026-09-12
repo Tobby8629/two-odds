@@ -9,10 +9,6 @@ import VotersCardIcon from "@/assets/SVGs/icons/VotersCardIcon";
 /** Required-field red, shared by the alert banner and invalid inputs. */
 export const KYC_ALERT_RED = "#F00000";
 
-export const COUNTRIES = [
-  "Nigeria", "Ghana", "Kenya", "South Africa", "United Kingdom", "United States",
-];
-
 export const NIGERIAN_STATES = [
   "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue",
   "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu",
@@ -66,4 +62,38 @@ export const KYC_DOC_LABELS: Record<KycDocType, string> = {
   bvn: "BVN",
   drivers_licence: "D-CARD",
   voters_card: "ID CARD",
+};
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Nigerian numbers are 11 digits, e.g. 08012345678. */
+const PHONE_DIGITS = 11;
+
+export type PersonalErrors = Partial<
+  Record<keyof import("@/store/kycFormStore").KycPersonalInfo, string>
+>;
+
+/** Shared by the step (to show messages) and the wizard (to gate Next). */
+export const validatePersonal = (
+  personal: import("@/store/kycFormStore").KycPersonalInfo
+): PersonalErrors => {
+  const errors: PersonalErrors = {};
+
+  if (!personal.firstName.trim()) errors.firstName = "Required";
+  if (!personal.lastName.trim()) errors.lastName = "Required";
+
+  if (!personal.email.trim()) errors.email = "Required";
+  else if (!EMAIL_RE.test(personal.email.trim()))
+    errors.email = "Enter a valid email address";
+
+  const digits = personal.phoneNumber.replace(/\D/g, "");
+
+  if (!personal.phoneNumber.trim()) errors.phoneNumber = "Required";
+  else if (digits.length !== PHONE_DIGITS)
+    errors.phoneNumber = `Phone number must be ${PHONE_DIGITS} digits`;
+
+  if (!personal.dateOfBirth.trim()) errors.dateOfBirth = "Required";
+  if (!personal.country.trim()) errors.country = "Required";
+
+  return errors;
 };

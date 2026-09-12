@@ -16,7 +16,7 @@ import SubmittedScreen from "./kyc/SubmittedScreen";
 import { useKycFormStore } from "@/store/kycFormStore";
 import { useKycStatus, useSubmitKyc } from "@/hooks/useKyc";
 import { SubmitKycInput } from "@/types/kyc.types";
-import { KYC_ALERT_RED } from "@/constants/kyc";
+import { KYC_ALERT_RED, validatePersonal } from "@/constants/kyc";
 import Loading from "@/components/Reuseables/Loading";
 
 /** Figma shows mm/dd/yy; the API wants ISO. */
@@ -54,7 +54,7 @@ export default function KycScreen() {
 
   const stepIsValid = () => {
     if (step === 0) {
-      return Object.values(personal).every((v) => v.trim().length > 0);
+      return Object.keys(validatePersonal(personal)).length === 0;
     }
 
     if (step === 1) {

@@ -1,14 +1,13 @@
 import React from "react";
 import { Text, View } from "react-native";
 import Field from "./Field";
-import SelectField from "./SelectField";
 import { useKycFormStore } from "@/store/kycFormStore";
-import { COUNTRIES } from "@/constants/kyc";
+import { validatePersonal } from "@/constants/kyc";
 
 const PersonalInfoStep = ({ showErrors }: { showErrors: boolean }) => {
   const { personal, setPersonal } = useKycFormStore();
 
-  const missing = (value: string) => showErrors && !value.trim();
+  const errors = showErrors ? validatePersonal(personal) : {};
 
   return (
     <View>
@@ -25,7 +24,7 @@ const PersonalInfoStep = ({ showErrors }: { showErrors: boolean }) => {
           label="First Name"
           placeholder="Enter first name"
           value={personal.firstName}
-          invalid={missing(personal.firstName)}
+          error={errors.firstName}
           onChangeText={(v) => setPersonal("firstName", v)}
         />
         <Field
@@ -33,7 +32,7 @@ const PersonalInfoStep = ({ showErrors }: { showErrors: boolean }) => {
           label="Last Name"
           placeholder="Enter last name"
           value={personal.lastName}
-          invalid={missing(personal.lastName)}
+          error={errors.lastName}
           onChangeText={(v) => setPersonal("lastName", v)}
         />
       </View>
@@ -43,16 +42,17 @@ const PersonalInfoStep = ({ showErrors }: { showErrors: boolean }) => {
         placeholder="@email.com"
         keyboardType="email-address"
         value={personal.email}
-        invalid={missing(personal.email)}
+        error={errors.email}
         onChangeText={(v) => setPersonal("email", v)}
       />
 
       <Field
         label="Phone Number"
-        placeholder="+23400000000"
+        placeholder="08012345678"
         keyboardType="phone-pad"
+        maxLength={11}
         value={personal.phoneNumber}
-        invalid={missing(personal.phoneNumber)}
+        error={errors.phoneNumber}
         onChangeText={(v) => setPersonal("phoneNumber", v)}
       />
 
@@ -60,17 +60,16 @@ const PersonalInfoStep = ({ showErrors }: { showErrors: boolean }) => {
         label="Date of Birth"
         placeholder="mm/dd/yy"
         value={personal.dateOfBirth}
-        invalid={missing(personal.dateOfBirth)}
+        error={errors.dateOfBirth}
         onChangeText={(v) => setPersonal("dateOfBirth", v)}
       />
 
-      <SelectField
+      <Field
         label="Country"
-        placeholder="Select your country"
-        options={COUNTRIES}
+        placeholder="Enter your country"
         value={personal.country}
-        invalid={missing(personal.country)}
-        onChange={(v) => setPersonal("country", v)}
+        error={errors.country}
+        onChangeText={(v) => setPersonal("country", v)}
       />
     </View>
   );
