@@ -27,6 +27,11 @@ type PinStep = "first" | "second";
 
 const empty = () => Array(4).fill("");
 
+/* Matches "No transaction PIN set", "PIN not set", "please set PIN first". */
+const NO_PIN_SET =
+  /(no|not)[^.]{0,30}pin|pin[^.]{0,15}not[^.]{0,10}set|set[^.]{0,15}pin[^.]{0,15}first/i;
+const ALREADY_SET = /already[^.]{0,20}set|pin[^.]{0,20}exists/i;
+
 const WithdrawalPin = () => {
   const [mode, setMode] = useState<PinMode>("change");
   const [step, setStep] = useState<PinStep>("first");
@@ -103,10 +108,17 @@ const WithdrawalPin = () => {
         "Something went wrong. Please try again."
       );
 
+      console.warn("PIN request failed:", message);
+
       /* The backend only tells us the account has no PIN by rejecting. */
-      if (mode === "change" && /no pin/i.test(message)) {
+      if (mode !== "set" && NO_PIN_SET.test(message)) {
         setNeedsFirstPin(true);
         setError(null);
+      } else if (mode === "set" && ALREADY_SET.test(message)) {
+        /* Someone with a PIN landed on the create path; send them to change. */
+        setMode("change");
+        setNeedsFirstPin(false);
+        setError("You already have a PIN. Enter it to change it.");
       } else {
         setError(message);
       }
@@ -163,10 +175,12 @@ const WithdrawalPin = () => {
             </Text>
           )}
 
-          {needsFirstPin && (
+          {(needsFirstPin || (mode === "change" && error)) && (
             <View className="items-center mt-6">
               <Text className="text-gray-300 text-xs text-center">
-                You haven't set a withdrawal PIN yet.
+                {needsFirstPin
+                  ? "You haven't set a withdrawal PIN yet."
+                  : "Don't have a PIN yet?"}
               </Text>
 
               <Button
