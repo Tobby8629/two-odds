@@ -17,7 +17,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { useCreateCustomBet } from "@/hooks/useBets";
-import { formatCurrency, potentialReturn } from "@/constants/functions";
+import {
+  apiErrorMessage,
+  formatCurrency,
+  potentialReturn,
+} from "@/constants/functions";
 
 /**
  * PLACEHOLDER. The bets API exposes no fee fields at all, so this rate comes
@@ -25,6 +29,13 @@ import { formatCurrency, potentialReturn } from "@/constants/functions";
  * API returns one - it must not be presented as authoritative before then.
  */
 const PLATFORM_FEE_RATE = 0.05;
+
+/**
+ * TEMPORARY. Set to true to see the Bet Created screen without a real post,
+ * for design review while the test account has no balance. Must be false
+ * before this branch is reviewed.
+ */
+const PREVIEW_SUCCESS = false;
 
 export default function ReviewBetScreen() {
   const { match, outcome, outcomeLabel, betType, stake, clearDraft } =
@@ -55,6 +66,11 @@ export default function ReviewBetScreen() {
   const handlePost = async () => {
     setError(null);
 
+    if (PREVIEW_SUCCESS) {
+      setCreated(true);
+      return;
+    }
+
     try {
       await createBet({
         matchId: match.id,
@@ -65,8 +81,15 @@ export default function ReviewBetScreen() {
       });
 
       setCreated(true);
-    } catch {
-      setError("Could not post this bet. Check your balance and try again.");
+    } catch (e) {
+      /* The backend explains the refusal, so show that rather than a guess. */
+      const message = apiErrorMessage(
+        e,
+        "Could not post this bet. Please try again."
+      );
+
+      console.warn("Create bet failed:", message, e);
+      setError(message);
     }
   };
 
