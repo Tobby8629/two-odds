@@ -19,7 +19,7 @@ import { useMatches } from "@/hooks/useMatches";
 import Sport from "@/components/Home/Sport";
 import { previewMatches } from "@/constants/previewMatches";
 import { sports as SportName } from "@/interface";
-import { useCreateCustomBet } from "@/hooks/useBets";
+import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { Match, MarketOutcome } from "@/types/sports.types";
 
 const FIELD_WIDTH = 358;
@@ -63,7 +63,7 @@ export default function CreateP2PBetScreen() {
     limit: 50,
   });
 
-  const { mutateAsync: createBet, isPending: isCreating } = useCreateCustomBet();
+  const setDraft = useBetDraftStore((state) => state.setDraft);
 
   /* Only MATCH_WINNER is offered, matching the three rows in the design. */
   const market = useMemo(
@@ -92,7 +92,7 @@ export default function CreateP2PBetScreen() {
 
   const canSubmit = Boolean(match && selectedOutcome) && Number(stake) > 0;
 
-  const handleCreate = async () => {
+  const handleCreate = () => {
     if (!match || !selectedOutcome) {
       setError("Choose a match and a prediction first");
       return;
@@ -105,19 +105,16 @@ export default function CreateP2PBetScreen() {
 
     setError(null);
 
-    try {
-      await createBet({
-        matchId: match.id,
-        betType: "MATCH_WINNER",
-        prediction: selectedOutcome.prediction,
-        odds: selectedOutcome.price,
-        stake: Number(stake),
-      });
+    /* Posting happens on the review screen, after the user confirms. */
+    setDraft({
+      match,
+      outcome: selectedOutcome,
+      outcomeLabel: outcomeLabel(match, selectedOutcome),
+      betType: "MATCH_WINNER",
+      stake: Number(stake),
+    });
 
-      router.replace("/(p2p)/my-bets");
-    } catch {
-      setError("Could not create this bet. Check your balance and try again.");
-    }
+    router.push("/(p2p)/review");
   };
 
   return (
@@ -212,17 +209,13 @@ export default function CreateP2PBetScreen() {
 
           <Pressable
             onPress={handleCreate}
-            disabled={!canSubmit || isCreating}
+            disabled={!canSubmit}
             style={[
               styles.action,
               { backgroundColor: canSubmit ? "#FFA500" : "#7C93A6" },
             ]}
           >
-            {isCreating ? (
-              <Loading inline size={24} />
-            ) : (
-              <Text style={styles.actionText}>Create Bet</Text>
-            )}
+            <Text style={styles.actionText}>Create Bet</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>
