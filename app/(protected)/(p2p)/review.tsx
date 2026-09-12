@@ -12,6 +12,8 @@ import { router } from "expo-router";
 import Layout from "../(settings)/Layout";
 import Loading from "@/components/Reuseables/Loading";
 import Head from "@/components/Home/Head";
+import Rocket from "@/assets/SVGs/icons/Rocket";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { useCreateCustomBet } from "@/hooks/useBets";
@@ -30,6 +32,7 @@ export default function ReviewBetScreen() {
 
   const { mutateAsync: createBet, isPending } = useCreateCustomBet();
 
+  const insets = useSafeAreaInsets();
   const [created, setCreated] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,7 +77,10 @@ export default function ReviewBetScreen() {
       {error ? <AlertBanner message={error} /> : null}
 
       <ScrollView
-        contentContainerStyle={styles.page}
+        contentContainerStyle={[
+          styles.page,
+          { paddingBottom: 48 + insets.bottom },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Match banner */}
@@ -147,11 +153,15 @@ export default function ReviewBetScreen() {
           {isPending ? (
             <Loading inline size={24} />
           ) : (
-            <Text style={styles.actionText}>Post Bet to P2P Market</Text>
+            <View style={styles.rowStart}>
+              <Text style={styles.actionText}>Post Bet to P2P Market</Text>
+              <Rocket width={17} height={17} color="#000000" style={{ marginLeft: 8 }} />
+            </View>
           )}
         </Pressable>
 
         <Pressable onPress={() => router.back()} style={styles.editLink}>
+          <Ionicons name="pencil" size={12} color="#FFFFFF" />
           <Text style={styles.editText}>Go Back &amp; Edit</Text>
         </Pressable>
       </ScrollView>
@@ -274,8 +284,14 @@ const styles = StyleSheet.create({
   },
   actionBusy: { opacity: 0.7 },
   actionText: { color: "#000000", fontSize: 15, fontFamily: "PoppinsSemiBold" },
-  editLink: { alignItems: "center", marginTop: 12 },
-  editText: { color: "#B9CBD9", fontSize: 12 },
+  editLink: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 16,
+    paddingVertical: 12,
+  },
+  editText: { color: "#FFFFFF", fontSize: 12, marginLeft: 6 },
   hint: { color: "#B9CBD9", fontSize: 12, textAlign: "center" },
   backdrop: {
     flex: 1,
