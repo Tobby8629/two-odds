@@ -33,6 +33,8 @@ interface KycFormState {
   idNumber: string;
   /** Local file uris, kept separate from the base64 the API wants. */
   uploads: Record<string, string | undefined>;
+  /** Base64 only where the API needs it, i.e. the BVN selfie. */
+  uploadsBase64: Record<string, string | undefined>;
   address: KycAddress;
   showRequiredAlert: boolean;
 
@@ -41,7 +43,7 @@ interface KycFormState {
   setDocType: (type: KycDocType | null) => void;
   setDocSubStep: (sub: KycDocSubStep) => void;
   setIdNumber: (value: string) => void;
-  setUpload: (slot: string, uri: string | undefined) => void;
+  setUpload: (slot: string, uri: string | undefined, base64?: string) => void;
   setAddress: (field: keyof KycAddress, value: string) => void;
   setShowRequiredAlert: (show: boolean) => void;
   reset: () => void;
@@ -70,6 +72,7 @@ export const useKycFormStore = create<KycFormState>((set) => ({
   docSubStep: "choose",
   idNumber: "",
   uploads: {},
+  uploadsBase64: {},
   address: emptyAddress,
   showRequiredAlert: false,
 
@@ -80,12 +83,15 @@ export const useKycFormStore = create<KycFormState>((set) => ({
     set((s) =>
       s.docType === docType
         ? { docType }
-        : { docType, idNumber: "", uploads: {} }
+        : { docType, idNumber: "", uploads: {}, uploadsBase64: {} }
     ),
   setDocSubStep: (docSubStep) => set({ docSubStep }),
   setIdNumber: (idNumber) => set({ idNumber }),
-  setUpload: (slot, uri) =>
-    set((s) => ({ uploads: { ...s.uploads, [slot]: uri } })),
+  setUpload: (slot, uri, base64) =>
+    set((s) => ({
+      uploads: { ...s.uploads, [slot]: uri },
+      uploadsBase64: { ...s.uploadsBase64, [slot]: base64 },
+    })),
   setAddress: (field, value) =>
     set((s) => ({ address: { ...s.address, [field]: value } })),
   setShowRequiredAlert: (showRequiredAlert) => set({ showRequiredAlert }),
@@ -98,6 +104,7 @@ export const useKycFormStore = create<KycFormState>((set) => ({
       docSubStep: "choose",
       idNumber: "",
       uploads: {},
+      uploadsBase64: {},
       address: emptyAddress,
       showRequiredAlert: false,
     }),

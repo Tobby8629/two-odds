@@ -39,6 +39,7 @@ export default function KycScreen() {
     docSubStep,
     setDocSubStep,
     idNumber,
+    uploadsBase64,
     address,
     showRequiredAlert,
     setShowRequiredAlert,

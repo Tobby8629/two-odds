@@ -5,6 +5,7 @@ import SelectField from "./SelectField";
 import UploadBox from "./UploadBox";
 import { useKycFormStore } from "@/store/kycFormStore";
 import { NIGERIAN_STATES } from "@/constants/kyc";
+import { useImagePicker } from "@/hooks/useImagePicker";
 
 /* Sizes come straight from the Figma frames. */
 const HALF_WIDTH = 160;
@@ -14,6 +15,7 @@ const STREET_INPUT_HEIGHT = 74;
 
 const AddressStep = ({ showErrors }: { showErrors: boolean }) => {
   const { address, setAddress, uploads, setUpload } = useKycFormStore();
+  const { pickFromLibrary } = useImagePicker();
 
   const missing = (value: string) => showErrors && !value.trim();
 
@@ -77,7 +79,10 @@ const AddressStep = ({ showErrors }: { showErrors: boolean }) => {
           label="Utility Bill"
           hint="Upload your any utility bill - Your address must match"
           value={uploads.utilityBill}
-          onPress={() => setUpload("utilityBill", undefined)}
+          onPress={async () => {
+            const picked = await pickFromLibrary();
+            if (picked) setUpload("utilityBill", picked.uri);
+          }}
         />
       </View>
     </View>

@@ -3,6 +3,7 @@ import { Pressable, Text, View } from "react-native";
 import Field from "./Field";
 import UploadBox from "./UploadBox";
 import { useKycFormStore } from "@/store/kycFormStore";
+import { useImagePicker } from "@/hooks/useImagePicker";
 import { KYC_ALERT_RED, KYC_DOC_LABELS, KYC_DOC_OPTIONS } from "@/constants/kyc";
 
 const Heading = () => (
@@ -98,6 +99,16 @@ const SelectedHeader = ({ title }: { title: string }) => {
 const DocumentStep = ({ showErrors }: { showErrors: boolean }) => {
   const { docType, docSubStep, idNumber, setIdNumber, uploads, setUpload } =
     useKycFormStore();
+  const { pickFromLibrary, takePhoto } = useImagePicker();
+
+  /* The selfie is the only upload the API takes, and it needs base64. */
+  const choose = async (slot: string, opts?: { camera?: boolean; base64?: boolean }) => {
+    const picked = opts?.camera
+      ? await takePhoto(opts?.base64)
+      : await pickFromLibrary(opts?.base64);
+
+    if (picked) setUpload(slot, picked.uri, picked.base64);
+  };
 
   if (docSubStep === "choose" || !docType) return <TypeChooser showErrors={showErrors} />;
 
@@ -127,7 +138,7 @@ const DocumentStep = ({ showErrors }: { showErrors: boolean }) => {
           label="NIN Slip"
           hint="Upload your NIN slip or NIMC card - Name must match personal info"
           value={uploads.ninSlip}
-          onPress={() => setUpload("ninSlip", undefined)}
+          onPress={() => choose("ninSlip")}
         />
       </View>
     );
@@ -156,7 +167,7 @@ const DocumentStep = ({ showErrors }: { showErrors: boolean }) => {
           prompt="Take a selfie or browse"
           hint="Your BVN doesn't give us access to your bank accounts"
           value={uploads.selfie}
-          onPress={() => setUpload("selfie", undefined)}
+          onPress={() => choose("selfie", { camera: true, base64: true })}
         />
       </View>
     );
@@ -173,13 +184,13 @@ const DocumentStep = ({ showErrors }: { showErrors: boolean }) => {
       <UploadBox
         label="ID Front"
         value={uploads.idFront}
-        onPress={() => setUpload("idFront", undefined)}
+        onPress={() => choose("idFront")}
       />
       <UploadBox
         label="ID Back"
         hint="All four corners visible, no glare, details readable"
         value={uploads.idBack}
-        onPress={() => setUpload("idBack", undefined)}
+        onPress={() => choose("idBack")}
       />
     </View>
   );

@@ -4,6 +4,8 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import Button from "@/components/Reuseables/Button";
 import { KycStatus } from "@/types/kyc.types";
+import { useKycFormStore } from "@/store/kycFormStore";
+import { KYC_ALERT_RED, KYC_DOC_OPTIONS } from "@/constants/kyc";
 
 interface SubmittedScreenProps {
   status: KycStatus;
@@ -18,21 +20,24 @@ const StatusRow = ({
   badge,
   badgeColour,
 }: {
-  icon: "badge" | "place";
+  icon: React.ReactNode;
   title: string;
   subtitle: string;
   badge: string;
   badgeColour: string;
 }) => (
   <View className="flex-row items-center py-3">
-    <MaterialIcons name={icon} size={20} color="#0A3A5C" />
+    {icon}
 
     <View className="flex-1 ml-3">
       <Text className="text-black text-sm font-semibold">{title}</Text>
       <Text className="text-[#7A8A99] text-[10px]">{subtitle}</Text>
     </View>
 
-    <View className="rounded-full px-2 py-1" style={{ backgroundColor: badgeColour }}>
+    <View
+      className="rounded-full px-3 py-1"
+      style={{ backgroundColor: badgeColour }}
+    >
       <Text className="text-white text-[9px] font-semibold">{badge}</Text>
     </View>
   </View>
@@ -43,6 +48,12 @@ const SubmittedScreen = ({
   rejectedReason,
   onCheckLater,
 }: SubmittedScreenProps) => {
+  const { docType, uploads } = useKycFormStore();
+
+  const chosen = KYC_DOC_OPTIONS.find((option) => option.type === docType);
+  const DocIcon = chosen?.icon;
+  const fileCount = Object.values(uploads).filter(Boolean).length;
+
   const rejected = status === "REJECTED";
   const verified = status === "VERIFIED";
 
@@ -61,12 +72,16 @@ const SubmittedScreen = ({
   return (
     <View className="items-center px-2">
       <View
-        className="w-24 h-24 rounded-full items-center justify-center mt-6 mb-6"
-        style={{ backgroundColor: rejected ? "#E53935" : "#FFC107" }}
+        className="rounded-full items-center justify-center mt-6 mb-6"
+        style={{
+          width: 99,
+          height: 99,
+          backgroundColor: rejected ? KYC_ALERT_RED : "#FFC107",
+        }}
       >
         <Ionicons
           name={rejected ? "close" : "checkmark"}
-          size={52}
+          size={54}
           color="#0A3A5C"
         />
       </View>
@@ -80,17 +95,29 @@ const SubmittedScreen = ({
 
       <View className="bg-white rounded-xl w-full px-4 py-1 mb-8">
         <StatusRow
-          icon="badge"
-          title="National ID Card"
-          subtitle={rejected ? "Rejected" : "Submitted"}
+          icon={
+            DocIcon ? (
+              <DocIcon width={28} height={26} />
+            ) : (
+              <MaterialIcons name="badge" size={20} color="#0A3A5C" />
+            )
+          }
+          title={chosen?.name ?? "Identity document"}
+          subtitle={
+            rejected
+              ? "Rejected"
+              : fileCount > 0
+                ? fileCount + (fileCount > 1 ? " files submitted" : " file submitted")
+                : "Submitted"
+          }
           badge={rejected ? "REJECTED" : verified ? "VERIFIED" : "IN REVIEW"}
-          badgeColour={rejected ? "#E53935" : verified ? "#2E7D32" : "#E59A0B"}
+          badgeColour={rejected ? KYC_ALERT_RED : verified ? "#2E7D32" : "#E59A0B"}
         />
 
         <View className="h-[1px] bg-[#E3EAF0]" />
 
         <StatusRow
-          icon="place"
+          icon={<MaterialIcons name="place" size={20} color="#0A3A5C" />}
           title="Personal info & address"
           subtitle="Confirmed"
           badge="VERIFIED"
