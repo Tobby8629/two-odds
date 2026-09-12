@@ -1,6 +1,8 @@
-import { getRequest, patchRequest } from "@/components/api/Axois";
+import { getRequest, patchRequest, postRequest } from "@/components/api/Axois";
+import { ApiResponse } from "@/types/api.types";
 import {
-  ApiResponse,
+  AvatarUpload,
+  PublicProfile,
   UpdateProfileInput,
   UserProfile,
 } from "@/types/profile.types";
@@ -37,5 +39,35 @@ export const userService = {
       );
 
     return response.data.data;
+  },
+
+  /** Public, unauthenticated. Used for bet counterparties. */
+  async getPublicProfile(id: string): Promise<PublicProfile | null> {
+    const response =
+      await getRequest<ApiResponse<PublicProfile>>(`/users/${id}`);
+
+    return response.data?.data ?? null;
+  },
+
+  /**
+   * multipart/form-data with field name `avatar`. The instance default of
+   * application/json has to be overridden or the boundary is dropped.
+   */
+  async uploadAvatar(file: AvatarUpload): Promise<string | null> {
+    const form = new FormData();
+
+    form.append("avatar", {
+      uri: file.uri,
+      name: file.name ?? "avatar.jpg",
+      type: file.type ?? "image/jpeg",
+    } as unknown as Blob);
+
+    const response = await postRequest<
+      ApiResponse<{ id: string; avatarUrl: string }>
+    >("/users/profile/avatar", form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return response.data?.data?.avatarUrl ?? null;
   },
 };
