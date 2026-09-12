@@ -9,6 +9,7 @@ import { useP2PStore } from '@/store/useP2PStore';
 import { useTabStore } from '@/store/useTabStore';
 import { useLiveMatches } from '@/hooks/useMatches';
 import { RelativePathString, router } from 'expo-router';
+import { previewMatches } from '@/constants/previewMatches';
 import { StyleSheet } from 'react-native';
 
 const PLAYER_ONE = require('@/assets/images/p2pPlayerOne.png');
@@ -21,7 +22,8 @@ export default function P2PLanding() {
   const { data: matches, isPending, isError, refetch, isRefetching } =
     useLiveMatches();
 
-  const liveMatches = matches ?? [];
+  /* TEMP: fall back to local fixtures until the API returns live matches. */
+  const liveMatches = matches && matches.length ? matches : previewMatches;
 
   return (
     <FlatList
