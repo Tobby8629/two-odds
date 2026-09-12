@@ -1,97 +1,163 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, ScrollView, Animated, Easing } from 'react-native';
-import { useP2PStore } from '@/store/useP2PStore';
+import React from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { RelativePathString, router } from 'expo-router';
 import Head from '@/components/Home/Head';
-import Button from '@/components/Reuseables/Button';
-import RadarAnimation from '@/components/Reuseables/Animations/RadarAnimation';
-import { useOpenBets } from '@/hooks/useBets';
+import UserAvatar from '@/components/Reuseables/UserAvatar';
+import { useP2PStore } from '@/store/useP2PStore';
+import { useProfileStore } from '@/store/useProfileStore';
+import { useProfile } from '@/hooks/useProfile';
 
 /**
- * The backend has no matchmaking: there is no queue, no lobby and no
- * "searching" status. A P2P bet is posted open and sits in a public market
- * until someone takes it. So this screen loads that market rather than
- * pretending to pair two players up, and the radar covers the fetch.
+ * The backend has no matchmaking: a bet is posted open and sits in the market
+ * until someone takes it. This screen is the waiting state for that, not a
+ * queue - there is nothing to poll until the bet flips OPEN to MATCHED.
  */
 export default function P2PSearching() {
   const { setScreen } = useP2PStore();
-  const [isSearching, setIsSearching] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-
-  const { refetch } = useOpenBets({ category: 'CUSTOM' });
-
-  const handleSearchAgain = async () => {
-    if (isSearching) return;
-
-    setIsSearching(true);
-    setError(null);
-
-    try {
-      const result = await refetch();
-
-      if (result.isError) throw new Error('market unavailable');
-
-      await new Promise<void>((resolve) => {
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 800,
-          easing: Easing.ease,
-          useNativeDriver: true,
-        }).start(() => resolve());
-      });
-
-      fadeAnim.setValue(1);
-      setScreen('list');
-    } catch {
-      setError('Could not reach the P2P market. Please try again.');
-    } finally {
-      setIsSearching(false);
-    }
-  };
+  const avatarId = useProfileStore((state) => state.avatarId);
+  const { data: profile } = useProfile();
 
   return (
-    <View className="flex-1 mb-5 bg-pry" style={{ paddingVertical: 42 }}>
+    <View style={styles.screen}>
       <Head />
 
       <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          alignItems: 'center',
-          paddingTop: 32,
-          paddingBottom: 40,
-        }}
+        contentContainerStyle={styles.body}
         showsVerticalScrollIndicator={false}
       >
-        <Animated.View
-          style={{
-            opacity: fadeAnim,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 32,
-            marginBottom: 32,
-          }}
+        <Text style={styles.kicker}>ACTIVE LOBBY</Text>
+
+        <Text style={styles.title}>Finding Opponent</Text>
+
+        <Text style={styles.subtitle}>
+          Waiting for a player to accept your stake...
+        </Text>
+
+        {/* Avatar with its glow ring and the search badge */}
+        <View style={styles.avatarWrap}>
+          <View style={styles.glowOuter}>
+            <View style={styles.glowInner}>
+              <UserAvatar
+                uri={profile?.avatarUrl}
+                avatarId={avatarId}
+                size={120}
+              />
+            </View>
+          </View>
+
+          <View style={styles.searchBadge}>
+            <Ionicons name="search" size={18} color="#0A3A5C" />
+          </View>
+        </View>
+
+        <Pressable
+          onPress={() => router.push('/(p2p)/create' as RelativePathString)}
+          style={styles.createPill}
         >
-          <Text className="text-white text-3xl text-center">
-            {isSearching ? 'Finding Open Bets' : 'Waiting to Connect'}
-          </Text>
-        </Animated.View>
+          <View style={styles.pillDot} />
+          <Text style={styles.pillText}>CREATE YOUR OWN BETS</Text>
+        </Pressable>
 
-        {/* Radar Animation */}
-        <RadarAnimation isSearching={isSearching} />
-
-        {error && (
-          <Text className="text-red-400 text-sm text-center px-8 mb-3">
-            {error}
-          </Text>
-        )}
-
-        {/* Button */}
-        <Button
-          text={isSearching ? 'Searching...' : 'Browse P2P Market'}
-          onPress={handleSearchAgain}
-        />
+        <Pressable onPress={() => setScreen('landing')} style={styles.cancel}>
+          <Text style={styles.cancelText}>Cancel</Text>
+        </Pressable>
       </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: '#123456', paddingTop: 56 },
+  body: {
+    flexGrow: 1,
+    alignItems: 'center',
+    paddingTop: 28,
+    paddingBottom: 48,
+    paddingHorizontal: 24,
+  },
+  kicker: {
+    color: '#FFFFFF',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: 12,
+    letterSpacing: 1,
+  },
+  title: {
+    color: '#FFFFFF',
+    fontFamily: 'PoppinsBold',
+    fontSize: 22,
+    marginTop: 10,
+  },
+  subtitle: {
+    color: '#B9CBD9',
+    fontFamily: 'Poppins',
+    fontSize: 12,
+    lineHeight: 19.5,
+    marginTop: 6,
+    textAlign: 'center',
+  },
+  avatarWrap: { marginTop: 48, marginBottom: 48 },
+  glowOuter: {
+    width: 168,
+    height: 168,
+    borderRadius: 84,
+    backgroundColor: '#1B4C74',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  glowInner: {
+    width: 136,
+    height: 136,
+    borderRadius: 68,
+    backgroundColor: '#2E6F9E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  searchBadge: {
+    position: 'absolute',
+    right: 6,
+    bottom: 0,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  createPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 16,
+    backgroundColor: '#0C3A63',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  pillDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#FFFFFF',
+    marginRight: 8,
+  },
+  pillText: {
+    color: '#FFFFFF',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: 10,
+    letterSpacing: 0.5,
+  },
+  cancel: {
+    width: 110,
+    height: 34,
+    borderRadius: 8,
+    backgroundColor: '#FFC107',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 28,
+  },
+  cancelText: {
+    color: '#000000',
+    fontFamily: 'PoppinsSemiBold',
+    fontSize: 14,
+  },
+});
