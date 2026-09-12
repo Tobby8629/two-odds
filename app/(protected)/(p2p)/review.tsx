@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import Layout from "../(settings)/Layout";
 import Loading from "@/components/Reuseables/Loading";
+import Head from "@/components/Home/Head";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { useCreateCustomBet } from "@/hooks/useBets";
@@ -68,6 +69,8 @@ export default function ReviewBetScreen() {
 
   return (
     <Layout header="Review Bet">
+      <Head compact />
+
       {error ? <AlertBanner message={error} /> : null}
 
       <ScrollView
@@ -255,8 +258,9 @@ const styles = StyleSheet.create({
   notice: { alignItems: "flex-start" },
   noticeText: {
     color: "#B9CBD9",
-    fontSize: 11,
-    lineHeight: 17,
+    fontFamily: "Poppins",
+    fontSize: 12,
+    lineHeight: 19.5,
     marginLeft: 8,
     flex: 1,
   },

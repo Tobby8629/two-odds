@@ -17,6 +17,7 @@ import Loading from "@/components/Reuseables/Loading";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
 import { useMatches } from "@/hooks/useMatches";
 import Sport from "@/components/Home/Sport";
+import Head from "@/components/Home/Head";
 import { sports as SportName } from "@/interface";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { Match, MarketOutcome } from "@/types/sports.types";
@@ -146,6 +147,8 @@ export default function CreateP2PBetScreen() {
 
   return (
     <Layout header="Create P2P Bet">
+      <Head compact />
+
       {error ? <AlertBanner message={error} /> : null}
 
       <KeyboardAvoidingView
