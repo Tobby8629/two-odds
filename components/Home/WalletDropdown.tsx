@@ -27,12 +27,7 @@ const WalletDropdown = ({ visible, onClose }: WalletDropdownProps) => {
   const [currency, setCurrency] = useState<WalletCurrency>("NGN");
 
   const { data: profile } = useProfile();
-
-  const {
-    data: balance,
-    isPending,
-    isError,
-  } = useWalletBalance();
+  const { data: balance, isPending, isError } = useWalletBalance();
 
   const amount =
     currency === "NGN" ? balance?.ngn?.balance : balance?.usdt?.balance;
@@ -50,66 +45,74 @@ const WalletDropdown = ({ visible, onClose }: WalletDropdownProps) => {
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       {/* Tapping anywhere outside dismisses the preview. */}
       <Pressable style={styles.backdrop} onPress={onClose}>
+        {/* Speech-bubble tail pointing back at the wallet icon. */}
+        <View pointerEvents="none" style={styles.tail} />
+
         <Pressable style={styles.card} onPress={(e) => e.stopPropagation()}>
           <View pointerEvents="none" style={styles.logo}>
             <BigLogo width={288} height={137} opacity={0.9} />
           </View>
 
-          <View className={`${flexNoJustify} gap-3`}>
-            <Pressable
-              onPress={() =>
-                setCurrency((c) => (c === "NGN" ? "USDT" : "NGN"))
-              }
-              className="flex-row items-center bg-white/10 rounded-md px-2 py-1"
-            >
-              <Text className="text-white text-xs mr-1">
-                {CURRENCY_LABELS[currency]}
-              </Text>
-              <Ionicons name="chevron-down" size={12} color="#FFFFFF" />
-            </Pressable>
+          <View style={styles.body}>
+            <View className={`${flexNoJustify} gap-3`}>
+              <Pressable
+                onPress={() =>
+                  setCurrency((c) => (c === "NGN" ? "USDT" : "NGN"))
+                }
+                className="flex-row items-center bg-white/10 rounded-md px-2 py-1"
+              >
+                <Text className="text-white text-xs mr-1">
+                  {CURRENCY_LABELS[currency]}
+                </Text>
+                <Ionicons name="chevron-down" size={12} color="#FFFFFF" />
+              </Pressable>
 
-            <Pressable onPress={() => setShowBalance((v) => !v)}>
-              {showBalance ? (
-                <OpenEye />
+              <Pressable onPress={() => setShowBalance((v) => !v)}>
+                {showBalance ? (
+                  <OpenEye />
+                ) : (
+                  <FontAwesome5 name="eye-slash" size={16} color="white" />
+                )}
+              </Pressable>
+            </View>
+
+            <View className="mt-4 mb-4">
+              {isPending ? (
+                <Loading inline size={32} />
               ) : (
-                <FontAwesome5 name="eye-slash" size={16} color="white" />
+                <Text className="text-white text-3xl font-semibold">
+                  {showBalance ? balanceLabel : "****"}
+                </Text>
               )}
-            </Pressable>
-          </View>
-
-          <View className="mt-4 mb-4">
-            {isPending ? (
-              <Loading inline size={32} />
-            ) : (
-              <Text className="text-white text-3xl font-semibold">
-                {showBalance ? balanceLabel : "****"}
+              <Text className="text-[#9FB6C9] text-[11px] mt-1">
+                Total Balance
               </Text>
-            )}
-            <Text className="text-[#9FB6C9] text-[11px] mt-1">Total Balance</Text>
+            </View>
+
+            <View style={styles.divider} />
+
+            <View className={`${flex} mt-4 mb-4`}>
+              <Pressable
+                onPress={() => go("/(transactions)/deposit")}
+                style={[styles.pill, styles.pillFilled]}
+              >
+                <Text style={styles.pillTextDark}>Deposit</Text>
+                <MoneyTransfer width={11} height={13} />
+              </Pressable>
+
+              <Pressable
+                onPress={() => go("/(transactions)/withdraw")}
+                style={[styles.pill, styles.pillOutlined]}
+              >
+                <Text style={styles.pillTextLight}>Withdrawal</Text>
+                <MoneyTransfer width={11} height={13} />
+              </Pressable>
+            </View>
           </View>
 
-          <View style={styles.divider} />
-
-          <View className={`${flexNoJustify} gap-4 mt-4`}>
-            <Pressable
-              onPress={() => go("/(transactions)/deposit")}
-              style={[styles.pill, styles.pillFilled]}
-            >
-              <Text style={styles.pillTextDark}>Deposit</Text>
-              <MoneyTransfer width={11} height={13} />
-            </Pressable>
-
-            <Pressable
-              onPress={() => go("/(transactions)/withdraw")}
-              style={[styles.pill, styles.pillOutlined]}
-            >
-              <Text style={styles.pillTextLight}>Withdrawal</Text>
-              <MoneyTransfer width={11} height={13} />
-            </Pressable>
-          </View>
-
-          <View className={`${flex} mt-5`}>
-            <Text className="text-[#9FB6C9] text-[11px]">BET ID :</Text>
+          {/* Darker strip flush to the card edges. */}
+          <View className={`${flex}`} style={styles.betIdBar}>
+            <Text className="text-[#9FB6C9] text-[11px] italic">BET ID :</Text>
             <Text
               numberOfLines={1}
               className="text-[#9FB6C9] text-[11px] flex-1 text-right ml-3"
@@ -132,24 +135,43 @@ const styles = StyleSheet.create({
   },
   card: {
     position: "absolute",
-    top: 96,
+    top: 92,
     left: 16,
     right: 16,
     backgroundColor: "#090C0E",
     borderRadius: 24,
-    paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 16,
     overflow: "hidden",
+  },
+  body: {
+    paddingHorizontal: 20,
   },
   logo: {
     position: "absolute",
-    top: 20,
-    right: 5,
+    top: 0,
+    right: 0,
+  },
+  tail: {
+    position: "absolute",
+    top: 78,
+    right: 30,
+    width: 0,
+    height: 0,
+    borderLeftWidth: 11,
+    borderRightWidth: 11,
+    borderBottomWidth: 14,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#090C0E",
   },
   divider: {
     height: 1,
     backgroundColor: "#2A2A2A",
+  },
+  betIdBar: {
+    backgroundColor: "#000000",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   pill: {
     width: 90,
