@@ -26,12 +26,20 @@ export default function P2PLanding() {
   const liveMatches = matches && matches.length ? matches : previewMatches;
 
   return (
-    <FlatList
+    <View style={styles.screen}>
+      {/* Stays put so the tab switch, search and wallet are always reachable. */}
+      <View style={styles.fixedHeader}>
+        <P2PToggle active={activeTab} onChange={setActiveTab} />
+
+        <Head />
+      </View>
+
+      <FlatList
       style={styles.list}
       data={liveMatches}
       keyExtractor={(m) => m.id}
       renderItem={({ item }) => (
-        <View className="items-center mb-4">
+        <View style={styles.cardRow}>
           <LiveMatchCard match={item} />
         </View>
       )}
@@ -41,10 +49,6 @@ export default function P2PLanding() {
       contentContainerStyle={styles.container}
       ListHeaderComponent={
         <View>
-          <P2PToggle active={activeTab} onChange={setActiveTab} />
-
-          <Head />
-
           {/* Players facing off */}
           <View className="flex-row items-center justify-center mt-6 mb-4">
             <Image source={PLAYER_ONE} style={styles.player} />
@@ -116,7 +120,8 @@ export default function P2PLanding() {
           </Text>
         )
       }
-    />
+      />
+    </View>
   );
 }
 
@@ -142,7 +147,21 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: "#123456",
-    paddingTop: 56,
+    paddingTop: 8,
     paddingBottom: 40,
+  },
+  cardRow: {
+    paddingHorizontal: 18,
+    marginBottom: 16,
+    alignItems: "center",
+  },
+  screen: {
+    flex: 1,
+    backgroundColor: "#123456",
+  },
+  fixedHeader: {
+    backgroundColor: "#123456",
+    paddingTop: 56,
+    zIndex: 10,
   },
 });

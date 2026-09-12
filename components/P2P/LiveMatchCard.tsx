@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Match } from "@/types/sports.types";
 import VsMark from "@/assets/SVGs/icons/VsMark";
 
@@ -72,16 +72,17 @@ const LiveMatchCard = ({ match }: { match: Match }) => {
 
 export default LiveMatchCard;
 
-const styles = {
+const styles = StyleSheet.create({
   card: {
-    width: 358,
+    width: "100%",
+    maxWidth: 358,
     height: 185,
     borderRadius: 48,
     borderWidth: 1,
     borderColor: "#1F5079",
     backgroundColor: "#001C34",
     padding: 20,
-    justifyContent: "center" as const,
+    justifyContent: "center",
   },
   liveDot: {
     width: 6,
@@ -93,7 +94,7 @@ const styles = {
   liveText: {
     color: "#E53935",
     fontSize: 10,
-    fontWeight: "700" as const,
+    fontWeight: "700",
   },
   scorePill: {
     borderWidth: 1,
@@ -108,4 +109,4 @@ const styles = {
     letterSpacing: 0.5,
     marginTop: 4,
   },
-};
+});
