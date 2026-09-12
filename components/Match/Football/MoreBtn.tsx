@@ -23,7 +23,7 @@ const MoreBtn = ({ title, setMore }: MoreBtnProps) => {
           </ThemedText>
 
           <ThemedText className="!text-black text-center my-3">
-            Lorem ipsum dolor sit amet consectetur. Nunc.
+            More betting options for this match.
           </ThemedText>
 
           <Pressable onPress={() => setMore(false)}>

@@ -82,7 +82,7 @@ const AvatarScreen = () => {
         <View style={styles.uploadRow}>
           <UserAvatar
             uri={profile?.avatarUrl}
-            fallbackKey={selectedId}
+            avatarId={selectedId}
             size={64}
           />
 

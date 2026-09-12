@@ -1,16 +1,23 @@
 import React from "react";
 import { Image, View } from "react-native";
-import { avatarForKey } from "@/constants/avatars";
+import { avatarById, avatarForKey } from "@/constants/avatars";
 
 interface UserAvatarProps {
   /** avatarUrl from the API; falls back to a local SVG when null. */
   uri?: string | null;
-  /** Seeds the fallback so the same person keeps the same face. */
+  /** An exact avatar id ("1".."16"), looked up directly. */
+  avatarId?: string;
+  /** An arbitrary key (a bet or user id) hashed to a stable avatar. */
   fallbackKey?: string;
   size?: number;
 }
 
-const UserAvatar = ({ uri, fallbackKey, size = 40 }: UserAvatarProps) => {
+const UserAvatar = ({
+  uri,
+  avatarId,
+  fallbackKey,
+  size = 40,
+}: UserAvatarProps) => {
   if (uri) {
     return (
       <Image
@@ -21,7 +28,9 @@ const UserAvatar = ({ uri, fallbackKey, size = 40 }: UserAvatarProps) => {
     );
   }
 
-  const Fallback = avatarForKey(fallbackKey).component;
+  const Fallback = avatarId
+    ? avatarById(avatarId).component
+    : avatarForKey(fallbackKey).component;
 
   return (
     <View style={{ width: size, height: size }}>

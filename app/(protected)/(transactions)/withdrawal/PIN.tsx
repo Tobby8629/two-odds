@@ -35,7 +35,7 @@ const PIN = () => {
           Enter Withdrawal Pin
         </ThemedText>
         <ThemedText className="text-center">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          Enter your 4-digit withdrawal PIN to approve this transaction.
         </ThemedText>
 
         <View className="my-5">

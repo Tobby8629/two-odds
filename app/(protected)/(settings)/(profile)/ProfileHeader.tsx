@@ -22,7 +22,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ avatarId, avatarUrl }) =>
       <View style={styles.row}>
         {/* Avatar */}
         <View style={styles.avatarWrapper}>
-          <UserAvatar uri={avatarUrl} fallbackKey={avatarId} size={80} />
+          <UserAvatar uri={avatarUrl} avatarId={avatarId} size={80} />
         </View>
 
         {/* Change Avatar Button */}
