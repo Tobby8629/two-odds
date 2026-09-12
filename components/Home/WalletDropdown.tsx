@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import BigLogo from "@/assets/SVGs/BigLogo";
+import WalletLogo from "@/assets/SVGs/WalletLogo";
 import MoneyTransfer from "@/assets/SVGs/icons/MoneyTransfer";
 import OpenEye from "@/assets/SVGs/OpenEye";
 import Loading from "@/components/Reuseables/Loading";
@@ -50,7 +50,7 @@ const WalletDropdown = ({ visible, onClose }: WalletDropdownProps) => {
 
         <Pressable style={styles.card} onPress={(e) => e.stopPropagation()}>
           <View pointerEvents="none" style={styles.logo}>
-            <BigLogo width={288} height={137} opacity={0.9} />
+            <WalletLogo width={150} height={148} opacity={0.9} />
           </View>
 
           <View style={styles.body}>
@@ -91,7 +91,7 @@ const WalletDropdown = ({ visible, onClose }: WalletDropdownProps) => {
 
             <View style={styles.divider} />
 
-            <View className={`${flex} mt-4 mb-4`}>
+            <View className={`${flexNoJustify} gap-4 mt-4 mb-4`}>
               <Pressable
                 onPress={() => go("/(transactions)/deposit")}
                 style={[styles.pill, styles.pillFilled]}
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     top: 92,
     left: 16,
     right: 16,
-    backgroundColor: "#090C0E",
+    backgroundColor: "#001C34",
     borderRadius: 24,
     paddingTop: 16,
     overflow: "hidden",
@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     position: "absolute",
-    top: 0,
-    right: 0,
+    top: -6,
+    right: -4,
   },
   tail: {
     position: "absolute",
@@ -162,11 +162,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 14,
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
-    borderBottomColor: "#090C0E",
+    borderBottomColor: "#001C34",
   },
   divider: {
     height: 1,
-    backgroundColor: "#2A2A2A",
+    marginTop: 4,
+    backgroundColor: "#0B3253",
   },
   betIdBar: {
     backgroundColor: "#000000",
