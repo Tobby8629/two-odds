@@ -73,9 +73,19 @@ interface MatchProps {
 
   interface MatchPropsBetslip {
     id: string;
-    match: Match;
+    // match: Match;
     matchId: string;
-    option: "homeTeam" | "awayTeam" | "Draw" | `Over ${string}` | `Under ${string}`;
+    betType: string;
+    option: | "homeTeam"
+  | "home"
+  | "away"
+  | "awayTeam"
+  | "draw"
+  | "home_draw"
+  | "away_draw"
+  | "home_away"
+  | `over ${string}`
+  | `under ${string}`;
 }
 
 

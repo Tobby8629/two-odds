@@ -1,6 +1,6 @@
 import { getQuery } from "@/components/api/QueryFn"
 import { useQuery } from "@tanstack/react-query"
-import { Match } from "./matchInterface/matchInterface"
+import { Market, Match, MatchDetailsResponse } from "./matchInterface/matchInterface"
 
 export interface Sport {
   id: string;
@@ -67,10 +67,25 @@ export const useCountryLeagues = (country: string, sportId: string) => {
 
 
 export const useMatches = ( leagueId: string, status?: Status) => {
-  // console.log(leagueId)
   return useQuery({
     queryKey: ["matches"],
     queryFn: () => getQuery<fetch<Match>>(`/sports/matches`, {leagueId, status}),
      staleTime: 5 * 60 * 1000, 
   })
 } 
+
+export const useMatchDetails = (matchId: string) => {
+  return useQuery({
+    queryKey: ["matchDetails", matchId],
+    queryFn: () => getQuery<MatchDetailsResponse>(`/sports/matches/${matchId}`),
+     staleTime: 5 * 60 * 1000, 
+  })
+}
+
+export const useMatchMarkets = (matchId: string) => {
+  return useQuery({
+    queryKey: ["matchMarkets", matchId],
+    queryFn: () => getQuery<fetch<Market>>(`/sports/matches/${matchId}/odds`),
+     staleTime: 5 * 60 * 1000, 
+  })
+}

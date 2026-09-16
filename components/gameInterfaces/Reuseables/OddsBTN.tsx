@@ -2,19 +2,26 @@ import { ThemedText } from "@/components/ThemedText";
 import { Pressable } from "react-native";
 import React from "react";
 import { Match } from "@/hooks/matchInterface/matchInterface";
-import { useSport } from "@/store/useStore";
+import { BetOption, useSport } from "@/store/useStore";
 import { SelectedOption } from "@/interface";
 
 
 interface Props {
   match: Match;
-  type: "homeTeam" | "awayTeam" | "Draw";
+  type: BetOption;
   className?: string;
-  selectGame: (id: string, option: SelectedOption['option'], match: Match) => void;
+  selectGame: (id: string, option: BetOption, betType:string, ) => void;
 }
 
 const OddsButton = ({ match, type, selectGame, className }: Props) => {
   const { selectedGames } = useSport();
+  
+  const option =
+  type === "homeTeam"
+    ? "home"
+    : type === "awayTeam"
+    ? "away"
+    : type;
 
   // Filter once per match
   const matchSelections = selectedGames.filter(
@@ -23,7 +30,7 @@ const OddsButton = ({ match, type, selectGame, className }: Props) => {
 
   // This is the final boolean for THIS button
   const isSelected = matchSelections.some(
-    (g) => g.option === type
+    (g) => g.option === option
   );
 
   const matchWinner = match.markets.find((e)=> e.betType === "MATCH_WINNER")
@@ -32,13 +39,13 @@ const OddsButton = ({ match, type, selectGame, className }: Props) => {
   const oddsValue =
     type === "homeTeam"
       ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "home")
-      : type === "Draw"
+      : type === "draw"
       ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "draw")
       : matchWinner?.outcomes.find((e)=>e.prediction.winner === "away");
 
   return (
     <Pressable
-      onPress={() => selectGame(match.id, type, match)}
+      onPress={() => selectGame(match.id, type, "MATCH_WINNER")}
       className={`px-3 py-3 rounded-xl w-[31%] 
         ${isSelected ? "bg-sec" : "bg-cus-purple"} 
         ${className ?? ""}`}

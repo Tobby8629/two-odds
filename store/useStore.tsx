@@ -27,10 +27,15 @@ import {
 
 export type BetOption =
   | "homeTeam"
+  | "home"
+  | "away"
   | "awayTeam"
-  | "Draw"
-  | `Over ${string}`
-  | `Under ${string}`;
+  | "draw"
+  | "home_draw"
+  | "away_draw"
+  | "home_away"
+  | `over ${string}`
+  | `under ${string}`;
 
 
 interface SportDetail {
@@ -113,7 +118,7 @@ interface UseSportProps {
   selectGame: (
     id: string,
     option: BetOption,
-    match: Match
+    betType: string
   ) => void;
 
   removeMatch: (
@@ -184,7 +189,7 @@ export const useSport = create<UseSportProps>()(
       selectGame: (
         matchId,
         option,
-        match
+        betType,
       ) => {
         set((state) => {
          
@@ -211,11 +216,13 @@ export const useSport = create<UseSportProps>()(
           const newSelection: MatchPropsBetslip = {
             id: `${matchId}-${Date.now()}`,
 
+            betType,
+
             matchId,
 
             option,
 
-            match,
+            // match,
           };
 
 
