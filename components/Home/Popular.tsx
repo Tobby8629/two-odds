@@ -20,9 +20,11 @@ export const PopularHeader = ({
   sport: string;
 }) => {
 
-  const isTwoWaySport = sport !== "football"; 
+  const isTwoWaySport = sport === "football"; 
 
-  const odds = isTwoWaySport ? ["1", "2"] : ["1", "X", "2"];
+  // const odds = isTwoWaySport ? ["1", "2"] : ["1", "X", "2"];
+
+  const odds = ["1", "X", "2"];
 
   return (
     <View
@@ -55,35 +57,41 @@ export const PopularHeader = ({
 
 export const MatchCard = ({ data }: PopularProps) => {
 
-  type type = "homeTeam" | "awayTeam" | "Draw";
-  const { selectGame, selectedsport, selectedGames } = useSport();
+  type type = "home" | "away" | "draw";
+  const { selectGame, selectedGames } = useSport();
   const game = data;
-  
-  const Check = selectedGames.filter((e)=>e.id === data.id)
 
   const matchWinner = game.markets.find((e)=> e.betType === "MATCH_WINNER")
 
   const getOddsValue = (type: type) => {
-    return type === "homeTeam"
+    return type === "home"
       ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "home")
-      : type === "Draw"
+      : type === "draw"
       ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "draw")
       : matchWinner?.outcomes.find((e)=>e.prediction.winner === "away");
   }
   
 
-  const isHomeSelected = Check?.find?.((e)=> e?.option?.includes("homeTeam"));
-  const isDrawSelected = Check?.find?.((e)=> e?.option?.includes("Draw"));
-  const isAwaySelected = Check?.find?.((e)=> e?.option?.includes("awayTeam"));
+    const isSelected = (
+      matchId: string,
+      betType: string,
+      option: string
+    ) => {
+      return selectedGames.some(
+        (game) =>
+          game.matchId === matchId &&
+          game.betType === betType &&
+          game.option === option
+      );
+    };
   const navigateMatchDetails = (id: string) => {
     router.push(`/(match)/${id}`);
   };
 
   // Check if sport supports 3-way odds
-  const isThreeWay = selectedsport === "football"; 
+  const isThreeWay = true
   // Change the condition to whatever matches your data model
 
-  console.log(isThreeWay)
 
   return (
     <View className="px-5 pt-2">
@@ -108,11 +116,11 @@ export const MatchCard = ({ data }: PopularProps) => {
 
           {/* HOME */}
           <TouchableOpacity
-            onPress={() => selectGame( game.id,"homeTeam",game )}
-            className={`${isHomeSelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
+            onPress={() => selectGame( game.id,"home","MATCH_WINNER" )}
+            className={`${isSelected(game.id, "MATCH_WINNER", "home") ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">
-              {getOddsValue("homeTeam")?.price?.toFixed(2)}
+              {getOddsValue("home")?.price?.toFixed(2)}
             </Text>
           </TouchableOpacity>
 
@@ -120,22 +128,22 @@ export const MatchCard = ({ data }: PopularProps) => {
           {/* DRAW — only for 3-way sports */}
           {isThreeWay && (
             <TouchableOpacity
-              onPress={() => selectGame(game.id, "Draw", game)}
-              className={`${isDrawSelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
+              onPress={() => selectGame(game.id, "draw", "MATCH_WINNER")}
+              className={`${isSelected(game.id, "MATCH_WINNER", "draw") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-md px-1`}
             >
               <Text className="text-lg text-black p-2 text-center">
-                {getOddsValue("Draw")?.price?.toFixed(2)}
+                {getOddsValue("draw")?.price?.toFixed(2)}
               </Text>
             </TouchableOpacity>
           )}
 
           {/* AWAY */}
           <TouchableOpacity
-            onPress={() => selectGame( game.id,"awayTeam",game )}
-            className={`${isAwaySelected ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
+            onPress={() => selectGame( game.id,"away","MATCH_WINNER")}
+            className={`${isSelected(game.id, "MATCH_WINNER", "away") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">
-              {getOddsValue("awayTeam")?.price?.toFixed(2)}
+              {getOddsValue("away")?.price?.toFixed(2)}
             </Text>
           </TouchableOpacity>
 

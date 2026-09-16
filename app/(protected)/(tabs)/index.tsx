@@ -26,7 +26,7 @@ export default function HomeScreen() {
   const [isSticky, setIsSticky] = useState(false);
   const { activeTab, setActiveTab } = useTabStore();
   const { currentScreen } = useP2PStore();
-  const { handleSelect, dataArry, selectedsport} = useSport()
+  const { handleSelect, selectedsport} = useSport()
   useFocusEffect(
     useCallback(() => {
       handleSelect(selectedsport);
