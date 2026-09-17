@@ -118,7 +118,8 @@ interface UseSportProps {
   selectGame: (
     id: string,
     option: BetOption,
-    betType: string
+    betType: string,
+    odd: number,
   ) => void;
 
   removeMatch: (
@@ -190,6 +191,7 @@ export const useSport = create<UseSportProps>()(
         matchId,
         option,
         betType,
+        odd,
       ) => {
         set((state) => {
          
@@ -221,6 +223,8 @@ export const useSport = create<UseSportProps>()(
             matchId,
 
             option,
+
+            odd,
 
             // match,
           };

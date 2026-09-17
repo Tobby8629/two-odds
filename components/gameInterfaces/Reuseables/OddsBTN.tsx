@@ -10,7 +10,7 @@ interface Props {
   match: Match;
   type: BetOption;
   className?: string;
-  selectGame: (id: string, option: BetOption, betType:string, ) => void;
+  selectGame: (id: string, option: BetOption, betType:string, odd: number ) => void;
 }
 
 const OddsButton = ({ match, type, selectGame, className }: Props) => {
@@ -45,7 +45,7 @@ const OddsButton = ({ match, type, selectGame, className }: Props) => {
 
   return (
     <Pressable
-      onPress={() => selectGame(match.id, type, "MATCH_WINNER")}
+      onPress={() => selectGame(match.id, type, "MATCH_WINNER", oddsValue?.price!)}
       className={`px-3 py-3 rounded-xl w-[31%] 
         ${isSelected ? "bg-sec" : "bg-cus-purple"} 
         ${className ?? ""}`}

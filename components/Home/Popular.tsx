@@ -116,7 +116,7 @@ export const MatchCard = ({ data }: PopularProps) => {
 
           {/* HOME */}
           <TouchableOpacity
-            onPress={() => selectGame( game.id,"home","MATCH_WINNER" )}
+            onPress={() => selectGame( game.id,"home","MATCH_WINNER", getOddsValue("home")?.price! )}
             className={`${isSelected(game.id, "MATCH_WINNER", "home") ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">
@@ -128,7 +128,7 @@ export const MatchCard = ({ data }: PopularProps) => {
           {/* DRAW — only for 3-way sports */}
           {isThreeWay && (
             <TouchableOpacity
-              onPress={() => selectGame(game.id, "draw", "MATCH_WINNER")}
+              onPress={() => selectGame(game.id, "draw", "MATCH_WINNER", getOddsValue("draw")?.price!)}
               className={`${isSelected(game.id, "MATCH_WINNER", "draw") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-md px-1`}
             >
               <Text className="text-lg text-black p-2 text-center">
@@ -139,7 +139,7 @@ export const MatchCard = ({ data }: PopularProps) => {
 
           {/* AWAY */}
           <TouchableOpacity
-            onPress={() => selectGame( game.id,"away","MATCH_WINNER")}
+            onPress={() => selectGame( game.id,"away","MATCH_WINNER", getOddsValue("away")?.price!)}
             className={`${isSelected(game.id, "MATCH_WINNER", "away") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-md px-1`}
           >
             <Text className="text-lg text-black p-2 text-center">

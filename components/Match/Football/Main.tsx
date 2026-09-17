@@ -7,6 +7,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { useMatchMarkets } from '@/hooks';
 import { DoubleChanceMarketOutcome, FirstHalfWinnerOutcome, HandicapOutcome, Market, Match, MatchWinnerOutcome, OverUnderOutcome, TeamTotalOutcome } from '@/hooks/matchInterface/matchInterface';
 import { BetOption, useSport } from '@/store/useStore';
+import Odds from '@/app/Odds';
 
 
 interface MainProps {
@@ -19,7 +20,8 @@ export interface OptionProps {
   selectGame: (
     matchId: string,
     option: BetOption,
-    betType: string
+    betType: string,
+    odd: number
    ) => void;
   id: string
   isSelected: ( matchId: string,
@@ -236,7 +238,7 @@ export const OptionInterface = ({
                   {subValue.prediction.winner}
                 </ThemedText>
 
-                <Pressable onPress={()=> selectGame(id,subValue.prediction.winner, market.betType)} className="!text-black w-[65%] text-center py-2 px-4">
+                <Pressable onPress={()=> selectGame(id,subValue.prediction.winner, market.betType, subValue.price)} className="!text-black w-[65%] text-center py-2 px-4">
                  <ThemedText className="!text-black">
                    {subValue.price.toFixed(2)}
                   </ThemedText>
@@ -275,7 +277,7 @@ export const OptionInterface = ({
                     : "2X"}
                 </ThemedText>
 
-                <Pressable onPress={()=> selectGame(id,subValue.prediction.outcome, market.betType)} className="!text-black w-[65%] text-center py-2 px-4">
+                <Pressable onPress={()=> selectGame(id,subValue.prediction.outcome, market.betType, subValue.price!)} className="!text-black w-[65%] text-center py-2 px-4">
                  <ThemedText className="!text-black">
                     {subValue.price.toFixed(2)}
                   </ThemedText>
@@ -324,7 +326,7 @@ export const OptionInterface = ({
                     Over
                   </ThemedText>
 
-                  <Pressable onPress={()=> selectGame(id, `over ${String(values?.over?.prediction.line!)}`, market.betType)} 
+                  <Pressable onPress={()=> selectGame(id, `over ${String(values?.over?.prediction.line!)}`, market.betType, values.over?.price!)} 
                   className={`${isSelected(id,market.betType, `over ${line}`) ? "bg-sec" : "bg-purple-200"} rounded-md text-center p-3 px-6 !text-black`}>
                    <ThemedText className="!text-black">
                      {values.over?.price.toFixed(2)}
@@ -337,7 +339,7 @@ export const OptionInterface = ({
                     Under
                   </ThemedText>
 
-                  <Pressable onPress={()=> selectGame(id, `under ${String(values?.over?.prediction.line!)}` , market.betType)} 
+                  <Pressable onPress={()=> selectGame(id, `under ${String(values?.over?.prediction.line!)}` , market.betType, values.over?.price!)} 
                   className={`${isSelected(id,market.betType, `under ${line}`) ? "bg-sec" : "bg-purple-200"} rounded-md text-center p-3 px-6 !text-black`}
                   >
                    <ThemedText className="!text-black">

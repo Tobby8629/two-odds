@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { ThemedText } from '../ThemedText'
-import useBetslip from '@/store/useStore'
 
 interface detailProps {
   onClose: () => void

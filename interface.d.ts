@@ -73,6 +73,7 @@ interface MatchProps {
 
   interface MatchPropsBetslip {
     id: string;
+    odd:number
     // match: Match;
     matchId: string;
     betType: string;
