@@ -6,9 +6,10 @@ import MatchCard from './Reuseables/MatchCard';
 import useBetslip from '@/store/useStore';
 import MarketTabs from './Reuseables/MarketTab';
 import HeaderRow from './Reuseables/HeaderRow';
-import { Match } from '@/constants/dataOne';
-import { useSport } from '@/store/useSports';
+// import { useSport } from '@/store/useSports';
 import { BB } from '@/store/BBDD';
+import { Match } from '@/hooks/matchInterface/matchInterface';
+
 
 interface BasketBallProps {
   matches: Match[];

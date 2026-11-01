@@ -249,9 +249,9 @@ export const logo = (selectedsport: string) => {
 
   export const SubKeyName = (subKey: string) => {
     switch (subKey) {
-      case 'home':
+      case 'homeTeam':
         return '1';
-      case 'away':
+      case 'awayTeam':
         return '2';
       case 'draw':
         return 'X'; 

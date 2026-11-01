@@ -7,6 +7,7 @@ import { ThemedText } from '../ThemedText'
 import StakeBox from './StakeBox'
 import Button from '../Reuseables/Button'
 import RadioButton from '../Reuseables/Input/RadioBtn'
+import { useSport } from '@/store/useStore'
 interface footerProps {
   handleSubmit: (stake: number | null, baseStake: number) => void
 }
@@ -16,11 +17,17 @@ const Footer = ({handleSubmit}: footerProps) => {
     const [baseStake, setBaseStake] = useState(100)
     const [check, setCheck] = useState(false)
   const [stake, setStake] = useState<number | null>(baseStake)
+  const { selectedGames } =useSport()
+ const totalOdd = selectedGames.reduce(
+  (acc, e) => acc * e.odd,
+  1
+);
+
   return (
     <Animated.View style={{ transform: [{ translateY }] }} className='fixed bottom-0 bg-[#003c6f] p-7'>
       <View className={flex}>
         <ThemedText className='text-xl capitalize'>Total odds: </ThemedText>
-        <ThemedText className='text-xl font-semibold'>32.5</ThemedText>
+        <ThemedText className='text-xl font-semibold'>{totalOdd.toFixed(2)}</ThemedText>
       </View>
       <View className='flex-row justify-end items-center gap-3 my-3'>
         <ThemedText>Accepts odds change</ThemedText>     

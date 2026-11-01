@@ -8,7 +8,7 @@ interface Props {
   selectMarket: (id: number) => void;
 }
 
-const MarketTabs = ({ markets, selectMarket }: Props) => (
+const  MarketTabs = ({ markets, selectMarket }: Props) => (
   <View className={`${flex} border-b border-gray-300 px-8 pt-3`}>
     {markets.map((m) => (
       <Pressable key={m.id} onPress={() => selectMarket(m.id)} className="mb-3">

@@ -10,9 +10,10 @@ import Statistics from '../Football/Statistics';
 
 interface TemplateProps {
   arr: string[];
+  id: string;
 }
 
-const Template = ({arr}: TemplateProps) => {
+const Template = ({arr, id}: TemplateProps) => {
 const [selected, setSelected] = React.useState<string>(arr[0]);
 
   return (
@@ -24,8 +25,8 @@ const [selected, setSelected] = React.useState<string>(arr[0]);
   />
 
   <ScrollView className='flex-1'>
-    {selected === 'main' && <Main option={sampleFootballMarket.main} />}
-    {selected === "over/under" && <Goal option={sampleFootballMarket.goals} />}
+    {selected === 'main' && <Main option={sampleFootballMarket.main} id={id} />}
+    {selected === "over/under" && <Goal option={sampleFootballMarket.goals}  />}
   </ScrollView>
 </View>
 

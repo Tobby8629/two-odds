@@ -11,7 +11,6 @@ import Quickpick from "@/components/Home/Quickpick";
 import LiveBets from "@/components/Home/LiveBets";
 import { MatchCard, PopularHeader } from "@/components/Home/Popular";
 import WithdrawModal from "@/components/Home/WithdrawModal";
-import useBetslip from "@/store/useStore";
 import { CombinedItem, CombiSportItem, MatchProps } from "@/interface";
 import { useTabStore } from "@/store/useTabStore";
 import { useP2PStore } from "@/store/useP2PStore";
@@ -19,16 +18,15 @@ import P2PToggle from "@/components/P2P/P2PToggle";
 import P2PLanding from "@/components/P2P/P2PLanding";
 import P2PSearching from "@/components/P2P/P2PSearching";
 import P2PBetsList from "@/components/P2P/P2PBetsList";
-import { useSport } from "@/store/useSports";
 import { useFocusEffect } from "expo-router";
-import { tokenStorage } from "@/services/tokenStorage";
+import { useMatches } from "@/hooks";
+import { useSport } from "@/store/useStore";
 
 export default function HomeScreen() {
-  // const { match,setMatches } = useBetslip();
   const [isSticky, setIsSticky] = useState(false);
   const { activeTab, setActiveTab } = useTabStore();
   const { currentScreen } = useP2PStore();
-  const { handleSelect, dataArry, selectedsport, updateDataArry} = useSport()
+  const { handleSelect, selectedsport} = useSport()
   useFocusEffect(
     useCallback(() => {
       handleSelect(selectedsport);
@@ -39,15 +37,21 @@ export default function HomeScreen() {
     const scrollY = e.nativeEvent.contentOffset.y;
     setIsSticky(scrollY > 520);
   };
-const match = dataArry.flatMap((e)=>e.leagues.flatMap((e)=>e.matches))
-// console.log(match)
-const combinedData: CombiSportItem[] = ["header", ...match];
+
+  const selectedleague = "cmsuhhp0k000d1fq9cdq0w0bi"
+
+  const match = useMatches(selectedleague).data?.data
+  const {isLoading} = useMatches(selectedleague)
+ 
+const combinedData: CombiSportItem[] = ["header", ...match!];
 if(activeTab === "p2p") {
   // Render P2P related components or screens
   if (currentScreen === "landing") return <P2PLanding />;
   if (currentScreen === "searching") return <P2PSearching />;
   if (currentScreen === "list") return <P2PBetsList />;
 }
+
+
 
 return (
     <FlatList<CombiSportItem>

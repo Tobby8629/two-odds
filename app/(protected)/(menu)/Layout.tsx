@@ -1,7 +1,8 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { FontAwesome6 } from '@expo/vector-icons';
 import { goBack } from 'expo-router/build/global-state/routing';
+import { Scroll } from 'lucide-react-native';
 
 interface TransacLayoutProps {
   children: React.ReactNode;

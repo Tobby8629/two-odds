@@ -102,7 +102,6 @@ const CreatePassword = () => {
         </View>
         
         <Button text={isPending ? 'creating...' :'continue'} onPress={check ? null : () => {
-          console.log("email", email)
           mutate(
           {url:  `/auth/register`,
           data: {

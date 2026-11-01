@@ -1,140 +1,333 @@
-import { bets } from "@/constants/data";
-import {  Match } from "@/constants/dataOne";
-import { betProps,  MatchPropsBetslip } from "@/interface";
-import { create } from "zustand";
-import { useSport } from "./useSports";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
-export interface select {
-  id: number,
-  option: "Home" | "Away" | "Draw"
+import { create } from "zustand";
+import {
+  createJSONStorage,
+  persist,
+} from "zustand/middleware";
+
+import { bets } from "@/constants/data";
+
+import {
+  basketballData,
+  CountryLeagues,
+  footballData,
+} from "@/constants/dataOne";
+
+import { Match } from "@/hooks/matchInterface/matchInterface";
+
+import {
+  betProps,
+  MatchPropsBetslip,
+  sports as AvailableSport,
+} from "@/interface";
+
+
+
+export type BetOption =
+  | "homeTeam"
+  | "home"
+  | "away"
+  | "awayTeam"
+  | "draw"
+  | "home_draw"
+  | "away_draw"
+  | "home_away"
+  | `over ${string}`
+  | `under ${string}`;
+
+
+interface SportDetail {
+  id: string;
+  name: string;
+  slug: string;
+  isActive: boolean;
 }
 
-interface Betslip {
-  match: Match[];
-  setMatches: ( matches: Match[]) => void; 
-  selectGame: ({id, option}:select) => void;
+
+interface SportFetch {
+  success: boolean;
+  data: SportDetail[];
+}
+
+
+interface SportStore {
+  sports: SportDetail[];
+
+  fetchSport: () => Promise<void>;
+
+  isLoading: boolean;
+
+  error: string | null;
+}
+
+
+interface BetHistoryStore {
+  bets: betProps[];
+
+  deleteBetSlip: (id: string) => void;
+}
+
+
+export interface WithdrawInfo {
+  amount: string | null;
+
+  asset: "solana" | "usdt" | "naira";
+
+  walletAddress: string;
+}
+
+
+interface WithdrawalStore {
+  withdrawStatus: boolean;
+
+  withdrawInfo: WithdrawInfo;
+
+  updateWithdrawStatus: () => void;
+
+  removeWithdrawStatus: () => void;
+
+  updateWithdrawInfo: (
+    value: WithdrawInfo
+  ) => void;
+}
+
+
+interface UseSportProps {
+  // dataArry: CountryLeagues[];
+
+  // footballData: CountryLeagues[];
+
+  // basketballData: CountryLeagues[];
+
+  selectedsport: string;
+
+  menuSelectedsport: string;
+
   selectedGames: MatchPropsBetslip[];
-  removeMatch: (id: string) => void;
+
+  handleSelect: (sport: string) => void;
+
+  menuhandleSelect: (sport: string) => void;
+
+  switchAndSelect: (
+    sport: AvailableSport
+  ) => void;
+
+  selectGame: (
+    id: string,
+    option: BetOption,
+    betType: string,
+    odd: number,
+  ) => void;
+
+  removeMatch: (
+    selectionId: string
+  ) => void;
+
   clearBetslip: () => void;
 }
 
-interface betHistory {
-  bets: betProps[],
-  deleteBetSlip: (id:string) => void
-}
 
 
-export interface WithdrawInfo{
-  amount: string | null,
-  asset: "solana" | "usdt" | "naira",
-  walletAddress: string,
-}
 
-interface withdrawal {
-  withdrawStatus: boolean
-  updateWithdrawStatus: () => void
-  removeWithdrawStatus: () => void
-  withdrawInfo: WithdrawInfo,
-  updateWithdrawInfo: (val: WithdrawInfo ) => void
-}
+export const useSport = create<UseSportProps>()(
+  persist(
+    (set) => ({
+      dataArry: footballData,
 
-export const useBetslip = create<Betslip>((set) => ({
-  match: [], 
-  selectedGames: [],
+      footballData,
 
-  setMatches: (matches: Match[]) => set({ match: matches }),
+      basketballData,
 
-  selectGame: ({ id, option }) =>
-  set((state) => {
-    let newSelectedGames = [...state.selectedGames];
-    
-    const updatedMatch = state.match.map((e) => {
-      if (e.id === id) {
-        const alreadySelected = e.selected.some((opt) => opt.option === option);
+      selectedsport: "football",
 
-        if (alreadySelected) {
-          //Get the ID of the already selected option from the Game selected
-          const SGID = e.selected.find((opt) => opt.option === option)?.id;
+      menuSelectedsport: "football",
 
-          //Filter out this option from the selected option from the Game selected
-          const newSelected = e.selected.filter((opt) => opt.option !== option);
-
-          // remove from selectedGames (single object)
-          newSelectedGames = newSelectedGames.filter(
-            (game) => game.selected.id !== SGID
-          );
-
-          return { ...e, selected: newSelected };
-        } 
-        else {
-          const newOption = { id: String(Date.now()), option };
-          const newSelected = [...e.selected, newOption];
-
-          // add to selectedGames
-          newSelectedGames = [
-            ...newSelectedGames,
-            {
-              id: e.id,
-              home: e.home,
-              away: e.away,
-              selected: newOption, // single object
-            },
-          ];
-
-          return { ...e, selected: newSelected };
-        }
-      }
-      return e;
-    });
-
-    return {
-      match: updatedMatch,
-      selectedGames: newSelectedGames,
-    };
-  }),
-
-  removeMatch: (id: string) =>
-    set((state) => ({
-      match: state.match.map((e) =>
-        e.selected.some((opt) => opt.id === id)
-          ? { ...e, selected: e.selected.filter((opt) => opt.id !== id) }
-          : e
-      ),
-      selectedGames: state.selectedGames.filter((e) => e.selected.id !== id),
-    })),
-
-  clearBetslip: () =>
-    set((state) => ({
-      match: state.match.map((e) =>
-        e.selected.length > 0 ? { ...e, selected: [] } : e
-      ),
       selectedGames: [],
-    })),
-}));
 
-export const useBetHistory = create<betHistory>((set, get)=>({
-  bets: bets,
-  deleteBetSlip: ((id: string) => set((state)=>({
-    bets: state.bets.filter((bet)=> bet.id != Number(id))
-  })))
-}))
 
-export const useWithdrawal = create<withdrawal>((set, get)=>({
-  withdrawStatus: false,
-  withdrawInfo: {
-    amount: null,
-    asset: "usdt",
-    walletAddress: "",
-  },
-  updateWithdrawStatus: (()=> set(()=> ({
-    withdrawStatus: true
-  }))),
-  removeWithdrawStatus: (()=>set(()=>({
-    withdrawStatus:false 
-  }))),
-  updateWithdrawInfo: ((val: WithdrawInfo)=>(set(()=>({
-    withdrawInfo: val
-  }))))
-}))
+      // ================================================
+      // SELECT SPORT
+      // ================================================
 
-export default useBetslip;
+      handleSelect: (sport) => {
+        set({
+          selectedsport: sport,
+        });
+      },
+
+
+      // ================================================
+      // MENU SPORT
+      // ================================================
+
+      menuhandleSelect: (sport) => {
+        set({
+          menuSelectedsport: sport,
+        });
+      },
+
+
+      // ================================================
+      // SWITCH SPORT + NAVIGATE
+      // ================================================
+
+      switchAndSelect: (sport) => {
+        set({
+          menuSelectedsport: sport,
+        });
+
+        router.push("/(tabs)/menu");
+      },
+
+
+      // ================================================
+      // SELECT / DESELECT BET
+      // ================================================
+
+      selectGame: (
+        matchId,
+        option,
+        betType,
+        odd,
+      ) => {
+        set((state) => {
+         
+          const existingSelection =
+            state.selectedGames.find(
+              (game) =>
+                game.matchId === matchId &&
+                game.option === option
+            );
+
+
+          if (existingSelection) {
+            return {
+              selectedGames:
+                state.selectedGames.filter(
+                  (game) =>
+                    game.id !==
+                    existingSelection.id
+                ),
+            };
+          }
+
+
+          const newSelection: MatchPropsBetslip = {
+            id: `${matchId}-${Date.now()}`,
+
+            betType,
+
+            matchId,
+
+            option,
+
+            odd,
+
+            // match,
+          };
+
+
+          return {
+            selectedGames: [
+              ...state.selectedGames,
+              newSelection,
+            ],
+          };
+        });
+      },
+
+
+      removeMatch: (selectionId) => {
+        set((state) => ({
+          selectedGames:
+            state.selectedGames.filter(
+              (game) =>
+                game.id !== selectionId
+            ),
+        }));
+      },
+
+      clearBetslip: () => {
+        set({
+          selectedGames: [],
+        });
+      },
+    }),
+
+    {
+      // ================================================
+      // LOCAL STORAGE
+      // ================================================
+
+      name: "two-odds-sport-store",
+
+      storage: createJSONStorage(
+        () => AsyncStorage
+      ),
+
+      partialize: (state) => ({
+        selectedGames:
+          state.selectedGames,
+
+        selectedsport:
+          state.selectedsport,
+
+        menuSelectedsport:
+          state.menuSelectedsport,
+      }),
+    }
+  )
+);
+
+export const useBetHistory =
+  create<BetHistoryStore>((set) => ({
+    bets,
+
+    deleteBetSlip: (id) => {
+      set((state) => ({
+        bets: state.bets.filter(
+          (bet) =>
+            bet.id !== Number(id)
+        ),
+      }));
+    },
+  }));
+
+export const useWithdrawal =
+  create<WithdrawalStore>((set) => ({
+    withdrawStatus: false,
+
+    withdrawInfo: {
+      amount: null,
+
+      asset: "usdt",
+
+      walletAddress: "",
+    },
+
+
+    updateWithdrawStatus: () => {
+      set({
+        withdrawStatus: true,
+      });
+    },
+
+
+    removeWithdrawStatus: () => {
+      set({
+        withdrawStatus: false,
+      });
+    },
+
+
+    updateWithdrawInfo: (
+      value
+    ) => {
+      set({
+        withdrawInfo: value,
+      });
+    },
+  }));

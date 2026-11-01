@@ -5,21 +5,23 @@ import { ThemedText } from '@/components/ThemedText'
 import ManUtd from '@/assets/SVGs/match/Manutd'
 import Button from '@/components/Reuseables/Button'
 import Statistics from '@/assets/SVGs/match/Statistics'
+import { MatchDetails } from '@/hooks/matchInterface/matchInterface'
 
 interface teamFeatures {
-  setStatistics: React.Dispatch<React.SetStateAction<boolean>>
+  setStatistics: React.Dispatch<React.SetStateAction<boolean>>;
+  match: MatchDetails
 }
 
 
-const TeamFeatures = ({setStatistics}: teamFeatures) => {
+const TeamFeatures = ({setStatistics, match}: teamFeatures) => {
   const [team, setTeam] = React.useState({teamOne: false, teamTwo: false}); 
   const hasAnyTrue = Object.values(team).some(value => value === true); 
-  
   const teamMap = {
-  teamOne: "manutd",
-  teamTwo: "chelsea",
+  teamOne: match?.homeTeam,
+  teamTwo: match?.awayTeam,
 } as const;
 
+console.log(match)
 const selectedTeam =
   (Object.entries(teamMap).find(([key]) => team[key as keyof typeof team])?.[1]) || "";
 
@@ -38,13 +40,18 @@ const selectedTeam =
       teamTwo: false,
     });
   };
-
-  console.log(team)
+  
   return (
     <View className='flex-row items-baseline px-3 justify-between'>
       <Pressable onPress={()=> ctrlTeam("teamOne")} className='w-[25%] items-center gap-3'>
         <ManUtd />
-        <ThemedText className='text-center'>manchester united</ThemedText>
+        <ThemedText 
+        className='text-center'
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        >
+          {match?.homeTeam}
+        </ThemedText>
       </Pressable>
 
       <View className='w-[35%] my-2 items-center gap-1'>
@@ -62,7 +69,13 @@ const selectedTeam =
 
       <Pressable onPress={()=> ctrlTeam("teamTwo")} className='w-[25%] items-center gap-3'>
         <ManUtd /> 
-        <ThemedText className='!text-center'>Chelsea</ThemedText>
+        <ThemedText 
+        className='!text-center'
+        numberOfLines={1}
+        ellipsizeMode="tail"
+        >
+          {match?.awayTeam}
+        </ThemedText>
       </Pressable>
 
 

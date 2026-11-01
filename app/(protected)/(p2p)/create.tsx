@@ -20,26 +20,17 @@ import Sport from "@/components/Home/Sport";
 import Head from "@/components/Home/Head";
 import { DEMO_MODE } from "@/constants/demo";
 import { previewMatches } from "@/constants/previewMatches";
-import { sports as SportName } from "@/interface";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { Match, MarketOutcome } from "@/types/sports.types";
 
 const FIELD_WIDTH = 358;
 
-/* Local sport names differ from the provider's, so match them loosely. */
+/** Shown before a match is picked, so the layout reads the same. */
 const PLACEHOLDER_PREDICTIONS = [
   "Team A to Win",
   "Team B to Win",
   "Draw",
 ];
-
-const SPORT_ALIASES: Record<string, string[]> = {
-  football: ["football", "soccer"],
-  basketball: ["basketball"],
-  tennis: ["tennis"],
-  volleyball: ["volleyball"],
-  americafootball: ["american", "nfl"],
-};
 
 /** Predictions arrive in several shapes depending on the market. */
 const outcomeLabel = (match: Match, outcome: MarketOutcome) => {
@@ -76,7 +67,7 @@ const marketLabel = (betType: string) =>
     .join(" ");
 
 export default function CreateP2PBetScreen() {
-  const [sport, setSport] = useState<SportName | "">("");
+  const [sportId, setSportId] = useState("");
   const [match, setMatch] = useState<Match | null>(null);
   const [outcomeIndex, setOutcomeIndex] = useState<number | null>(null);
   const [stake, setStake] = useState("");
@@ -105,15 +96,10 @@ export default function CreateP2PBetScreen() {
   const visibleMatches = useMemo(() => {
     const source = DEMO_MODE ? previewMatches : matches ?? [];
 
-    if (!sport) return source;
+    if (!sportId) return source;
 
-    const aliases = SPORT_ALIASES[sport] ?? [sport];
-
-    return source.filter((m) => {
-      const name = (m.league?.sport?.name ?? "").toLowerCase();
-      return aliases.some((a) => name.includes(a));
-    });
-  }, [matches, sport]);
+    return source.filter((m) => m.league?.sport?.id === sportId);
+  }, [matches, sportId]);
 
   const hasOdds = Boolean(match && market && market.outcomes.length);
 
@@ -165,9 +151,9 @@ export default function CreateP2PBetScreen() {
         >
           <Sport
             title="Select Sport"
-            selectSport={sport}
+            selectSport={sportId}
             handlePress={(next) => {
-              setSport(next === sport ? "" : next);
+              setSportId(next === sportId ? "" : next);
               setMatch(null);
               setOutcomeIndex(null);
             }}
@@ -220,7 +206,7 @@ export default function CreateP2PBetScreen() {
           ) : (
             <>
               {/* Inert rows so the layout reads the same before odds load. */}
-              {PLACEHOLDER_PREDICTIONS.map((label) => (
+              {PLACEHOLDER_PREDICTIONS.map((label: string) => (
                 <View key={label} style={[styles.field, styles.row]}>
                   <Text numberOfLines={1} style={styles.placeholder}>
                     {label}
