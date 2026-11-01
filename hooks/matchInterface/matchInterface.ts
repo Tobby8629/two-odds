@@ -18,11 +18,18 @@ export type DoubleChanceOutcome =
   | "away_draw"
   | "home_away";
 
+/*
+ * Exactly what GET /sports/matches returns and accepts as a filter.
+ * A finished match is FINISHED, not COMPLETED, so comparing to "COMPLETED"
+ * never matches and the match keeps reading as upcoming. POSTPONED is sent too.
+ * Mirrored in types/sports.types.ts; keep the two in step.
+ */
 export type MatchStatus =
   | "UPCOMING"
   | "LIVE"
-  | "COMPLETED"
-  | "CANCELLED";
+  | "FINISHED"
+  | "CANCELLED"
+  | "POSTPONED";
 
 
 // ======================================================

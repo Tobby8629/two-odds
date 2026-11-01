@@ -1,5 +1,6 @@
 // types/sports.types.ts
 
+/* Mirrored in hooks/matchInterface/matchInterface.ts; keep the two in step. */
 export type MatchStatus =
   | "UPCOMING"
   | "LIVE"
