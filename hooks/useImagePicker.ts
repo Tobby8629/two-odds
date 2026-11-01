@@ -16,6 +16,8 @@ try {
 export interface PickedImage {
   uri: string;
   base64?: string;
+  size?: number;
+  mimeType?: string;
 }
 
 /** Keeps a base64 selfie small enough to post as JSON. */
@@ -55,7 +57,12 @@ export const useImagePicker = () => {
       if (result.canceled || !result.assets?.length) return null;
 
       const asset = result.assets[0];
-      return { uri: asset.uri, base64: asset.base64 ?? undefined };
+      return {
+        uri: asset.uri,
+        base64: asset.base64 ?? undefined,
+        size: asset.fileSize ?? undefined,
+        mimeType: asset.mimeType ?? undefined,
+      };
     },
     []
   );
@@ -86,7 +93,12 @@ export const useImagePicker = () => {
       if (result.canceled || !result.assets?.length) return null;
 
       const asset = result.assets[0];
-      return { uri: asset.uri, base64: asset.base64 ?? undefined };
+      return {
+        uri: asset.uri,
+        base64: asset.base64 ?? undefined,
+        size: asset.fileSize ?? undefined,
+        mimeType: asset.mimeType ?? undefined,
+      };
     },
     []
   );

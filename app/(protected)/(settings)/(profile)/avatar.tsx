@@ -12,7 +12,7 @@ import Layout from "../Layout";
 import { AVATARS } from "@/constants/avatars";
 import { useProfileStore } from "@/store/useProfileStore";
 import { useImagePicker } from "@/hooks/useImagePicker";
-import { useProfile, useUploadAvatar } from "@/hooks/useProfile";
+import { useProfile, useSetAvatar, useUploadAvatar } from "@/hooks/useProfile";
 import UserAvatar from "@/components/Reuseables/UserAvatar";
 import Loading from "@/components/Reuseables/Loading";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
@@ -28,6 +28,7 @@ const AvatarScreen = () => {
   const { pickFromLibrary } = useImagePicker();
   const { mutateAsync: uploadAvatar, isPending: isUploading } =
     useUploadAvatar();
+  const { mutateAsync: setAvatar, isPending: isSaving } = useSetAvatar();
 
   /* An uploaded photo is the real avatar; the SVGs are the fallback. */
   const handleUpload = async () => {
@@ -40,7 +41,8 @@ const AvatarScreen = () => {
       await uploadAvatar({
         uri: picked.uri,
         name: "avatar.jpg",
-        type: "image/jpeg",
+        type: picked.mimeType ?? "image/jpeg",
+        size: picked.size ?? 0,
       });
       router.back();
     } catch {
@@ -48,10 +50,20 @@ const AvatarScreen = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!selectedId) return;
 
     setAvatarId(selectedId);
+    setError(null);
+
+    try {
+      /* Stored as a generated-avatar identifier so it follows the account. */
+      await setAvatar(`local:${selectedId}`);
+    } catch {
+      setError("Saved on this device, but could not sync to your account.");
+      return;
+    }
+
     router.back();
   };
 
@@ -92,7 +104,7 @@ const AvatarScreen = () => {
             style={styles.uploadButton}
             activeOpacity={0.8}
           >
-            {isUploading ? (
+            {isUploading || isSaving ? (
               <Loading inline size={24} />
             ) : (
               <Text style={styles.uploadText}>Upload a photo</Text>

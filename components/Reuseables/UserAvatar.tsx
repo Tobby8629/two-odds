@@ -18,7 +18,10 @@ const UserAvatar = ({
   fallbackKey,
   size = 40,
 }: UserAvatarProps) => {
-  if (uri) {
+  /* The API stores a locally chosen SVG as "local:<id>", not a real URL. */
+  const localId = uri?.startsWith("local:") ? uri.slice(6) : undefined;
+
+  if (uri && !localId) {
     return (
       <Image
         source={{ uri }}
@@ -28,7 +31,9 @@ const UserAvatar = ({
     );
   }
 
-  const Fallback = avatarId
+  const Fallback = localId
+    ? avatarById(localId).component
+    : avatarId
     ? avatarById(avatarId).component
     : avatarForKey(fallbackKey).component;
 

@@ -59,6 +59,27 @@ export const useUpdateProfile = () => {
   });
 };
 
+/** Stores a generated avatar value, e.g. a locally chosen SVG id. */
+export const useSetAvatar = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (avatarUrl: string) => userService.setAvatar(avatarUrl),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: profileKeys.detail });
+    },
+  });
+};
+
+export const useOnlineUsers = (withinMinutes = 15, limit = 20) =>
+  useQuery({
+    queryKey: ["users", "online", withinMinutes, limit],
+    queryFn: () => userService.getOnlineUsers(withinMinutes, limit),
+    staleTime: 30 * 1000,
+    refetchInterval: 60 * 1000,
+    retry: 1,
+  });
+
 export const useUploadAvatar = () => {
   const queryClient = useQueryClient();
 

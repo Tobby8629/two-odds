@@ -51,11 +51,21 @@ export interface UpdateProfileInput {
   dateOfBirth?: string;
 }
 
-/** Local file handed to the multipart avatar upload. */
+/** Local file handed to the presigned avatar upload. */
 export interface AvatarUpload {
   uri: string;
   name?: string;
   type?: string;
+  /** Required by /uploads/presign; max 5MB for avatars. */
+  size: number;
+}
+
+/** Shape returned by POST /uploads/presign. */
+export interface PresignedUpload {
+  key: string;
+  uploadUrl: string;
+  fileUrl: string;
+  expiresIn: number;
 }
 
 export interface Avatar {
