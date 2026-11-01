@@ -5,15 +5,21 @@ import React, { useEffect, useMemo } from "react";
 import GoalsDD from "./GoalsDD";
 import { useSport } from "@/store/useStore";
 
+interface OverUnderLine {
+  line: string;
+  over: string;
+  under: string;
+}
+
 interface Props {
   match: any;
-  generalGoal: string; 
+  generalGoal: string;
 }
 
 const OverUnderButtons = ({ match, generalGoal }: Props) => {
   const { selectGame, selectedGames } = useSport();
 
-  const overUnder = match?.odds?.overUnder ?? [];
+  const overUnder: OverUnderLine[] = match?.odds?.overUnder ?? [];
 
   // --------- INITIAL VALUE ----------
   const initialLine = useMemo(() => {
@@ -42,8 +48,8 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
   // --------- CHECK SELECTED ----------
   const matchSelected = selectedGames?.filter(g => g.id === match.id);
 
-  const checkOver = matchSelected?.some((e)=> e.option === `Over ${line}`);
-  const checkUnder = matchSelected?.some((e)=> e.option === `Under ${line}`);
+  const checkOver = matchSelected?.some((e) => e.option === `over ${line}`);
+  const checkUnder = matchSelected?.some((e) => e.option === `under ${line}`);
 
   // --------- HANDLE SELECT LINE ----------
   const updateGoalSelection = (line: string) => {
@@ -63,7 +69,7 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
 
       {/* Over Button */}
       <Pressable
-        onPress={() => selectGame( match.id,  `Over ${line}`, match )}
+        onPress={() => selectGame(match.id, `over ${line}`, "OVER_UNDER", Number(over))}
         className={`${checkOver ? "bg-sec" : "bg-cus-purple"} px-3 py-3 rounded-xl`}
       >
         <ThemedText className="text-center text-black">{over}</ThemedText>
@@ -71,7 +77,7 @@ const OverUnderButtons = ({ match, generalGoal }: Props) => {
 
       {/* Under Button */}
       <Pressable
-        onPress={() => selectGame( match.id,  `Under ${line}`, match )}
+        onPress={() => selectGame(match.id, `under ${line}`, "OVER_UNDER", Number(under))}
         className={`${checkUnder ? "bg-sec" : "bg-cus-purple"} px-3 py-3 rounded-xl`}
       >
         <ThemedText className="text-center text-black">{under}</ThemedText>

@@ -1,6 +1,6 @@
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import React from 'react'
-import useBetslip from '@/store/useStore'
+import { useSport } from "@/store/useStore";
 import { flex, flexNoJustify } from '@/constants/style'
 import GoldX from '@/assets/SVGs/icons/GoldX'
 import Ball from '@/assets/SVGs/sport/ball'
@@ -8,7 +8,7 @@ import { ThemedText } from '@/components/ThemedText';
 
 
 const MatchCard = () => {
-  const { selectedGames, removeMatch} = useBetslip()
+  const { selectedGames, removeMatch} = useSport()
   const oddsKey = {
   Home: "homeOdds",
   Draw: "drawOdds",

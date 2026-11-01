@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native'; 
 import { BettingMarket } from '@/interface';
 import MatchCard from './Reuseables/MatchCard';
-import useBetslip from '@/store/useStore';
 import MarketTabs from './Reuseables/MarketTab';
 import HeaderRow from './Reuseables/HeaderRow';
 // import { useSport } from '@/store/useSports';
