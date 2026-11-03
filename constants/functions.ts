@@ -1,3 +1,4 @@
+import axios from "axios";
 import { data, validateInput, validateOutput, verifyInt } from "@/interface";
 import { router } from "expo-router";
 
@@ -139,6 +140,24 @@ export const verifying = (
 export const hasFalseValue = (checkvalue: verifyInt) =>  Object.values(checkvalue).some(value => value === false);
 
 
+/** Surfaces the backend's own message: { success:false, error:{ message } }. */
+export const apiErrorMessage = (error: unknown, fallback: string) => {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data as
+      | { error?: { message?: string }; message?: string }
+      | undefined;
+
+    return (
+      data?.error?.message ??
+      data?.message ??
+      error.message ??
+      fallback
+    );
+  }
+
+  return fallback;
+};
+
 export const CURRENCY_SYMBOLS = {
   NGN: "₦",
   USDT: "$",
@@ -230,9 +249,9 @@ export const logo = (selectedsport: string) => {
 
   export const SubKeyName = (subKey: string) => {
     switch (subKey) {
-      case 'home':
+      case 'homeTeam':
         return '1';
-      case 'away':
+      case 'awayTeam':
         return '2';
       case 'draw':
         return 'X'; 

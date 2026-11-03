@@ -1,13 +1,13 @@
 import React from "react";
 import {
-  ActivityIndicator,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { avatarForKey } from "@/constants/avatars";
 import { formatCurrency, potentialReturn } from "@/constants/functions";
 import { Bet } from "@/types/bets.types";
+import Loading from "@/components/Reuseables/Loading";
 
 export interface P2PBetCardProps {
   bet: Bet;
@@ -24,7 +24,7 @@ const STATUS_COLOURS: Record<string, string> = {
   SETTLED_LOSS: "#9E9E9E",
   CANCELLED: "#9E9E9E",
   EXPIRED: "#9E9E9E",
-  CASHED_OUT: "#2E7D32",
+  CASHED_OUT: "#2E7D32"
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -34,7 +34,7 @@ const STATUS_LABELS: Record<string, string> = {
   SETTLED_LOSS: "Lost",
   CANCELLED: "Cancelled",
   EXPIRED: "Expired",
-  CASHED_OUT: "Cashed Out",
+  CASHED_OUT: "Cashed Out"
 };
 
 /** Turns { winner: "home" } into "Winner: home" without inventing labels. */
@@ -59,7 +59,7 @@ const P2PBetCard: React.FC<P2PBetCardProps> = ({
   bet,
   onTake,
   onCancel,
-  isBusy,
+  isBusy
 }) => {
   /*
    * The backend exposes no counterparty identity and no way to look another
@@ -82,7 +82,7 @@ const P2PBetCard: React.FC<P2PBetCardProps> = ({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.15,
         shadowRadius: 4,
-        elevation: 3,
+        elevation: 3
       }}
     >
       {/* Header: avatar, prediction, status */}
@@ -133,11 +133,11 @@ const P2PBetCard: React.FC<P2PBetCardProps> = ({
           className="rounded-lg py-3 items-center"
           style={{
             backgroundColor: onTake ? "#E59A0B" : "#9E9E9E",
-            opacity: isBusy ? 0.6 : 1,
+            opacity: isBusy ? 0.6 : 1
           }}
         >
           {isBusy ? (
-            <ActivityIndicator color="#fff" />
+            <Loading inline size={28} />
           ) : (
             <Text className="text-white font-semibold">
               {onTake ? "Join Bet" : "Cancel Bet"}

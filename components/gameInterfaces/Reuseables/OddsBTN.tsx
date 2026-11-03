@@ -1,40 +1,51 @@
 import { ThemedText } from "@/components/ThemedText";
-import { Match } from "@/constants/dataOne";
-import { useSport } from "@/store/useSports";
 import { Pressable } from "react-native";
 import React from "react";
+import { Match } from "@/hooks/matchInterface/matchInterface";
+import { BetOption, useSport } from "@/store/useStore";
+import { SelectedOption } from "@/interface";
+
 
 interface Props {
   match: Match;
-  type: "Home" | "Away" | "Draw";
+  type: BetOption;
   className?: string;
-  selectGame: (option: { id: number; option: "Home" | "Away" | "Draw" }) => void;
+  selectGame: (id: string, option: BetOption, betType:string, odd: number ) => void;
 }
 
 const OddsButton = ({ match, type, selectGame, className }: Props) => {
   const { selectedGames } = useSport();
+  
+  const option =
+  type === "homeTeam"
+    ? "home"
+    : type === "awayTeam"
+    ? "away"
+    : type;
 
   // Filter once per match
   const matchSelections = selectedGames.filter(
-    (g) => g.id === match.id
+    (g) => g.matchId === match.id
   );
 
   // This is the final boolean for THIS button
   const isSelected = matchSelections.some(
-    (g) => g.selected.option === type
+    (g) => g.option === option
   );
 
+  const matchWinner = match.markets.find((e)=> e.betType === "MATCH_WINNER")
+  
   // Get the odds value based on type
   const oddsValue =
-    type === "Home"
-      ? match?.odds?.home
-      : type === "Draw"
-      ? match?.odds?.draw
-      : match?.odds?.away;
+    type === "homeTeam"
+      ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "home")
+      : type === "draw"
+      ? matchWinner?.outcomes.find((e)=>e.prediction.winner === "draw")
+      : matchWinner?.outcomes.find((e)=>e.prediction.winner === "away");
 
   return (
     <Pressable
-      onPress={() => selectGame({ id: match.id, option: type })}
+      onPress={() => selectGame(match.id, type, "MATCH_WINNER", oddsValue?.price!)}
       className={`px-3 py-3 rounded-xl w-[31%] 
         ${isSelected ? "bg-sec" : "bg-cus-purple"} 
         ${className ?? ""}`}
@@ -42,7 +53,7 @@ const OddsButton = ({ match, type, selectGame, className }: Props) => {
       <ThemedText
         className={`text-center ${isSelected ? "!text-white" : "!text-black"}`}
       >
-        {oddsValue}
+        {oddsValue?.price?.toFixed(2)}
       </ThemedText>
     </Pressable>
   );

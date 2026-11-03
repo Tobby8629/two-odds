@@ -1,18 +1,17 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { AVATARS } from "@/constants/avatars";
+import UserAvatar from "@/components/Reuseables/UserAvatar";
 import { useRouter } from "expo-router";
 
 interface ProfileHeaderProps {
   avatarId: string;
+  /** Uploaded avatar wins over the local pick. */
+  avatarUrl?: string | null;
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({ avatarId }) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ avatarId, avatarUrl }) => {
   const router = useRouter();
-  const avatar = AVATARS.find((a) => a.id === avatarId) || AVATARS[0];
-  const AvatarComponent = avatar.component;
-
   // Navigate to Avatar Screen
   const handleChangeAvatar = () => {
     router.push("/(settings)/(profile)/avatar");
@@ -23,7 +22,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ avatarId }) => {
       <View style={styles.row}>
         {/* Avatar */}
         <View style={styles.avatarWrapper}>
-          <AvatarComponent width={80} height={80} />
+          <UserAvatar uri={avatarUrl} avatarId={avatarId} size={80} />
         </View>
 
         {/* Change Avatar Button */}

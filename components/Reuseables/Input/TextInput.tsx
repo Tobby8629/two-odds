@@ -13,14 +13,16 @@ interface textinput {
   inputStyle?: string
   value: string | number
   keyboardType?: "default" | "numeric" | "email-address" | "phone-pad" | "number-pad"
+  placeholderTextColor?: string
 }
 
-const Textinput = ({ onChangeText, placeholder, id, value, keyboardType, onFocus, secure, inputStyle, onBlur, className}: textinput) => {
+const Textinput = ({ onChangeText, placeholder, id, value, keyboardType, onFocus, secure, inputStyle, onBlur, className, placeholderTextColor}: textinput) => {
   return (
     <View className={`w-full ${className}`}>
        <TextInput
         id={id}
         placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
         keyboardType={keyboardType}
         onBlur={onBlur}
         secureTextEntry={secure}

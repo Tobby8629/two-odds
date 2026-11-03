@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -7,49 +7,230 @@ import {
   Text,
   View,
 } from "react-native";
+import { router } from "expo-router";
 import Layout from "../Layout";
 import { ThemedText } from "@/components/ThemedText";
 import OTPInput from "@/components/ui/Otp";
 import Button from "@/components/Reuseables/Button";
+import AlertBanner from "@/components/Reuseables/AlertBanner";
+import {
+  pinErrorMessage,
+  useChangePin,
+  useForgotPin,
+  useResetPin,
+  useSetPin,
+} from "@/hooks/useWithdrawalPin";
+
+/** change = current PIN then new PIN. reset = emailed code then new PIN. set = first PIN only. */
+type PinMode = "change" | "reset" | "set";
+type PinStep = "first" | "second";
+
+const empty = () => Array(4).fill("");
+
+/* Matches "No transaction PIN set", "PIN not set", "please set PIN first". */
+const NO_PIN_SET =
+  /(no|not)[^.]{0,30}pin|pin[^.]{0,15}not[^.]{0,10}set|set[^.]{0,15}pin[^.]{0,15}first/i;
+const ALREADY_SET = /already[^.]{0,20}set|pin[^.]{0,20}exists/i;
 
 const WithdrawalPin = () => {
-  const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
-  const handleSubmit = () => {
-    console.log("PIN entered:", otp.join(""));
+  const [mode, setMode] = useState<PinMode>("change");
+  const [step, setStep] = useState<PinStep>("first");
+
+  const [first, setFirst] = useState<string[]>(empty);
+  const [newPin, setNewPin] = useState<string[]>(empty);
+  const [error, setError] = useState<string | null>(null);
+  const [needsFirstPin, setNeedsFirstPin] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const setPin = useSetPin();
+  const changePin = useChangePin();
+  const forgotPin = useForgotPin();
+  const resetPin = useResetPin();
+
+  const isPending =
+    setPin.isPending ||
+    changePin.isPending ||
+    forgotPin.isPending ||
+    resetPin.isPending;
+
+  const value = step === "first" ? first : newPin;
+  const setValue = step === "first" ? setFirst : setNewPin;
+  const complete = /^\d{4}$/.test(value.join(""));
+
+  const title =
+    step === "second" || mode === "set"
+      ? "Create New Pin"
+      : mode === "reset"
+        ? "Enter Reset Code"
+        : "Enter Withdrawal Pin";
+
+  const blurb =
+    step === "second" || mode === "set"
+      ? "Choose a 4-digit PIN. You will use it to approve withdrawals."
+      : mode === "reset"
+        ? "Enter the 4-digit code we sent to your email."
+        : "Enter your current 4-digit withdrawal PIN to continue.";
+
+  /* Let the banner read, then return to Security. */
+  useEffect(() => {
+    if (!success) return;
+
+    const timer = setTimeout(() => {
+      if (success.startsWith("Reset code")) {
+        setSuccess(null);
+        return;
+      }
+
+      router.back();
+    }, 1600);
+
+    return () => clearTimeout(timer);
+  }, [success]);
+
+  const handleConfirm = async () => {
+    if (!complete || isPending) return;
+
+    setError(null);
+
+    if (step === "first" && mode !== "set") {
+      setStep("second");
+      return;
+    }
+
+    try {
+      if (mode === "set") {
+        await setPin.mutateAsync({ pin: value.join("") });
+      } else if (mode === "change") {
+        await changePin.mutateAsync({
+          currentPin: first.join(""),
+          newPin: newPin.join(""),
+        });
+      } else {
+        await resetPin.mutateAsync({
+          code: first.join(""),
+          newPin: newPin.join(""),
+        });
+      }
+
+      setSuccess(
+        mode === "set" ? "Withdrawal Pin Created" : "Withdrawal Pin Updated"
+      );
+    } catch (e) {
+      const message = pinErrorMessage(
+        e,
+        "Something went wrong. Please try again."
+      );
+
+      console.warn("PIN request failed:", message);
+
+      /* The backend only tells us the account has no PIN by rejecting. */
+      if (mode !== "set" && NO_PIN_SET.test(message)) {
+        setNeedsFirstPin(true);
+        setError(null);
+      } else if (mode === "set" && ALREADY_SET.test(message)) {
+        /* Someone with a PIN landed on the create path; send them to change. */
+        setMode("change");
+        setNeedsFirstPin(false);
+        setError("You already have a PIN. Enter it to change it.");
+      } else {
+        setError(message);
+      }
+
+      setStep("first");
+      setFirst(empty());
+      setNewPin(empty());
+    }
   };
 
+  const handleForgot = async () => {
+    if (isPending) return;
+
+    setError(null);
+
+    try {
+      await forgotPin.mutateAsync();
+      setMode("reset");
+      setStep("first");
+      setFirst(empty());
+      setNewPin(empty());
+      setSuccess("Reset code sent to your email");
+    } catch (e) {
+      setError(pinErrorMessage(e, "Could not send a reset code."));
+    }
+  };
 
   return (
     <Layout header="Withdrawal Pin" navigator="xmark">
+      {success && <AlertBanner message={success} variant="success" />}
+
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <View className="flex-1 items-center pt-24 px-6">
-          <ThemedText className="text-white mb-5 text-2xl font-semibold">
-            Enter Withdrawal Pin
+        <View className="flex-1 items-center pt-16 px-6">
+          <ThemedText className="text-white mb-3 text-2xl font-semibold">
+            {title}
           </ThemedText>
 
-          <ThemedText className="text-gray-400 mb-6 text-center">
-            Please enter your 4-digit withdrawal PIN below to proceed.
+          <ThemedText className="text-gray-400 mb-10 text-center text-xs">
+            {blurb}
           </ThemedText>
 
-        <View className="my-6">
           <OTPInput
-            otp={otp}
-            setOtp={setOtp}
+            key={`${mode}-${step}`}
             length={4}
-            onSubmit={handleSubmit}
+            otp={value}
+            setOtp={setValue}
+            onSubmit={() => {}}
           />
-        </View>
 
-          <Button text="Confirm" onPress={handleSubmit} className="mt-6 w-1/2 mx-auto" />
-
-          <Pressable onPress={() => console.log("Forgot PIN pressed")}>
-            <Text className="text-sec mt-4 text-sm underline">
-              Forgot PIN?
+          {error && (
+            <Text className="text-red-400 text-sm text-center mt-6">
+              {error}
             </Text>
-          </Pressable>
+          )}
+
+          {(needsFirstPin || (mode === "change" && error)) && (
+            <View className="items-center mt-6">
+              <Text className="text-gray-300 text-xs text-center">
+                {needsFirstPin
+                  ? "You haven't set a withdrawal PIN yet."
+                  : "Don't have a PIN yet?"}
+              </Text>
+
+              <Button
+                text="create pin"
+                textStyle="lowercase !text-base !font-normal"
+                className="mt-3 !w-[200px] !h-[38px] rounded-md !bg-sec"
+                onPress={() => {
+                  setNeedsFirstPin(false);
+                  setError(null);
+                  setFirst(empty());
+                  setNewPin(empty());
+                  setMode("set");
+                  setStep("first");
+                }}
+              />
+            </View>
+          )}
+
+          <Button
+            text={isPending ? "please wait" : "confirm"}
+            disable={!complete || isPending}
+            onPress={handleConfirm}
+            textStyle="lowercase !text-base !font-normal"
+            className={`mt-12 !w-[200px] !h-[38px] rounded-md ${
+              !complete || isPending ? "!bg-cus-purple" : "!bg-sec"
+            }`}
+          />
+
+          {/* Only the current-PIN screen offers a reset. */}
+          {step === "first" && mode === "change" && (
+            <Pressable onPress={handleForgot} disabled={isPending}>
+              <Text className="text-sec mt-4 text-xs">Forgot Pin?</Text>
+            </Pressable>
+          )}
+
         </View>
       </KeyboardAvoidingView>
     </Layout>

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Pressable,
   TextInput,
-  View,
+  View
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
+import Loading from "@/components/Reuseables/Loading";
 
 interface ProfileFieldProps {
   label: string;
@@ -27,7 +27,7 @@ const ProfileField: React.FC<ProfileFieldProps> = ({
   isFirst,
   onSave,
   validate,
-  maxLength,
+  maxLength
 }) => {
   const isEditable = Boolean(onSave);
 
@@ -115,7 +115,7 @@ const ProfileField: React.FC<ProfileFieldProps> = ({
             />
 
             {isSaving ? (
-              <ActivityIndicator color="#FFA500" className="ml-2" />
+              <Loading inline size={28} />
             ) : (
               <View className="flex-row items-center ml-2">
                 <Pressable onPress={handleSave} hitSlop={8}>

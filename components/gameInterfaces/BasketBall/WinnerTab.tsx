@@ -4,14 +4,14 @@ import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { Match, MatchProps } from '@/interface';
 import GameCard from './GameCard';
 import MatchCard from '../Reuseables/MatchCard';
-import useBetslip from '@/store/useStore';
+import { useSport } from "@/store/useStore";
 
 interface WinnerTabProps {
   matches: MatchProps[];
 }
 
 const WinnerTab: React.FC<WinnerTabProps> = ({ matches }) => {
-  const { selectGame } = useBetslip()
+  const { selectGame } = useSport()
   return (
     <View style={{ flex: 1 }}>
       {/* Sticky Header Bar */}

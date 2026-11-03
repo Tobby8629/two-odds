@@ -5,14 +5,14 @@ import { Match, MatchProps } from '@/interface';
 // import OverUnderGameCard from './OverUnderGameCard';
 import { Ionicons } from '@expo/vector-icons';
 import MatchCard from '../Reuseables/MatchCard';
-import useBetslip from '@/store/useStore';
+import { useSport } from "@/store/useStore";
 
 interface OverUnderTabProps {
   matches: MatchProps[];
 }
 
 const OverUnderTab: React.FC<OverUnderTabProps> = ({ matches }) => {
-  const { selectGame } = useBetslip()
+  const { selectGame } = useSport()
   return (
     <View style={{ flex: 1 }}>
       {/* Header Bar */}

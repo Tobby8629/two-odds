@@ -2,29 +2,70 @@
 
 export type { ApiResponse } from "./api.types";
 
-/**
- * Shape returned by GET /users/profile.
- *
- * The design also calls for first/last name, phone, address, city and state,
- * but the backend does not store or return any of them, so they are not
- * modelled here and the profile screen does not render them.
- */
+/** Shape returned by GET /users/profile. Nullable fields are unset, not missing. */
 export interface UserProfile {
   id: string;
   email: string;
   username: string;
   displayName: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  dateOfBirth?: string | null;
+  /** null until set via POST /users/profile/avatar. */
+  avatarUrl?: string | null;
   walletAddress?: string;
   role?: string;
   isPremium?: boolean;
+  wins?: number;
+  losses?: number;
+  /** wins / (wins + losses), 0 with no settled bets. */
+  winRate?: number;
 }
 
-/**
- * The only fields PATCH /users/profile accepts.
- */
+/** Non-sensitive fields from GET /users/{id}, used for bet counterparties. */
+export interface PublicProfile {
+  id: string;
+  username: string;
+  displayName?: string | null;
+  avatarUrl?: string | null;
+  wins?: number;
+  losses?: number;
+  winRate?: number;
+}
+
+/** Everything PATCH /users/profile accepts. */
 export interface UpdateProfileInput {
   displayName?: string;
   username?: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  /** ISO date, e.g. 1995-06-14. */
+  dateOfBirth?: string;
+}
+
+/** Local file handed to the presigned avatar upload. */
+export interface AvatarUpload {
+  uri: string;
+  name?: string;
+  type?: string;
+  /** Required by /uploads/presign; max 5MB for avatars. */
+  size: number;
+}
+
+/** Shape returned by POST /uploads/presign. */
+export interface PresignedUpload {
+  key: string;
+  uploadUrl: string;
+  fileUrl: string;
+  expiresIn: number;
 }
 
 export interface Avatar {

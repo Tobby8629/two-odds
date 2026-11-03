@@ -32,7 +32,15 @@
       "@react-native-community/datetimepicker",
       "expo-font",
       "expo-web-browser",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow 2Odds to access your photos so you can upload your verification documents.",
+          "cameraPermission": "Allow 2Odds to use your camera so you can take a verification selfie."
+        }
+      ],
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true

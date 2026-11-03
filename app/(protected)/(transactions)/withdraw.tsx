@@ -130,7 +130,7 @@ const withdraw = () => {
             <View key={String(i)} className={`${flexNoJustify} gap-2  my-2`}>
               <View className='w-1 h-1 bg-white rounded-full'></View>
               <ThemedText className='!text-white'>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+                Withdrawals are sent to your saved bank account and usually arrive within minutes. 
               </ThemedText>
             </View>
           ))}

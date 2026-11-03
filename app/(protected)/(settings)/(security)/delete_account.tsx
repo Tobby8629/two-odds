@@ -1,84 +1,3 @@
-// import { Pressable, StyleSheet, Text, View } from 'react-native'
-// import React, { useState } from 'react'
-// import Layout from '../Layout'
-// import { ThemedText } from '@/components/ThemedText'
-// import Button from '@/components/Reuseables/Button'
-
-// type DELETE_ACCOUNT = "delete" | "exclusion"
-// interface comp {
-//   option: DELETE_ACCOUNT,
-//   setoption: React.Dispatch<React.SetStateAction<DELETE_ACCOUNT>>
-// }
-
-// const delete_account = () => {
-//   const [option, setoption] = useState<DELETE_ACCOUNT>("delete")
-//   return (
-//    <Layout header='Delete Account' navigator='xmark'>
-//       {option === "delete" ?  <Delete setoption={setoption} option={option}/>
-//        : <Exclusion setoption={setoption} option={option} />}
-//       <View>
-//         <ThemedText className='leading-7 text-lg'>Customer service</ThemedText>
-//         <ThemedText className='leading-7 text-lg'>Lorem ipsum dolor sit amet consectetur. Facilisi arcu cursus pellentesque dui urna.</ThemedText>
-//       </View>
-//    </Layout>
-//   )
-// }
-
-// const Exclusion = ({setoption}: comp) => {
-//   return (
-//     <View>
-//       <ThemedText>
-//         Lorem ipsum dolor sit amet consectetur. 
-//         Habitasse at phasellus venenatis non eu egestas arcu lectus.
-//         Molestie duis amet sit et. Vitae feugiat lacus faucibus 
-//         tincidunt convallis. Nunc.Lorem ipsum dolor sit amet 
-//         consectetur. Habitasse at phasellus venenatis non eu egestas
-//         arcu lectus. Molestie duis amet sit et. Vitae feugiat lacus faucibus 
-//         tincidunt convallis. Nunc.Lorem ipsum dolor sit amet consectetur. 
-//         Habitasse at phasellus venenatis non eu egestas arcu lectus. Molestie duis amet sit et. 
-//         Vitae feugiat lacus faucibus tincidunt convallis. Nunc.
-//       </ThemedText>
-//       <ThemedText>
-//         If you are considering the self exclusion you need to withdraw your money. 
-//         You won’t be able to withdraw until you back.
-//       </ThemedText>
-//       <Button text='Set up Self-Exclusion' onPress={()=>console.log("cancel")}/>
-//     </View>
-//   )
-// }
-
-// const Delete = ({setoption}: comp) => {
-//   return (
-//     <View className='p-6'>
-//       <ThemedText className='text-2xl my-6 leading-9'>Are You Sure You Wish to Delete Your Account</ThemedText>
-//       <ThemedText className='leading-7 text-lg'>
-//         Lorem ipsum dolor sit amet consectetur. 
-//         Habitasse at phasellus venenatis non eu egestas arcu lectus.
-//          Molestie duis amet sit et.
-//          Vitae feugiat lacus faucibus tincidunt convallis. Nunc.
-//       </ThemedText>
-//       <ThemedText className='my-5 text-lg'>
-//         Lorem ipsum dolor sit amet consectetur. 
-//         Habitasse at phasellus venenatis non eu egestas 
-//       </ThemedText>
-//       <ThemedText className='leading-7 text-lg'>
-//         If you wish to close your account temporarily and use it in the future 
-//         you will need to contact support directly or self exclude yourself
-//         <Pressable onPress={()=> setoption("exclusion")}>
-//           <ThemedText className='!text-sec text-lg'> Click Here. </ThemedText>
-//         </Pressable>
-//       </ThemedText>
-//       <Button className='mx-auto my-3' text='Close Your Account' onPress={()=>console.log("cancel")}/>
-      
-//     </View>
-//   )
-// }
-
-// export default delete_account
-
-// const styles = StyleSheet.create({})
-
-
 import { ScrollView, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../Layout";
@@ -125,7 +44,7 @@ const DeleteAccount = () => {
           </View>
         </View>
         <ThemedText className="text-center text-sm  text-gray-200 leading-6 mt-1">
-          Lorem ipsum dolor sit amet consectetur. Facilisi arcu cursus pellentesque dui urna.
+          Our team is available if you would rather talk it through first.
         </ThemedText>
       </View>
     </>
@@ -158,11 +77,8 @@ const Exclusion = ({ setoption }: CompProps) => {
   return (
     <View>
       <ThemedText className="text-gray-100 text-base leading-7 mb-6">
-        Lorem ipsum dolor sit amet consectetur. Habitasse at phasellus venenatis non eu egestas
-        arcu lectus. Molestie duis amet sit et. Vitae feugiat lacus faucibus tincidunt convallis.
-        Nunc. Lorem ipsum dolor sit amet consectetur. Habitasse at phasellus venenatis non eu
-        egestas arcu lectus. Molestie duis amet sit et. Vitae feugiat lacus faucibus tincidunt
-        convallis. Nunc.
+        Self-exclusion locks you out of betting for a period you choose. During that time you
+        cannot place bets or deposit funds, and the block cannot be lifted early.
       </ThemedText>
 
       <ThemedText className="text-gray-100 text-base leading-7 mb-10">
@@ -207,12 +123,12 @@ const Delete = ({ setoption }: CompProps) => {
       </ThemedText>
 
       <ThemedText className="text-gray-100 text-base leading-7 mb-5">
-        Lorem ipsum dolor sit amet consectetur. Habitasse at phasellus venenatis non eu egestas arcu
-        lectus. Molestie duis amet sit et. Vitae feugiat lacus faucibus tincidunt convallis. Nunc.
+        Deleting your account closes it permanently. Your bet history, balance and verification
+        details will no longer be available to you.
       </ThemedText>
 
       <ThemedText className="text-gray-100 text-base leading-7 mb-5">
-        Lorem ipsum dolor sit amet consectetur. Habitasse at phasellus venenatis non eu egestas.
+        Withdraw any remaining balance before you continue, as it cannot be recovered afterwards.
       </ThemedText>
 
     

@@ -1,7 +1,10 @@
-import { getRequest, putRequest } from "@/components/api/Axois";
+import { getRequest, postRequest, putRequest } from "@/components/api/Axois";
 import { ApiResponse } from "@/types/api.types";
 import {
+  ChangePinInput,
   CurrencyDepositLimits,
+  ResetPinInput,
+  SetPinInput,
   UpdateDepositLimitsInput,
   WalletBalance,
 } from "@/types/wallet.types";
@@ -34,5 +37,21 @@ export const walletService = {
       "/wallet/deposit-limits",
       input
     );
+  },
+  async setPin(input: SetPinInput): Promise<void> {
+    await postRequest<ApiResponse<unknown>>("/wallet/pin/set", input);
+  },
+
+  async changePin(input: ChangePinInput): Promise<void> {
+    await postRequest<ApiResponse<unknown>>("/wallet/pin/change", input);
+  },
+
+  /** Emails a reset code; takes no body. */
+  async forgotPin(): Promise<void> {
+    await postRequest<ApiResponse<unknown>>("/wallet/pin/forgot", {});
+  },
+
+  async resetPin(input: ResetPinInput): Promise<void> {
+    await postRequest<ApiResponse<unknown>>("/wallet/pin/reset", input);
   },
 };

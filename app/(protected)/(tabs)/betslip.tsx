@@ -3,15 +3,15 @@ import { ThemedText } from '@/components/ThemedText';
 import { flex, flexNoJustify } from '@/constants/style';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Dropdown, { ItemProp } from '@/components/Reuseables/dropdown';
-import  { useState } from 'react';
-import useBetslip from '@/store/useStore';
+import  { useEffect, useState } from 'react';
 import EmptyState from '@/components/Reuseables/EmptyState';
 import AnimatedPopup from '@/components/Reuseables/Animations/Popup';
 import MatchCard from '@/components/Betslip/MatchCard';
 import Footer from '@/components/Betslip/Footer';
 import PopupD from '@/components/Betslip/PopupD';
 import Error from '@/components/Reuseables/Error';
-import { useSport } from '@/store/useSports';
+import { useSport } from '@/store/useStore';
+
 
 export default function TabTwoScreen() {
  
@@ -34,9 +34,10 @@ export default function TabTwoScreen() {
       setErr({status: true, message: "insufficient Balance"})
     }
   }
-
-  // console.log("selectedGames", selectedGames);
-
+  const clearBetslipFnc  = () => {
+    clearBetslip()
+    onClose()
+  }
   return (
     <View  
         style={{
@@ -74,7 +75,7 @@ export default function TabTwoScreen() {
             className='!bg-[#E3F2FD]'
             children = {<PopupD 
               onClose={onClose}
-              func={clearBetslip}
+              func={clearBetslipFnc}
               headerText='Delete Betslip'
               text={"Are you sure you want to clear your list"}
             /> }

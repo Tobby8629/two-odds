@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Pressable,
   RefreshControl,
   ScrollView,
   Text,
-  View,
+  View
 } from "react-native";
 import Layout from "../(settings)/Layout";
 import P2PBetCard from "@/components/P2P/P2PBetCard";
 import { useCancelBet, useMyBetHistory, useMyBets } from "@/hooks/useBets";
 import { Bet } from "@/types/bets.types";
+import Loading from "@/components/Reuseables/Loading";
 
 type MyBetsTab = "open" | "matched" | "history";
 
@@ -39,7 +39,7 @@ export default function MyP2PBetsScreen() {
           isPending: open.isPending,
           isError: open.isError,
           refetch: open.refetch,
-          isRefetching: open.isRefetching,
+          isRefetching: open.isRefetching
         }
       : activeTab === "matched"
         ? {
@@ -47,14 +47,14 @@ export default function MyP2PBetsScreen() {
             isPending: matched.isPending,
             isError: matched.isError,
             refetch: matched.refetch,
-            isRefetching: matched.isRefetching,
+            isRefetching: matched.isRefetching
           }
         : {
             bets: history.bets,
             isPending: history.isPending,
             isError: history.isError,
             refetch: history.refetch,
-            isRefetching: false,
+            isRefetching: false
           };
 
   const handleCancel = async (bet: Bet) => {
@@ -112,7 +112,7 @@ export default function MyP2PBetsScreen() {
 
       {active.isPending ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#FFC107" />
+          <Loading inline size={72} />
         </View>
       ) : active.isError ? (
         <View className="flex-1 items-center justify-center px-8">
@@ -132,7 +132,7 @@ export default function MyP2PBetsScreen() {
           contentContainerStyle={{
             alignItems: "center",
             paddingTop: 12,
-            paddingBottom: 40,
+            paddingBottom: 40
           }}
           showsVerticalScrollIndicator={false}
           refreshControl={

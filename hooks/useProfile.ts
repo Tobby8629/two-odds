@@ -5,10 +5,11 @@ import {
 } from "@tanstack/react-query";
 import { userService } from "@/services/userService";
 import { useAuthStore } from "@/store/useAuthStore";
-import { UpdateProfileInput } from "@/types/profile.types";
+import { AvatarUpload, UpdateProfileInput } from "@/types/profile.types";
 
 export const profileKeys = {
   detail: ["profile"] as const,
+  public: (id: string) => ["profile", "public", id] as const,
 };
 
 /**
@@ -27,6 +28,16 @@ export const useProfile = () => {
   });
 };
 
+/** Another user's public profile, for bet counterparties. */
+export const usePublicProfile = (id: string | undefined) =>
+  useQuery({
+    queryKey: profileKeys.public(id ?? ""),
+    queryFn: () => userService.getPublicProfile(id as string),
+    enabled: Boolean(id),
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+
 /**
  * PATCH /users/profile documents no response body, so the cache is
  * refetched rather than patched from the mutation result.
@@ -44,6 +55,40 @@ export const useUpdateProfile = () => {
     },
     onError: (error: unknown) => {
       console.error("Profile update failed:", error);
+    },
+  });
+};
+
+/** Stores a generated avatar value, e.g. a locally chosen SVG id. */
+export const useSetAvatar = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (avatarUrl: string) => userService.setAvatar(avatarUrl),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: profileKeys.detail });
+    },
+  });
+};
+
+export const useOnlineUsers = (withinMinutes = 15, limit = 20) =>
+  useQuery({
+    queryKey: ["users", "online", withinMinutes, limit],
+    queryFn: () => userService.getOnlineUsers(withinMinutes, limit),
+    staleTime: 30 * 1000,
+    refetchInterval: 60 * 1000,
+    retry: 1,
+  });
+
+export const useUploadAvatar = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (file: AvatarUpload) => userService.uploadAvatar(file),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: profileKeys.detail,
+      });
     },
   });
 };

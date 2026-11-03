@@ -17,7 +17,9 @@ export const useWalletBalance = () => {
     queryKey: walletKeys.balance,
     queryFn: walletService.getBalance,
     enabled: Boolean(user),
-    staleTime: 30 * 1000,
+    staleTime: 15 * 1000,
+    refetchOnMount: "always",
+    refetchOnReconnect: true,
     retry: 1,
   });
 };

@@ -7,6 +7,14 @@ import Layout from "../Layout";
 import Textinput from "@/components/Reuseables/Input/TextInput";
 import { InputID } from "@/interface";
 import useMutate from "@/hooks/useMutate";
+import AlertBanner from "@/components/Reuseables/AlertBanner";
+
+/* Mirrors the 8-character minimum on POST /auth/change-password. */
+const PASSWORD_RULES = [
+  "At least 8 characters long",
+  "Contains an uppercase and a lowercase letter",
+  "Contains at least one number",
+];
 
 interface ChangePasswordForm {
   oldpassword: string;
@@ -15,6 +23,9 @@ interface ChangePasswordForm {
 }
 
 export default function ChangePassword() {
+  const [banner, setBanner] = useState<
+    { message: string; variant: "error" | "success" } | null
+  >(null);
   const [data, setData] = useState<ChangePasswordForm>({
     oldpassword: "",
     newpassword: "",
@@ -46,39 +57,42 @@ export default function ChangePassword() {
 });
 
   const handleSubmit = async () => {
-  if (check) {
-    alert("Please fill in all fields.");
-    return;
-  }
+    setBanner(null);
 
-  if (
-    data.newpassword !==
-    data.confirmpassword
-  ) {
-    alert(
-      "New password and confirm password do not match."
-    );
-    return;
-  }
+    if (check) {
+      setBanner({ message: "Please fill in all fields", variant: "error" });
+      return;
+    }
 
-  try {
-    await mutateAsync({
-      url: "auth/change-password",
-      data: {
-        currentPassword: data.oldpassword,
-        newPassword: data.newpassword,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error changing password:",
-      error
-    );
+    if (data.newpassword.length < 8) {
+      setBanner({
+        message: "Password must be at least 8 characters",
+        variant: "error",
+      });
+      return;
+    }
 
-    alert(
-      "An error occurred while changing the password."
-    );
-  }
+    if (data.newpassword !== data.confirmpassword) {
+      setBanner({ message: "The two passwords do not match", variant: "error" });
+      return;
+    }
+
+    try {
+      await mutateAsync({
+        url: "auth/change-password",
+        data: {
+          currentPassword: data.oldpassword,
+          newPassword: data.newpassword,
+        },
+      });
+    } catch (error) {
+      console.error("Error changing password:", error);
+
+      setBanner({
+        message: "Current password is incorrect",
+        variant: "error",
+      });
+    }
   };
   return (
     <Layout header="Change Password">
@@ -97,8 +111,9 @@ export default function ChangePassword() {
                 secure={!showPassword[key as keyof ChangePasswordForm]}
                 onChangeText={handleChange}
                 placeholder={`Enter your ${key.replace("password", " password")}`}
-                className="flex-1 text-white"
-                inputStyle=" !bg-transparent !h-[30px]"
+                className="flex-1"
+                placeholderTextColor="#9AA8B5"
+                inputStyle=" !bg-transparent !h-[30px] !text-black"
               />
 
               <Pressable onPress={() => toggleVisibility(key as keyof ChangePasswordForm)}>
@@ -109,7 +124,7 @@ export default function ChangePassword() {
                       : "eye-slash"
                   }
                   size={18}
-                  color="#ccc"
+                  color="#0A3A5C"
                 />
               </Pressable>
             </View>
@@ -129,10 +144,10 @@ export default function ChangePassword() {
       <View className="px-5 pt-4">
         <ThemedText className="text-lg mb-3 !text-sec  font-semibold">Password Requirements</ThemedText>
       
-      {Array.from({length: 3,}).map((_, index)=>(
-        <View key={index.toString()} className="flex-row items-baseline mb-3 gap-2">
-          <View className="w-1 h-1 rounded-full bg-white"/>
-          <ThemedText className="leading-7">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tempora obcaecati placeat nulla, fugit inventore magnam dicta tempore quasi in!</ThemedText>
+      {PASSWORD_RULES.map((rule) => (
+        <View key={rule} className="flex-row items-baseline mb-3 gap-2">
+          <View className="w-1 h-1 rounded-full bg-[#B9CBD9]"/>
+          <ThemedText className="leading-7 !text-[#B9CBD9] text-sm">{rule}</ThemedText>
         </View>
       ))}
       </View>
