@@ -174,8 +174,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     });
 
     try {
+      console.log("Attempting login with email:", email);
       const response = await publicApi.post<AuthResponse>(
         "/auth/login",
+      
         {
           email: email.trim().toLowerCase(),
           password,

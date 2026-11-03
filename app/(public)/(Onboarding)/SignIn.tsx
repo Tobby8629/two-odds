@@ -120,7 +120,7 @@ const navigate = async () => {
   }, [user, mutation.isSuccess]);
 
   return (
-    <View className='h-screen'>
+    <Pressable onPress={Keyboard.dismiss} className='h-screen'>
     {mutation.isPending && <Loading />} 
     <View className='z-[99]'>
       {err.status && <Error error={err.message} setError={setErr} />}
@@ -168,7 +168,7 @@ const navigate = async () => {
         </View>
       </View>
     </Layout>
-    </View>
+    </Pressable>
   );
 };
 

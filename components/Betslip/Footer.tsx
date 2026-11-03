@@ -14,8 +14,8 @@ interface footerProps {
 
 const Footer = ({handleSubmit}: footerProps) => {
   const {translateY}  = useKeyboardTranslation(80)
-    const [baseStake, setBaseStake] = useState(100)
-    const [check, setCheck] = useState(false)
+  const [baseStake, setBaseStake] = useState(100)
+  const [check, setCheck] = useState(false)
   const [stake, setStake] = useState<number | null>(baseStake)
   const { selectedGames } =useSport()
  const totalOdd = selectedGames.reduce(
