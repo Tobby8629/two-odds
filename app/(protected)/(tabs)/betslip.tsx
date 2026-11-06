@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StyleSheet, View, Text, Dimensions, Pressable } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { flex, flexNoJustify } from '@/constants/style';
@@ -14,6 +15,7 @@ import { useSport } from '@/store/useStore';
 
 
 export default function TabTwoScreen() {
+  const insets = useSafeAreaInsets();
  
   const options: ItemProp<"bet_Accumulator" | "single" | "system">[] = [
     {title:"Bet Accumulator", value: "bet_Accumulator"}, 
@@ -45,7 +47,7 @@ export default function TabTwoScreen() {
         backgroundColor: "#003c6f",
       }} className=' bg-[#003c6f]'
     >
-      <View className={`${flex} fixed top-0 pt-14 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`}>
+      <View className={`${flex} fixed top-0 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`} style={{ paddingTop: insets.top + 8 }}>
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
           <Text className='text-xl font-bold text-white '>{selectedGames.length}</Text>
         </View>

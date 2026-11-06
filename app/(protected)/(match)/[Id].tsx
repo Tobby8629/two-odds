@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { use, useState } from 'react'
 import { FontAwesome6 } from '@expo/vector-icons'
@@ -43,6 +44,7 @@ const marketSwitch = (selectedsport: sports) => {
 }
 
 const EachMatch = () => {
+  const insets = useSafeAreaInsets();
   const isIos = Platform.OS === "ios";
   const { selectedsport } = useSport();
   const id = useLocalSearchParams().Id as string
@@ -71,7 +73,7 @@ const EachMatch = () => {
     <View className='bg-pry flex-1'>
 
       {/***********  Header  ***********/ }
-      <View className={`flex-row justify-between px-6 items-center bg-pry-light ${isIos ? "h-[120px] pt-14" : "h-[80px]"} `}>
+      <View className="flex-row justify-between px-6 items-center bg-pry-light pb-4" style={{ paddingTop: insets.top + 8, minHeight: 64 }}>
         <Pressable onPress={()=> router.back()}>
           <FontAwesome6 name="angle-left" size={25} color="white" />
         </Pressable>

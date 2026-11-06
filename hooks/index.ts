@@ -68,7 +68,7 @@ export const useCountryLeagues = (country: string, sportId: string) => {
 
 export const useMatches = ( leagueId: string, status?: Status) => {
   return useQuery({
-    queryKey: ["matches"],
+    queryKey: ["matches", leagueId, status],
     queryFn: () => getQuery<fetch<Match>>(`/sports/matches`, {leagueId, status}),
      staleTime: 5 * 60 * 1000, 
   })

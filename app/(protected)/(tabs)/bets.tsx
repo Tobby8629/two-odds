@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StyleSheet, Text, View, ScrollView, Dimensions, Pressable } from 'react-native'
 import React from 'react'
 import EmptyState from '@/components/Reuseables/EmptyState'
@@ -7,6 +8,7 @@ import EachBet from '@/components/Bets/EachBet'
 import {bets as matchBets} from '@/constants/data'
 
 const bets = () => {
+  const insets = useSafeAreaInsets();
   const {height} = Dimensions.get("window")
   return (
     <View  
@@ -15,7 +17,7 @@ const bets = () => {
         backgroundColor: "#003c6f",
       }} className=' bg-[#003c6f]'
     >
-    <View className={`${flex} fixed top-0 pt-14 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`}>
+    <View className={`${flex} fixed top-0 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`} style={{ paddingTop: insets.top + 8 }}>
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
           <Text className='text-xl font-bold text-white '>{matchBets.length}</Text>
         </View>

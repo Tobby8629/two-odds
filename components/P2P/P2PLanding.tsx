@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import React from 'react';
 import { FlatList, Image, Pressable, Text, View } from 'react-native';
 import Head from '@/components/Home/Head';
@@ -10,13 +11,14 @@ import { useTabStore } from '@/store/useTabStore';
 import { useLiveMatches } from '@/hooks/useMatches';
 import { RelativePathString, router } from 'expo-router';
 import { previewMatches } from '@/constants/previewMatches';
-import { DEMO_MODE } from '@/constants/demo';
+import { DEMO_MODE, SIMULATE } from '@/constants/demo';
 import { StyleSheet } from 'react-native';
 
 const PLAYER_ONE = require('@/assets/images/p2pPlayerOne.png');
 const PLAYER_TWO = require('@/assets/images/p2pPlayerTwo.png');
 
 export default function P2PLanding() {
+  const insets = useSafeAreaInsets();
   const { setScreen } = useP2PStore();
   const { activeTab, setActiveTab } = useTabStore();
 
@@ -28,12 +30,14 @@ export default function P2PLanding() {
     ? previewMatches
     : matches && matches.length
       ? matches
-      : previewMatches;
+      : SIMULATE.liveMatches
+        ? previewMatches
+        : [];
 
   return (
     <View style={styles.screen}>
       {/* Stays put so the tab switch, search and wallet are always reachable. */}
-      <View style={styles.fixedHeader}>
+      <View style={[styles.fixedHeader, { paddingTop: insets.top + 8 }]}>
         <P2PToggle active={activeTab} onChange={setActiveTab} />
 
         <Head />
