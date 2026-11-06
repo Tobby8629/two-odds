@@ -43,7 +43,8 @@ export default function HomeScreen() {
   const match = useMatches(selectedleague).data?.data
   const {isLoading} = useMatches(selectedleague)
  
-const combinedData: CombiSportItem[] = ["header", ...match!];
+/* match is undefined until the query resolves, so it cannot be spread bare. */
+const combinedData: CombiSportItem[] = ["header", ...(match ?? [])];
 if(activeTab === "p2p") {
   // Render P2P related components or screens
   if (currentScreen === "landing") return <P2PLanding />;
@@ -88,7 +89,7 @@ return (
 
 const styles = StyleSheet.create({
   flatListContainer: {
-    backgroundColor: "#123456",
+    backgroundColor: "#003C6F",
     paddingVertical: 56,
   },
 });

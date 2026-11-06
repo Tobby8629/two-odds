@@ -10,7 +10,7 @@ import { useTabStore } from '@/store/useTabStore';
 import { useLiveMatches } from '@/hooks/useMatches';
 import { RelativePathString, router } from 'expo-router';
 import { previewMatches } from '@/constants/previewMatches';
-import { DEMO_MODE } from '@/constants/demo';
+import { DEMO_MODE, SIMULATE } from '@/constants/demo';
 import { StyleSheet } from 'react-native';
 
 const PLAYER_ONE = require('@/assets/images/p2pPlayerOne.png');
@@ -28,7 +28,9 @@ export default function P2PLanding() {
     ? previewMatches
     : matches && matches.length
       ? matches
-      : previewMatches;
+      : SIMULATE.liveMatches
+        ? previewMatches
+        : [];
 
   return (
     <View style={styles.screen}>
