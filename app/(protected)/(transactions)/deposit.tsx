@@ -5,6 +5,7 @@ import { BadgeCheck, ExternalLink, X } from 'lucide-react-native'
 import { FontAwesome5, FontAwesome6 } from '@expo/vector-icons'
 import * as WebBrowser from 'expo-web-browser'
 import QRCode from 'react-native-qrcode-svg'
+import * as Clipboard from 'expo-clipboard'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Layout from './Layout'
 import Button from '@/components/Reuseables/Button'
@@ -109,6 +110,7 @@ const Deposits = () => {
   const [error, setError] = useState<string | null>(null)
   const [invoice, setInvoice] = useState<UsdtDeposit | null>(null)
   const [confirmed, setConfirmed] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   const isNaira = asset === 'NGN'
   const numeric = parseFloat(amount)
@@ -149,6 +151,13 @@ const Deposits = () => {
     const t = setTimeout(() => setConfirmed(true), 8000)
     return () => clearTimeout(t)
   }, [invoice])
+
+  const handleCopy = async () => {
+    if (!invoice) return
+    await Clipboard.setStringAsync(invoice.payAddress)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
 
   const reset = () => {
     setInvoice(null)
@@ -219,14 +228,27 @@ const Deposits = () => {
               </Text>
             </View>
 
-            <Pressable
-              onPress={() => Share.share({ message: invoice.payAddress })}
-              className="flex-row items-center justify-center"
-              style={{ height: 23, paddingHorizontal: 15, borderRadius: 4, backgroundColor: '#FFA500', gap: 6 }}
-            >
-              <Text style={{ color: '#000000', fontSize: 14, fontWeight: '600', lineHeight: 14 }}>Share</Text>
-              <FontAwesome6 name="arrow-up-from-bracket" size={12} color="#000000" />
-            </Pressable>
+            <View className="flex-row" style={{ gap: 20 }}>
+              <Pressable
+                onPress={() => Share.share({ message: invoice.payAddress })}
+                className="flex-row items-center justify-center"
+                style={{ height: 23, paddingHorizontal: 15, borderRadius: 4, backgroundColor: '#FFA500', gap: 6 }}
+              >
+                <Text style={{ color: '#000000', fontSize: 14, fontWeight: '600', lineHeight: 14 }}>Share</Text>
+                <FontAwesome6 name="arrow-up-from-bracket" size={12} color="#000000" />
+              </Pressable>
+
+              <Pressable
+                onPress={handleCopy}
+                className="flex-row items-center justify-center"
+                style={{ height: 23, paddingHorizontal: 15, borderRadius: 4, backgroundColor: '#FFA500', gap: 6 }}
+              >
+                <Text style={{ color: '#000000', fontSize: 14, fontWeight: '600', lineHeight: 14 }}>
+                  {copied ? 'Copied' : 'Copy'}
+                </Text>
+                <FontAwesome6 name={copied ? 'check' : 'copy'} size={12} color="#000000" />
+              </Pressable>
+            </View>
           </View>
         ) : (
           <>
