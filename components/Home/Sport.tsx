@@ -82,12 +82,10 @@ const Sport = ({ handlePress, selectSport, title = "Sports" }: ctrl) => {
         {title}
       </Text>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingLeft: 20,
-        }}
+      {/* Five buttons spread across the width, so there is nothing to scroll. */}
+      <View
+        className="flex-row items-center justify-between"
+        style={{ paddingHorizontal: 20 }}
       >
         {visibleSports.map((sport) => {
           const Icon = SPORT_ICONS[sport.slug];
@@ -99,7 +97,7 @@ const Sport = ({ handlePress, selectSport, title = "Sports" }: ctrl) => {
               accessibilityLabel={sport.name}
               className={`
                 ${sport.id === selectSport ? "bg-sec" : "bg-white"}
-                mr-4 rounded-full p-3 justify-center items-center
+                rounded-full p-3 justify-center items-center
               `}
               style={{ minWidth: 52, minHeight: 52 }}
             >
@@ -113,7 +111,7 @@ const Sport = ({ handlePress, selectSport, title = "Sports" }: ctrl) => {
             </Pressable>
           );
         })}
-      </ScrollView>
+      </View>
     </View>
   );
 };
