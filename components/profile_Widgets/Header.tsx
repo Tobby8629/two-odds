@@ -9,11 +9,13 @@ import Withdraw from '@/assets/SVGs/profile/Withdraw'
 import { FontAwesome5 } from '@expo/vector-icons'
 
 import { router } from 'expo-router'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useProfile } from '@/hooks/useProfile'
 import { useWalletBalance } from '@/hooks/useWalletBalance'
 import { formatCurrency } from '@/constants/functions'
 
 const Header = () => {
+  const insets = useSafeAreaInsets();
   const [visible, setVisible] = React.useState(false);
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -39,7 +41,7 @@ const Header = () => {
       : formatCurrency(balance?.ngn?.balance, "NGN");
 
   return (
-    <View className='px-7 pt-[3.8rem] pb-8 bg-[#1F5079]'>
+    <View className='px-7 pb-8 bg-[#1F5079]' style={{ paddingTop: insets.top + 16 }}>
       <View className={`${flex} py-4`}>
       <View className='flex-row items-center gap-2 flex-1 mr-4'>
           <UserLogo />

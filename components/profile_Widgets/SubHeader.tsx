@@ -19,7 +19,7 @@ const SubHeader = () => {
       link: "/(transactions)/history" as RelativePathString
     },
     {
-      name: "Rewards",
+      name: "E-Rewards",
       icon: Transactions,
       link: "/(tabs)/rewards" as RelativePathString
     },
