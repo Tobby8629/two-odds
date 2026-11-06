@@ -3,6 +3,10 @@ import { ApiResponse } from "@/types/api.types";
 import {
   ChangePinInput,
   CurrencyDepositLimits,
+  NairaDeposit,
+  NairaDepositInput,
+  UsdtDeposit,
+  UsdtDepositInput,
   ResetPinInput,
   SetPinInput,
   UpdateDepositLimitsInput,
@@ -38,6 +42,16 @@ export const walletService = {
       input
     );
   },
+  async depositUsdt(input: UsdtDepositInput): Promise<UsdtDeposit> {
+    const response = await postRequest<ApiResponse<UsdtDeposit>>("/wallet/deposit/usdt", input);
+    return response.data.data;
+  },
+
+  async depositNaira(input: NairaDepositInput): Promise<NairaDeposit> {
+    const response = await postRequest<ApiResponse<NairaDeposit>>("/wallet/deposit/naira", input);
+    return response.data.data;
+  },
+
   async setPin(input: SetPinInput): Promise<void> {
     await postRequest<ApiResponse<unknown>>("/wallet/pin/set", input);
   },

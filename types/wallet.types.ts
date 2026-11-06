@@ -56,3 +56,30 @@ export interface ResetPinInput {
   code: string;
   newPin: string;
 }
+
+export type DepositNetwork = "SOLANA" | "ETHEREUM";
+
+/** POST /wallet/deposit/usdt */
+export interface UsdtDepositInput {
+  amount: number;
+  network: DepositNetwork;
+}
+
+export interface UsdtDeposit {
+  payAddress: string;
+  payAmount: string | number;
+  paymentId: string;
+  network: string;
+  reference: string;
+}
+
+/** POST /wallet/deposit/naira */
+export interface NairaDepositInput {
+  amount: number;
+}
+
+export interface NairaDeposit {
+  authorizationUrl: string;
+  accessCode: string;
+  reference: string;
+}

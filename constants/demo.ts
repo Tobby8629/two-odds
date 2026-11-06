@@ -19,4 +19,6 @@ export const SIMULATE = {
   liveMatches: __DEV__,
   /** No endpoint tells the client that a deposit has been confirmed. */
   depositConfirmation: __DEV__,
+  /** Deposit request bodies are unconfirmed (the real call returns 422), so dev builds fake the response. */
+  depositRequest: __DEV__,
 };
