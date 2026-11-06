@@ -11,6 +11,7 @@ import Football from "@/assets/SVGs/sport/football";
 import Basketball from "@/assets/SVGs/sport/Basketball";
 import AmericanFootball from "@/assets/SVGs/sport/AF";
 import Tennis from "@/assets/SVGs/sport/Tennis";
+import Volleyball from "@/assets/SVGs/sport/Volleyball";
 import { SvgProps } from "react-native-svg";
 
 interface ctrl {
@@ -31,10 +32,31 @@ const SPORT_ICONS: Record<string, React.ComponentType<SvgProps>> = {
   football: AmericanFootball,
   basketball: Basketball,
   tennis: Tennis,
+  volleyball: Volleyball,
 };
+
+/* Left to right, as the design lays the row out. */
+const SPORT_ORDER = ["soccer", "tennis", "basketball", "football", "volleyball"];
+
+/*
+ * In the design but not returned by GET /sports, so there are no matches to
+ * show for it yet. Drop this once the backend adds the sport.
+ */
+const DESIGN_ONLY = [
+  { id: "volleyball", name: "Volleyball", slug: "volleyball" },
+];
 
 const Sport = ({ handlePress, selectSport, title = "Sports" }: ctrl) => {
   const { data: sports, isLoading, error } = useSportFetch();
+
+  const visibleSports = [
+    ...(sports?.data ?? []).filter((sport) => SPORT_ICONS[sport.slug]),
+    ...DESIGN_ONLY.filter(
+      (extra) => !(sports?.data ?? []).some((s) => s.slug === extra.slug)
+    ),
+  ].sort(
+    (a, b) => SPORT_ORDER.indexOf(a.slug) - SPORT_ORDER.indexOf(b.slug)
+  );
 
   if (isLoading) {
     return (
@@ -67,7 +89,7 @@ const Sport = ({ handlePress, selectSport, title = "Sports" }: ctrl) => {
           paddingLeft: 20,
         }}
       >
-        {sports?.data.filter((sport) => SPORT_ICONS[sport.slug]).map((sport) => {
+        {visibleSports.map((sport) => {
           const Icon = SPORT_ICONS[sport.slug];
 
           return (
