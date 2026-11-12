@@ -83,7 +83,7 @@ const Dot = ({ player, color, keeper }: { player: PitchPlayer; color: string; ke
 );
 
 const Line = ({ players, color, keeper }: { players: PitchPlayer[]; color: string; keeper: string }) => (
-  <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+  <View style={{ flexDirection: "row", justifyContent: "space-around", paddingHorizontal: 24 }}>
     {players.map((pl) => (
       <Dot key={pl.number} player={pl} color={color} keeper={keeper} />
     ))}
@@ -121,7 +121,7 @@ const Pitch = ({ data }: { data: MatchAnalytics }) => {
         borderWidth: 2,
         borderColor: "rgba(255,255,255,0.1)",
         backgroundColor: C.pitch,
-        padding: 24,
+        paddingVertical: 24,
         gap: 24,
         overflow: "hidden",
       }}
@@ -137,8 +137,8 @@ const Pitch = ({ data }: { data: MatchAnalytics }) => {
         <View
           style={{
             position: "absolute",
-            left: -24,
-            right: -24,
+            left: 0,
+            right: 0,
             height: 2,
             borderWidth: 1,
             borderColor: "rgba(255,255,255,0.2)",

@@ -47,14 +47,23 @@ export interface TeamLineup {
   substitutes: SubPlayer[];
 }
 
-export interface TimelineEvent {
-  minute: number;
-  side: "home" | "away";
-  type: "goal" | "yellow" | "red" | "sub";
-  player: string;
-  /** Second line, e.g. the assist or the player replaced. */
-  detail?: string;
-}
+/** One moment on the timeline, listed oldest first (the screen shows newest on top). */
+export type TimelineItem =
+  | {
+      kind: "event";
+      /** Shown as written, e.g. "45+2'". */
+      minute: string;
+      side: "home" | "away";
+      type: "goal" | "yellow" | "red" | "sub" | "attack";
+      /** Player name, or the title for a sub / attack. */
+      title: string;
+      /** Grey line under the title, e.g. "Header (1-1)". */
+      detail?: string;
+      /** Substitution only. */
+      playerIn?: string;
+      playerOut?: string;
+    }
+  | { kind: "pill"; label: string };
 
 export interface MatchAnalytics {
   matchId: string;
@@ -68,7 +77,9 @@ export interface MatchAnalytics {
   stats: StatRow[];
   cards: { homeYellow: number; homeRed: number; awayYellow: number; awayRed: number };
   lineups: { home: TeamLineup; away: TeamLineup };
-  timeline: TimelineEvent[];
+  /** Minute shown in the LIVE badge, or null once the match has ended. */
+  liveMinute: number | null;
+  timeline: TimelineItem[];
 }
 
 const pp = (number: number, label: string, keeper = false): PitchPlayer => ({
@@ -80,7 +91,7 @@ const pp = (number: number, label: string, keeper = false): PitchPlayer => ({
 export const mockAnalytics: MatchAnalytics = {
   matchId: "sim",
   league: "Premier League",
-  status: "Full time",
+  status: "Live 68'",
   home: { name: "Chelsea", short: "CHE" },
   away: { name: "Arsenal", short: "ARS" },
   homeScore: 2,
@@ -135,12 +146,15 @@ export const mockAnalytics: MatchAnalytics = {
       ],
     },
   },
+  liveMinute: 68,
   timeline: [
-    { minute: 12, side: "home", type: "goal", player: "C. Palmer", detail: "Assist: R. Sterling" },
-    { minute: 27, side: "away", type: "yellow", player: "D. Rice" },
-    { minute: 38, side: "away", type: "goal", player: "B. Saka", detail: "Assist: M. Odegaard" },
-    { minute: 55, side: "home", type: "sub", player: "M. Mudryk", detail: "For N. Madueke" },
-    { minute: 64, side: "home", type: "goal", player: "N. Jackson", detail: "Assist: C. Palmer" },
-    { minute: 78, side: "away", type: "red", player: "Gabriel" },
+    { kind: "pill", label: "Match started" },
+    { kind: "event", minute: "12'", side: "home", type: "goal", title: "N. Jackson", detail: "Assisted by E. Fernandez (1-0)" },
+    { kind: "event", minute: "24'", side: "away", type: "goal", title: "B. Saka", detail: "Header (1-1)" },
+    { kind: "event", minute: "45+2'", side: "away", type: "yellow", title: "W. Saliba", detail: "Unsporting behavior" },
+    { kind: "pill", label: "Half time (1-1)" },
+    { kind: "event", minute: "48'", side: "home", type: "goal", title: "C. Palmer", detail: "Penalty Kick (2-1)" },
+    { kind: "event", minute: "58'", side: "home", type: "sub", title: "Substitution", playerIn: "Mudryk", playerOut: "Sterling" },
+    { kind: "event", minute: "65'", side: "away", type: "attack", title: "Dangerous Attack", detail: "Arsenal pressure" },
   ],
 };
