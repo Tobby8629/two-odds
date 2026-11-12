@@ -15,19 +15,36 @@ export interface StatRow {
   away: number;
 }
 
-export interface LineupPlayer {
+/** A player circle on the pitch. */
+export interface PitchPlayer {
+  number: number;
+  /** Short label shown under the circle, e.g. "Gabriel J.". */
+  label: string;
+  keeper?: boolean;
+}
+
+/** A row in the "starting XI" list. */
+export interface KeyPlayer {
   number: number;
   name: string;
-  /** Goal or card marker shown next to the name, if any. */
-  note?: "goal" | "yellow" | "red";
-  rating?: number;
+  position: string;
+  /** Scorer: name is highlighted and a goal icon is shown. */
+  scored?: boolean;
+  /** Substituted off ("out") or on ("in") at this minute. */
+  sub?: { direction: "in" | "out"; minute: number };
+}
+
+export interface SubPlayer {
+  number: number;
+  name: string;
 }
 
 export interface TeamLineup {
   formation: string;
   /** Goalkeeper first, then each line from defence to attack. */
-  lines: LineupPlayer[][];
-  substitutes: LineupPlayer[];
+  lines: PitchPlayer[][];
+  keyPlayers: KeyPlayer[];
+  substitutes: SubPlayer[];
 }
 
 export interface TimelineEvent {
@@ -54,10 +71,10 @@ export interface MatchAnalytics {
   timeline: TimelineEvent[];
 }
 
-const p = (number: number, name: string, extra: Partial<LineupPlayer> = {}): LineupPlayer => ({
+const pp = (number: number, label: string, keeper = false): PitchPlayer => ({
   number,
-  name,
-  ...extra,
+  label,
+  keeper,
 });
 
 export const mockAnalytics: MatchAnalytics = {
@@ -80,22 +97,42 @@ export const mockAnalytics: MatchAnalytics = {
     home: {
       formation: "4-3-3",
       lines: [
-        [p(1, "R. Sanchez")],
-        [p(24, "R. James"), p(6, "T. Silva"), p(26, "L. Colwill"), p(21, "B. Chilwell")],
-        [p(8, "E. Fernandez"), p(25, "M. Caicedo"), p(20, "C. Palmer", { note: "goal" })],
-        [p(7, "R. Sterling"), p(15, "N. Jackson", { note: "goal" }), p(11, "N. Madueke")],
+        [pp(1, "Sanchez", true)],
+        [pp(3, "Cucurella"), pp(6, "Thiago S."), pp(2, "Disasi"), pp(27, "Gusto")],
+        [pp(8, "Enzo"), pp(25, "Caicedo"), pp(23, "Gallagher")],
+        [pp(10, "Mudryk"), pp(15, "Jackson"), pp(20, "Palmer")],
       ],
-      substitutes: [p(12, "M. Mudryk"), p(10, "C. Nkunku"), p(17, "A. Disasi")],
+      keyPlayers: [
+        { number: 1, name: "Robert Sanchez", position: "GK" },
+        { number: 6, name: "Thiago Silva", position: "CB" },
+        { number: 20, name: "Cole Palmer", position: "RW", scored: true },
+        { number: 10, name: "Mykhailo Mudryk", position: "", sub: { direction: "out", minute: 62 } },
+      ],
+      substitutes: [
+        { number: 11, name: "Madueke" },
+        { number: 28, name: "Petrovic" },
+        { number: 26, name: "Colwill" },
+      ],
     },
     away: {
-      formation: "4-3-3",
+      formation: "4-2-3-1",
       lines: [
-        [p(1, "D. Raya")],
-        [p(4, "B. White"), p(2, "W. Saliba"), p(6, "Gabriel"), p(35, "O. Zinchenko")],
-        [p(8, "M. Odegaard"), p(41, "D. Rice", { note: "yellow" }), p(29, "K. Havertz")],
-        [p(7, "B. Saka", { note: "goal" }), p(9, "G. Jesus"), p(11, "G. Martinelli")],
+        [pp(22, "Raya", true)],
+        [pp(35, "Zinchenko"), pp(6, "Gabriel"), pp(2, "Saliba"), pp(4, "White")],
+        [pp(41, "Rice"), pp(20, "Jorginho")],
+        [pp(11, "Martinelli"), pp(8, "Odegaard"), pp(7, "Saka")],
+        [pp(9, "Gabriel J.")],
       ],
-      substitutes: [p(19, "L. Trossard"), p(14, "E. Nketiah"), p(18, "T. Tomiyasu")],
+      keyPlayers: [
+        { number: 8, name: "Martin Ødegaard", position: "CAM" },
+        { number: 41, name: "Declan Rice", position: "CDM" },
+        { number: 19, name: "Leandro Trossard", position: "", sub: { direction: "in", minute: 62 } },
+      ],
+      substitutes: [
+        { number: 29, name: "Havertz" },
+        { number: 14, name: "Nketiah" },
+        { number: 15, name: "Kiwior" },
+      ],
     },
   },
   timeline: [
