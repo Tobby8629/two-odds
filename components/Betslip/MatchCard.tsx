@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { flex, flexNoJustify } from '@/constants/style'
 import GoldX from '@/assets/SVGs/icons/GoldX'
@@ -66,7 +66,15 @@ const MatchTeams = ({ matchId }: { matchId: string }) => {
 
   const match = data?.data;
 
+  /* Figma: "20 June 2025 (12:30)", 12 white, under the teams. */
+  const kickoff = match?.startTime ? new Date(match.startTime) : null;
+  const dateLine =
+    kickoff && !Number.isNaN(kickoff.getTime())
+      ? `${kickoff.getDate()} ${kickoff.toLocaleString('en-GB', { month: 'long' })} ${kickoff.getFullYear()} (${kickoff.toTimeString().slice(0, 5)})`
+      : '';
+
   return (
+    <View>
     <View className={`${flexNoJustify} gap-1 w-full`}>
       <ThemedText className="font-base text-lg">
         {match?.homeTeam}
@@ -79,6 +87,8 @@ const MatchTeams = ({ matchId }: { matchId: string }) => {
       <ThemedText className="font-base text-lg">
         {match?.awayTeam}
       </ThemedText>
+    </View>
+    {dateLine ? <Text style={{ color: '#FFFFFF', fontSize: 12, marginTop: 2 }}>{dateLine}</Text> : null}
     </View>
   );
 };

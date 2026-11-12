@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { flex } from '@/constants/style'
 import useKeyboardTranslation from '../Reuseables/KeyboardTrans'
@@ -26,7 +26,7 @@ const Footer = ({handleSubmit}: footerProps) => {
   return (
     <Animated.View style={{ transform: [{ translateY }] }} className='fixed bottom-0 bg-[#003c6f] p-7'>
       <View className={flex}>
-        <ThemedText className='text-xl capitalize'>Total odds: </ThemedText>
+        <Text style={{ color: '#FFFFFF', fontSize: 16 }}>Total Odds:</Text>
         <ThemedText className='text-xl font-semibold'>{totalOdd.toFixed(2)}</ThemedText>
       </View>
       <View className='flex-row justify-end items-center gap-3 my-3'>
@@ -42,14 +42,19 @@ const Footer = ({handleSubmit}: footerProps) => {
         {stake && stake >= baseStake ? <ThemedText>Potential winning: ${stake ? stake*3 : 0*3} </ThemedText> : null }
       </View>
       <View className={`${flex} my-3`}>
-        <Button
-          text='Book A Bet'
+        {/* Figma: Book A Bet 132x48 radius 8 #D9D9D9 at 30%; Place Bet 196x48 radius 8 #FFA500; labels 18 white. */}
+        <Pressable
           onPress={()=> console.log("saved")}
-        />
-        <Button   
-          text='Place A Bet'
+          style={{ width: 132, height: 48, borderRadius: 8, padding: 10, backgroundColor: 'rgba(217,217,217,0.3)', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text style={{ color: '#FFFFFF', fontSize: 18 }}>Book A Bet</Text>
+        </Pressable>
+        <Pressable
           onPress={()=> handleSubmit(stake, baseStake)}
-        />
+          style={{ flex: 1, maxWidth: 196, marginLeft: 12, height: 48, borderRadius: 8, padding: 10, backgroundColor: '#FFA500', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Text style={{ color: '#FFFFFF', fontSize: 18 }}>Place Bet</Text>
+        </Pressable>
       </View>
     </Animated.View>
   )
