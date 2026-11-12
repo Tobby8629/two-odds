@@ -49,7 +49,7 @@ export default function P2PSearching() {
           </View>
 
           <View style={styles.searchBadge}>
-            <Ionicons name="search" size={18} color="#0A3A5C" />
+            <Ionicons name="search" size={17.48} color="#0A0A1A" />
           </View>
         </View>
 
@@ -70,7 +70,7 @@ export default function P2PSearching() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#123456' },
+  screen: { flex: 1, backgroundColor: '#003C6F' },
   body: {
     flexGrow: 1,
     alignItems: 'center',
@@ -80,30 +80,33 @@ const styles = StyleSheet.create({
   },
   kicker: {
     color: '#FFFFFF',
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: 12,
-    letterSpacing: 1,
+    fontFamily: 'PoppinsBold',
+    fontSize: 18,
+    lineHeight: 28,
+    letterSpacing: -0.45,
   },
   title: {
     color: '#FFFFFF',
     fontFamily: 'PoppinsBold',
-    fontSize: 22,
+    fontSize: 24,
+    lineHeight: 32,
     marginTop: 10,
+    textAlign: 'center',
   },
   subtitle: {
-    color: '#B9CBD9',
+    color: '#94A3B8',
     fontFamily: 'Poppins',
-    fontSize: 12,
-    lineHeight: 19.5,
+    fontSize: 14,
+    lineHeight: 20,
     marginTop: 6,
     textAlign: 'center',
   },
   avatarWrap: { marginTop: 48, marginBottom: 48 },
   glowOuter: {
-    width: 168,
-    height: 168,
-    borderRadius: 84,
-    backgroundColor: '#1B4C74',
+    width: 158,
+    height: 158,
+    borderRadius: 79,
+    backgroundColor: 'rgba(227,242,253,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -120,9 +123,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 6,
     bottom: 0,
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -130,9 +133,11 @@ const styles = StyleSheet.create({
   createPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 16,
-    backgroundColor: '#0C3A63',
-    paddingHorizontal: 14,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(227,242,253,0.2)',
+    backgroundColor: 'rgba(227,242,253,0.1)',
+    paddingHorizontal: 16,
     paddingVertical: 8,
   },
   pillDot: {
@@ -143,23 +148,26 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   pillText: {
-    color: '#FFFFFF',
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: 10,
-    letterSpacing: 0.5,
+    color: '#E3F2FD',
+    fontFamily: 'Poppins',
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
   },
   cancel: {
-    width: 110,
-    height: 34,
-    borderRadius: 8,
-    backgroundColor: '#FFC107',
+    width: 100,
+    height: 30,
+    borderRadius: 9,
+    backgroundColor: '#E59A0B',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 28,
   },
   cancelText: {
-    color: '#000000',
-    fontFamily: 'PoppinsSemiBold',
+    color: '#111818',
+    fontFamily: 'Lexend_500Medium',
     fontSize: 14,
+    lineHeight: 21,
   },
 });
