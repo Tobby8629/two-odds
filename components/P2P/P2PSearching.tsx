@@ -67,7 +67,7 @@ export default function P2PSearching() {
           <View style={styles.glowOuter}>
             <View style={styles.avatarDisc}>
               {/* The illustration sits left of centre in its own artwork, so it is nudged right. */}
-              <View style={{ transform: [{ translateX: 8 }] }}>
+              <View style={{ transform: [{ translateX: 18 }, { translateY: 16 }] }}>
                 <UserAvatar
                   uri={profile?.avatarUrl}
                   avatarId={avatarId}
