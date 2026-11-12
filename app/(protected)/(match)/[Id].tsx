@@ -7,7 +7,7 @@ import { ThemedText } from '@/components/ThemedText'
 import Button from '@/components/Reuseables/Button'
 import { sports } from '@/interface'
 import Template from '@/components/Match/reuseables/Template'
-import { router, useLocalSearchParams } from 'expo-router'
+import { RelativePathString, router, useLocalSearchParams } from 'expo-router'
 import TeamFeatures from '@/components/Match/reuseables/TeamFeatures'
 import { useEffect } from "react";
 import { useSport } from '@/store/useStore'
@@ -68,7 +68,7 @@ const EachMatch = () => {
 
 
       {/***********  Match INFO  ***********/ }
-      <TeamFeatures match={match!} setStatistics={() => router.push({ pathname: '/(match)/analytics', params: { id } })} />
+      <TeamFeatures match={match!} setStatistics={() => router.push({ pathname: '/(match)/analytics' as RelativePathString, params: { id } })} />
 
       {/***********  Betting Markets  ***********/ }
       <View className='flex-1 mt-4 relative'>
