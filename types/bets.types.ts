@@ -49,6 +49,8 @@ export interface Bet {
   match?: BetMatch;
   /** Public creator details; undocumented, the mock fills them. */
   creator?: BetCreator;
+  /** The player who took the bet, once matched. */
+  taker?: BetCreator;
   /** Creator's note shown on the bet details screen. */
   commentary?: string;
   /** How many people have looked at the bet. */

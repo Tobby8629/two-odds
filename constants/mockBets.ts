@@ -71,6 +71,7 @@ const seed = (): Bet[] => {
 const decorate = (list: Bet[]): Bet[] =>
   list.map((b) => ({
     ...b,
+    taker: b.taker ?? (b.takerId ? CREATORS[b.takerId] : undefined),
     creator: b.creator ?? (b.creatorId ? CREATORS[b.creatorId] : undefined),
     commentary: b.commentary ?? NOTES[b.id],
     viewers: b.viewers ?? 15,

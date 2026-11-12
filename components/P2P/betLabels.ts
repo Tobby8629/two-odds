@@ -74,3 +74,16 @@ export const kickoffLabel = (iso?: string) => {
   if (sameDay(d, tomorrow)) return `TOMORROW ${time}`;
   return `${d.toLocaleDateString([], { month: "short", day: "numeric" }).toUpperCase()} ${time}`;
 };
+
+/** "Today, 10:30 PM", "Tomorrow, 1:00 PM" or "Sep 22, 4:00 PM". */
+export const shortWhen = (iso?: string) => {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const time = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  const now = new Date();
+  const tomorrow = new Date(now.getTime() + 86400000);
+  if (d.toDateString() === now.toDateString()) return `Today, ${time}`;
+  if (d.toDateString() === tomorrow.toDateString()) return `Tomorrow, ${time}`;
+  return `${d.toLocaleDateString([], { month: "short", day: "numeric" })}, ${time}`;
+};
