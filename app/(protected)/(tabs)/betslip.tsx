@@ -43,11 +43,11 @@ export default function TabTwoScreen() {
   return (
     <View  
         style={{
-        height: height - 70,
+        height: height - 46 - insets.bottom,
         backgroundColor: "#003c6f",
       }} className=' bg-[#003c6f]'
     >
-      <View className={`${flex} fixed top-0 pb-7 px-7 left-0 right-0 z-10 bg-pry-light`} style={{ paddingTop: insets.top + 8 }}>
+      <View className={`${flex} fixed top-0 pb-7 px-7 left-0 right-0 z-10`} style={{ paddingTop: insets.top + 8, backgroundColor: '#1F5079' }}>
         <View className='h-10 w-10 justify-center items-center rounded-full bg-sec'>
           <Text className='text-xl font-bold text-white '>{selectedGames.length}</Text>
         </View>
