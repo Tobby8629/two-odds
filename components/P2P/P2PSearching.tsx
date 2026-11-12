@@ -69,7 +69,7 @@ export default function P2PSearching() {
               <UserAvatar
                 uri={profile?.avatarUrl}
                 avatarId={avatarId}
-                size={120}
+                size={128}
               />
             </View>
           </View>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   body: {
     flexGrow: 1,
     alignItems: 'center',
-    paddingTop: 28,
+    paddingTop: 25,
     paddingBottom: 48,
     paddingHorizontal: 24,
   },
@@ -127,28 +127,33 @@ const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
   },
-  avatarWrap: { marginTop: 48, marginBottom: 48 },
+  /* Figma "Pulse Animation" container: 256x256, ring centred inside it. */
+  avatarWrap: { width: 256, height: 256, alignItems: 'center', justifyContent: 'center', marginTop: 100, marginBottom: 96 },
+  /* Figma ring: 160x160, 1px #E3F2FD at 30%, fill #E3F2FD at 20%. */
   glowOuter: {
-    width: 158,
-    height: 158,
-    borderRadius: 79,
-    backgroundColor: 'rgba(227,242,253,0.1)',
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    borderWidth: 1,
+    borderColor: 'rgba(227,242,253,0.3)',
+    backgroundColor: 'rgba(227,242,253,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   glowInner: {
-    width: 136,
-    height: 136,
-    borderRadius: 68,
-    backgroundColor: '#2E6F9E',
+    width: 128,
+    height: 128,
+    borderRadius: 64,
+    backgroundColor: 'rgba(227,242,253,0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },
+  /* Sits just below the ring's lower right, as in the design. */
   searchBadge: {
     position: 'absolute',
-    right: 6,
-    bottom: 0,
+    left: 159,
+    top: 217,
     width: 48,
     height: 48,
     borderRadius: 24,
@@ -188,7 +193,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E59A0B',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 28,
+    marginTop: 46,
   },
   cancelText: {
     color: '#111818',

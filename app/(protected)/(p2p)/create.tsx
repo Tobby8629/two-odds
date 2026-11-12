@@ -18,7 +18,7 @@ import AlertBanner from "@/components/Reuseables/AlertBanner";
 import { useMatches } from "@/hooks/useMatches";
 import Sport from "@/components/Home/Sport";
 import Head from "@/components/Home/Head";
-import { DEMO_MODE } from "@/constants/demo";
+import { DEMO_MODE, SIMULATE } from "@/constants/demo";
 import { previewMatches } from "@/constants/previewMatches";
 import { useBetDraftStore } from "@/store/useBetDraftStore";
 import { Match, MarketOutcome } from "@/types/sports.types";
@@ -95,10 +95,18 @@ export default function CreateP2PBetScreen() {
 
   const visibleMatches = useMemo(() => {
     const source = DEMO_MODE ? previewMatches : matches ?? [];
+    const filtered = sportId ? source.filter((m) => m.league?.sport?.id === sportId) : source;
 
-    if (!sportId) return source;
+    /*
+     * Simulation: the sports API has few matches with odds, so the local
+     * fixtures are always offered as well, so a bet can always be built.
+     */
+    if (SIMULATE.p2p && !DEMO_MODE) {
+      const known = new Set(filtered.map((m) => m.id));
+      return [...previewMatches.filter((m) => !known.has(m.id)), ...filtered];
+    }
 
-    return source.filter((m) => m.league?.sport?.id === sportId);
+    return filtered;
   }, [matches, sportId]);
 
   const hasOdds = Boolean(match && market && market.outcomes.length);
@@ -165,7 +173,7 @@ export default function CreateP2PBetScreen() {
           >
             <Text
               numberOfLines={1}
-              style={match ? styles.value : styles.placeholder}
+              style={styles.matchText}
             >
               {match ? match.homeTeam + " vs " + match.awayTeam : "Choose Match"}
             </Text>
@@ -182,9 +190,14 @@ export default function CreateP2PBetScreen() {
               <Pressable
                 key={i}
                 onPress={() => setOutcomeIndex(i)}
-                style={[styles.field, styles.row]}
+                style={[
+                  styles.field,
+                  styles.fieldBordered,
+                  styles.row,
+                  outcomeIndex === i ? styles.fieldSelected : null,
+                ]}
               >
-                <Text numberOfLines={1} style={styles.value}>
+                <Text numberOfLines={1} style={styles.optionText}>
                   {outcomeLabel(match!, outcome)}
                 </Text>
 
@@ -207,12 +220,16 @@ export default function CreateP2PBetScreen() {
             <>
               {/* Inert rows so the layout reads the same before odds load. */}
               {PLACEHOLDER_PREDICTIONS.map((label: string) => (
-                <View key={label} style={[styles.field, styles.row]}>
-                  <Text numberOfLines={1} style={styles.placeholder}>
+                <Pressable
+                  key={label}
+                  onPress={() => setPickerOpen(true)}
+                  style={[styles.field, styles.fieldBordered, styles.row]}
+                >
+                  <Text numberOfLines={1} style={styles.optionText}>
                     {label}
                   </Text>
                   <View style={styles.radio} />
-                </View>
+                </Pressable>
               ))}
 
               <Text style={styles.hint}>
@@ -230,7 +247,7 @@ export default function CreateP2PBetScreen() {
             onChangeText={(t) => setStake(t.replace(/[^0-9.]/g, ""))}
             keyboardType="numeric"
             placeholder="0.00"
-            placeholderTextColor="#7C93A6"
+            placeholderTextColor="#9CA6BA"
             style={[styles.field, styles.input]}
           />
 
@@ -239,7 +256,7 @@ export default function CreateP2PBetScreen() {
             disabled={!canSubmit}
             style={[
               styles.action,
-              { backgroundColor: canSubmit ? "#FFA500" : "#7C93A6" },
+              { backgroundColor: canSubmit ? "#E59A0B" : "#7C93A6" },
             ]}
           >
             <Text style={styles.actionText}>Create Bet</Text>
@@ -250,7 +267,7 @@ export default function CreateP2PBetScreen() {
       <Modal visible={pickerOpen} transparent animationType="fade">
         <Pressable style={styles.backdrop} onPress={() => setPickerOpen(false)}>
           <View style={styles.sheet}>
-            {loadingMatches ? (
+            {loadingMatches && !SIMULATE.p2p ? (
               <View style={{ paddingVertical: 40 }}>
                 <Loading inline size={56} />
               </View>
@@ -291,10 +308,13 @@ export default function CreateP2PBetScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#003C6F" },
   page: { paddingHorizontal: 16, paddingBottom: 40 },
+  /* Figma: "Your Prediction" Inter Bold 18/22.5 ls -0.27 white. */
   sectionLabel: {
     color: "#FFFFFF",
-    fontFamily: "PoppinsSemiBold",
-    fontSize: 16,
+    fontFamily: "Inter_700Bold",
+    fontSize: 18,
+    lineHeight: 22.5,
+    letterSpacing: -0.27,
     marginTop: 18,
     marginBottom: 10,
   },
@@ -303,13 +323,18 @@ const styles = StyleSheet.create({
     maxWidth: FIELD_WIDTH,
     minWidth: 160,
     height: 56,
-    borderRadius: 8,
-    backgroundColor: "#012645",
-    borderWidth: 1,
-    borderColor: "#1F5079",
+    /* Figma "Options": 358x56, radius 12, #021C32 at 70%. */
+    borderRadius: 12,
+    backgroundColor: "rgba(2,28,50,0.7)",
     paddingHorizontal: 16,
     marginBottom: 12,
   },
+  /* The prediction rows show an outline in the design; its colour is not read yet. */
+  fieldBordered: { borderWidth: 1, borderColor: "#000000" },
+  /* The design's selected state is not read yet; amber matches the radio. */
+  fieldSelected: { borderColor: "#E59A0B", backgroundColor: "rgba(229,154,11,0.12)" },
+  matchText: { color: "#FFFFFF", fontFamily: "Inter_400Regular", fontSize: 16, lineHeight: 24, flex: 1, marginRight: 8 },
+  optionText: { color: "#FFFFFF", fontFamily: "Inter_500Medium", fontSize: 14, lineHeight: 21, flex: 1, marginRight: 8 },
   row: {
     flexDirection: "row",
     alignItems: "center",
@@ -318,7 +343,8 @@ const styles = StyleSheet.create({
   rowEnd: { flexDirection: "row", alignItems: "center" },
   value: { color: "#FFFFFF", fontSize: 14, flex: 1, marginRight: 8 },
   placeholder: { color: "#B9CBD9", fontSize: 14, flex: 1 },
-  input: { color: "#FFFFFF", fontSize: 14 },
+  /* Figma "Input": 358x52, radius 12, #012645; placeholder Inter Regular 16 #9CA6BA. */
+  input: { height: 52, backgroundColor: "#012645", color: "#FFFFFF", fontFamily: "Inter_400Regular", fontSize: 16 },
   odds: { color: "#FFA500", fontSize: 12, marginRight: 10 },
   radio: {
     width: 20,
@@ -340,6 +366,7 @@ const styles = StyleSheet.create({
     maxWidth: 480,
     minWidth: 84,
     height: 48,
+    /* Figma "Create Bet": 358x48, radius 12, padding 20, #E59A0B. */
     borderRadius: 12,
     paddingHorizontal: 20,
     alignItems: "center",
@@ -348,8 +375,10 @@ const styles = StyleSheet.create({
   },
   actionText: {
     color: "#000000",
-    fontSize: 15,
-    fontFamily: "PoppinsSemiBold",
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0.24,
+    fontFamily: "Inter_700Bold",
   },
   backdrop: {
     flex: 1,
