@@ -47,12 +47,25 @@ export interface Bet {
    */
   /** Fixture the bet is on. Undocumented; the mock fills it, the real shape is unconfirmed. */
   match?: BetMatch;
+  /** Public creator details; undocumented, the mock fills them. */
+  creator?: BetCreator;
+  /** Creator's note shown on the bet details screen. */
+  commentary?: string;
+  /** How many people have looked at the bet. */
+  viewers?: number;
   creatorId?: string;
   takerId?: string;
   userId?: string;
 }
 
+export interface BetCreator {
+  username: string;
+  /** 0..1 */
+  winRate?: number;
+}
+
 export interface BetMatch {
+  venue?: string;
   homeTeam: string;
   awayTeam: string;
   league?: string;

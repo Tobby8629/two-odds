@@ -2,6 +2,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { previewMatches } from "@/constants/previewMatches";
 import {
   Bet,
+  BetCreator,
   BetMatch,
   BetStatus,
   CreateCustomBetInput,
@@ -32,6 +33,17 @@ const matchInfo = (i: number): BetMatch | undefined => {
     : undefined;
 };
 
+const CREATORS: Record<string, BetCreator> = {
+  "u-ada": { username: "AdaNwosu", winRate: 0.92 },
+  "u-chidi": { username: "ChidiOkoro", winRate: 0.81 },
+  "u-ife": { username: "IfeBello", winRate: 0.74 },
+};
+const NOTES: Record<string, string> = {
+  b1: "Strong at home and the other side is missing two starters.",
+  b2: "Away form has been the best in the league for a month.",
+  b3: "Both sides are cagey; I am backing a stalemate.",
+};
+
 let seq = 100;
 let store: Bet[] | null = null;
 
@@ -55,7 +67,17 @@ const seed = (): Bet[] => {
   ];
 };
 
-const bets = () => (store ??= seed());
+/* Fills the display-only fields the design shows but the bet itself does not carry. */
+const decorate = (list: Bet[]): Bet[] =>
+  list.map((b) => ({
+    ...b,
+    creator: b.creator ?? (b.creatorId ? CREATORS[b.creatorId] : undefined),
+    commentary: b.commentary ?? NOTES[b.id],
+    viewers: b.viewers ?? 15,
+    match: b.match ? { venue: "Main Stadium", ...b.match } : b.match,
+  }));
+
+const bets = () => (store ??= decorate(seed()));
 
 const paginate = (list: Bet[]): PaginatedBets => ({
   bets: list,
