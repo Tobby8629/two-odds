@@ -141,29 +141,36 @@ export default function MyP2PBetsScreen() {
             <Ionicons name="chevron-back" size={20} color="#FFFFFF" />
           </Pressable>
 
-          <Text
-            style={{
-              color: "#F1F5F9",
-              fontFamily: "PoppinsBold",
-              fontSize: 20,
-              lineHeight: 28,
-              letterSpacing: -0.5,
-            }}
-          >
-            My P2P Bets
-          </Text>
+          <View style={{ flex: 1, alignItems: "center", paddingHorizontal: 8 }}>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.8}
+              style={{
+                color: "#F1F5F9",
+                fontFamily: "PoppinsBold",
+                fontSize: 20,
+                lineHeight: 28,
+                letterSpacing: -0.5,
+              }}
+            >
+              My P2P Bets
+            </Text>
+          </View>
 
-          <View
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: 14,
-              backgroundColor: "#FFFFFF",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons name="wallet" size={14} color="#012A4D" />
+          <View style={{ width: 40, alignItems: "flex-end", justifyContent: "center" }}>
+            <View
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                backgroundColor: "#FFFFFF",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons name="wallet" size={14} color="#012A4D" />
+            </View>
           </View>
         </View>
       </View>

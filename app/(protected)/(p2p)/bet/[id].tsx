@@ -388,6 +388,7 @@ export default function BetDetailsScreen() {
               <View
                 style={{
                   flex: 1,
+                  minWidth: 0,
                   borderRadius: 24,
                   borderWidth: 1,
                   borderColor: "rgba(255,255,255,0.1)",
@@ -408,7 +409,12 @@ export default function BetDetailsScreen() {
                 >
                   Stake Required
                 </Text>
-                <Text style={{ color: "#FFFFFF", fontFamily: F.extra, fontSize: 24, lineHeight: 32 }}>
+                <Text
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.5}
+                  style={{ color: "#FFFFFF", fontFamily: F.extra, fontSize: 24, lineHeight: 32 }}
+                >
                   {formatCurrency(stake, currency)}
                 </Text>
               </View>
@@ -416,6 +422,7 @@ export default function BetDetailsScreen() {
               <View
                 style={{
                   flex: 1,
+                  minWidth: 0,
                   borderRadius: 24,
                   borderWidth: 1,
                   borderColor: "#010101",
@@ -436,15 +443,20 @@ export default function BetDetailsScreen() {
                 >
                   Est. Payout
                 </Text>
-                <Text style={{ color: "#FFFFFF", fontFamily: F.extra, fontSize: 24, lineHeight: 32 }}>
+                <Text
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.5}
+                  style={{ color: "#FFFFFF", fontFamily: F.extra, fontSize: 24, lineHeight: 32 }}
+                >
                   {formatCurrency(payout, currency)}
                 </Text>
               </View>
             </View>
 
             {/* Viewers */}
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 32, gap: 12 }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 32, marginHorizontal: 24, gap: 12 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", flexShrink: 0 }}>
                 {[0, 1, 2].map((i) => (
                   <View
                     key={i}
@@ -455,6 +467,8 @@ export default function BetDetailsScreen() {
                       borderWidth: 2,
                       borderColor: "#122210",
                       overflow: "hidden",
+                      alignItems: "center",
+                      justifyContent: "center",
                       marginLeft: i === 0 ? 0 : -8,
                     }}
                   >
@@ -480,7 +494,7 @@ export default function BetDetailsScreen() {
                 </View>
               </View>
 
-              <Text style={{ color: "#94A3B8", fontFamily: F.medium, fontSize: 12, lineHeight: 16 }}>
+              <Text style={{ flexShrink: 1, color: "#94A3B8", fontFamily: F.medium, fontSize: 12, lineHeight: 16 }}>
                 {bet.viewers ?? 15} people already looked at this bet
               </Text>
             </View>
