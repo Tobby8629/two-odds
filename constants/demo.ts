@@ -9,3 +9,16 @@
  * uses once the flow is signed off.
  */
 export const DEMO_MODE = false;
+
+/**
+ * Fake data for features whose endpoint does not exist yet. Tied to __DEV__ so
+ * a release build can never show simulated results as if they were real.
+ */
+export const SIMULATE = {
+  /** GET /sports/matches?status=LIVE returns nothing until games are in play. */
+  liveMatches: __DEV__,
+  /** No endpoint tells the client that a deposit has been confirmed. */
+  depositConfirmation: __DEV__,
+  /** Deposit request bodies are unconfirmed (the real call returns 422), so dev builds fake the response. */
+  depositRequest: __DEV__,
+};

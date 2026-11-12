@@ -96,30 +96,30 @@ export const MatchCard = ({ data }: PopularProps) => {
   return (
     <View className="px-5 pt-2">
       <Pressable onPress={() => navigateMatchDetails(data.id)} 
-      className="bg-[#E3F2FD] flex-row justify-between items-center p-3 mb-5 rounded-lg h-[95px]">
+      className="bg-[#022645] flex-row justify-between items-center px-4 mb-5 rounded-[10px] h-[89px]">
         
         {/* TEAMS */}
         <View className="gap-5 w-6/12">
           <View className="flex-row items-center gap-3">
-            <View className="w-3 h-3 rounded-full bg-slate-500" />
-            <Text className="text-lg capitalize">{game.homeTeam}</Text>
+            <View className="w-3 h-3 rounded-full bg-white" />
+            <Text className="text-base capitalize text-white">{game.homeTeam}</Text>
           </View>
 
           <View className="flex-row items-center gap-3">
-            <View className="w-3 h-3 rounded-full bg-slate-500" />
-            <Text className="text-lg capitalize">{game.awayTeam}</Text>
+            <View className="w-3 h-3 rounded-full bg-white" />
+            <Text className="text-base capitalize text-white">{game.awayTeam}</Text>
           </View>
         </View>
 
         {/* ODDS BUTTONS */}
-        <View className={`flex-row items-center justify-between gap-2 ${isThreeWay ? " w-6/12" : "" }`}>
+        <View className={`flex-row items-center justify-end gap-[5px]`}>
 
           {/* HOME */}
           <TouchableOpacity
             onPress={() => selectGame( game.id,"home","MATCH_WINNER", getOddsValue("home")?.price! )}
-            className={`${isSelected(game.id, "MATCH_WINNER", "home") ? "bg-sec" : "bg-[#ABB2FA]"} rounded-md px-1`}
+            className={`${isSelected(game.id, "MATCH_WINNER", "home") ? "bg-sec" : "bg-[#ABB2FA]"} rounded-[9px] w-[45px] h-[30px] items-center justify-center`}
           >
-            <Text className="text-lg text-black p-2 text-center">
+            <Text className="text-[13px] text-black text-center">
               {getOddsValue("home")?.price?.toFixed(2)}
             </Text>
           </TouchableOpacity>
@@ -129,9 +129,9 @@ export const MatchCard = ({ data }: PopularProps) => {
           {isThreeWay && (
             <TouchableOpacity
               onPress={() => selectGame(game.id, "draw", "MATCH_WINNER", getOddsValue("draw")?.price!)}
-              className={`${isSelected(game.id, "MATCH_WINNER", "draw") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-md px-1`}
+              className={`${isSelected(game.id, "MATCH_WINNER", "draw") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-[9px] w-[45px] h-[30px] items-center justify-center`}
             >
-              <Text className="text-lg text-black p-2 text-center">
+              <Text className="text-[13px] text-black text-center">
                 {getOddsValue("draw")?.price?.toFixed(2)}
               </Text>
             </TouchableOpacity>
@@ -140,9 +140,9 @@ export const MatchCard = ({ data }: PopularProps) => {
           {/* AWAY */}
           <TouchableOpacity
             onPress={() => selectGame( game.id,"away","MATCH_WINNER", getOddsValue("away")?.price!)}
-            className={`${isSelected(game.id, "MATCH_WINNER", "away") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-md px-1`}
+            className={`${isSelected(game.id, "MATCH_WINNER", "away") ? "bg-sec" : "bg-[#ABB2FA]"}  rounded-[9px] w-[45px] h-[30px] items-center justify-center`}
           >
-            <Text className="text-lg text-black p-2 text-center">
+            <Text className="text-[13px] text-black text-center">
               {getOddsValue("away")?.price?.toFixed(2)}
             </Text>
           </TouchableOpacity>

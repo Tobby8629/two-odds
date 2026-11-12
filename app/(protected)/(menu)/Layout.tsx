@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -13,9 +14,10 @@ interface TransacLayoutProps {
 }
 
 const Layout = ({children, className, title, otherLinks, handleClick= () => {goBack()} }: TransacLayoutProps) => {
+  const insets = useSafeAreaInsets();
   return (
     <View className='bg-pry flex-1'>
-      <View className={`flex-row ${otherLinks && "justify-between items-center"} pb-5 pt-20 bg-[#1F5079] px-6 ${className}`}>
+      <View className={`flex-row ${otherLinks && "justify-between items-center"} pb-5 bg-[#1F5079] px-6 ${className}`} style={{ paddingTop: insets.top + 12 }}>
         <Pressable onPress={handleClick}>
           <FontAwesome6 name="angle-left" size={24} color="white" />
         </Pressable>

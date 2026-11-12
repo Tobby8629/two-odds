@@ -28,17 +28,17 @@ const tabBarHeight = useBottomTabBarHeight();
         <OtherLinks />
         <Text className='bg-[#1F5079] text-white text-right py-4 px-7 mt-4'>
           ©
-          2025 2odds. All rights reserved
+          2026 2odds. All rights reserved
         </Text>
         <View>
           <View className={`${flexCenter} py-4`}>
-            <Text className='text-white'>Terms of service</Text>
+            <Text className='text-white'>Terms of Service</Text>
             <View className='bg-[#1F5079] w-[2px] h-full mx-2'></View>
             <Text className='text-white'>About Us</Text>
           </View>
 
           <Button
-            text={isLoading ? "Logging out..." : "Logout"}
+            text={isLoading ? "Logging out..." : "Log Out"}
             onPress={logout}
             className='!bg-purple-300 w-[50%] h-[40px] mx-auto rounded-lg mt-4'
           />

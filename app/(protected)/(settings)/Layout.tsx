@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { FontAwesome, FontAwesome6 } from '@expo/vector-icons'
@@ -12,9 +13,10 @@ interface layoutInterface {
 }
 
 const Layout = ({header, children, navigator, topInset = true}: layoutInterface) => {
+  const insets = useSafeAreaInsets();
   return (
       <View className='bg-pry flex-1'>
-      <View className={`flex-row items-center pb-5 ${topInset ? 'pt-20' : 'pt-5'} bg-[#1F5079] px-6`}>
+      <View className={`flex-row items-center pb-5 bg-[#1F5079] px-6`} style={{ paddingTop: topInset ? insets.top + 12 : 20 }}>
         <Pressable onPress={()=> router.back()}>
           <FontAwesome6 name={navigator || "angle-left"} size={24} color="white" />
         </Pressable>

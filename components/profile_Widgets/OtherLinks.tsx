@@ -13,7 +13,7 @@ interface LinkOption {
 
 const options: LinkOption[] = [
   {
-    name: "Notifications Center",
+    name: "Notification Center",
     link: "/(settings)/notifications" as RelativePathString,
     enabled: true,
   },
@@ -23,12 +23,12 @@ const options: LinkOption[] = [
     enabled: false,
   },
   {
-    name: "security",
+    name: "Security",
     link: "/(settings)/(security)" as RelativePathString,
     enabled: true,
   },
   {
-    name: "Biometric Login",
+    name: "Biometric login",
     link: "/(settings)/biometric-login" as RelativePathString,
     enabled: false,
   },
@@ -38,10 +38,13 @@ const options: LinkOption[] = [
     enabled: true,
   },
   {
-    name: "communities",
+    name: "Communities",
     link: "/(settings)/communities" as RelativePathString,
     enabled: false,
   },
+  { name: "Language", link: "/(settings)/language" as RelativePathString, enabled: false },
+  { name: "Tutorial", link: "/(settings)/tutorial" as RelativePathString, enabled: false },
+  { name: "Feedback", link: "/(settings)/feedback" as RelativePathString, enabled: false },
 ]
 
 const OtherLinks = () => {
@@ -55,7 +58,7 @@ const OtherLinks = () => {
           className={`${flex} items-center justify-between py-3 ${i+1 === options.length ? "border-none" : "border-b"} border-[#1F5079]`}
         >
           <Text className={`font-poppins text-base font-normal ${e.enabled ? "text-white" : "text-white/40"}`}>{e.name}</Text>
-          {e.name !== "Biometric Login" &&
+          {e.name !== "Biometric login" &&
           <View className='pr-7'>
             <AngleRight />
           </View>

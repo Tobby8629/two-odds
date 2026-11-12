@@ -1,3 +1,4 @@
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,12 +15,13 @@ import { useProfile } from '@/hooks/useProfile';
  * queue - there is nothing to poll until the bet flips OPEN to MATCHED.
  */
 export default function P2PSearching() {
+  const insets = useSafeAreaInsets();
   const { setScreen } = useP2PStore();
   const avatarId = useProfileStore((state) => state.avatarId);
   const { data: profile } = useProfile();
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, { paddingTop: insets.top + 8 }]}>
       <Head />
 
       <ScrollView
@@ -68,7 +70,7 @@ export default function P2PSearching() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#123456', paddingTop: 56 },
+  screen: { flex: 1, backgroundColor: '#123456' },
   body: {
     flexGrow: 1,
     alignItems: 'center',
