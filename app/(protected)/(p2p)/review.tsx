@@ -190,6 +190,7 @@ export default function ReviewBetScreen() {
           <View
             style={{
               flex: 1,
+              minWidth: 0,
               borderRadius: 24,
               borderWidth: 1,
               borderColor: "rgba(255,255,255,0.1)",
@@ -201,7 +202,12 @@ export default function ReviewBetScreen() {
             <Text style={{ color: "#94A3B8", fontFamily: "Lexend_500Medium", fontSize: 12, lineHeight: 16, letterSpacing: 0.3, textTransform: "uppercase" }}>
               Your Stake
             </Text>
-            <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 24, lineHeight: 32 }}>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.5}
+              style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 24, lineHeight: 32 }}
+            >
               {formatCurrency(stake)}
             </Text>
           </View>
@@ -209,6 +215,7 @@ export default function ReviewBetScreen() {
           <View
             style={{
               flex: 1,
+              minWidth: 0,
               borderRadius: 24,
               borderWidth: 1,
               borderColor: "#000000",
@@ -220,7 +227,12 @@ export default function ReviewBetScreen() {
             <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_500Medium", fontSize: 12, lineHeight: 16, letterSpacing: 0.3, textTransform: "uppercase" }}>
               To Win
             </Text>
-            <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 24, lineHeight: 32 }}>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.5}
+              style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 24, lineHeight: 32 }}
+            >
               {formatCurrency(toWin)}
             </Text>
           </View>
@@ -255,16 +267,16 @@ export default function ReviewBetScreen() {
           }}
         >
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <Text style={{ color: "#94A3B8", fontFamily: "Lexend_400Regular", fontSize: 14, lineHeight: 20 }}>
+            <Text numberOfLines={1} style={{ flexShrink: 1, marginRight: 8, color: "#94A3B8", fontFamily: "Lexend_400Regular", fontSize: 14, lineHeight: 20 }}>
               P2P Platform Fee ({Math.round(PLATFORM_FEE_RATE * 100)}%)
             </Text>
-            <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_500Medium", fontSize: 14, lineHeight: 20 }}>
+            <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={{ flexShrink: 0, color: "#FFFFFF", fontFamily: "Lexend_500Medium", fontSize: 14, lineHeight: 20 }}>
               - {formatCurrency(fee)}
             </Text>
           </View>
 
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <Text style={{ color: "#94A3B8", fontFamily: "Lexend_400Regular", fontSize: 14, lineHeight: 20 }}>
+            <Text numberOfLines={1} style={{ flexShrink: 1, marginRight: 8, color: "#94A3B8", fontFamily: "Lexend_400Regular", fontSize: 14, lineHeight: 20 }}>
               Network Processing
             </Text>
             <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_500Medium", fontSize: 14, lineHeight: 20 }}>FREE</Text>
@@ -276,7 +288,7 @@ export default function ReviewBetScreen() {
             <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 14, lineHeight: 20 }}>
               Net Post Amount
             </Text>
-            <Text style={{ color: "#E59A0B", fontFamily: "Lexend_700Bold", fontSize: 14, lineHeight: 20 }}>
+            <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={{ flexShrink: 0, color: "#E59A0B", fontFamily: "Lexend_700Bold", fontSize: 14, lineHeight: 20 }}>
               {formatCurrency(net)}
             </Text>
           </View>

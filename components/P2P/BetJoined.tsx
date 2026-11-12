@@ -203,7 +203,7 @@ const BetJoined = ({
                   >
                     Total Pot
                   </Text>
-                  <Text style={{ color: "#FFFFFF", fontFamily: F.bold, fontSize: 18, lineHeight: 28 }}>
+                  <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6} style={{ color: "#FFFFFF", fontFamily: F.bold, fontSize: 18, lineHeight: 28 }}>
                     {totalPot}
                   </Text>
                 </View>

@@ -62,15 +62,18 @@ export default function P2PSearching() {
           {found ? 'Opponent found. Opening the bet...' : 'Waiting for a player to accept your stake...'}
         </Text>
 
-        {/* Avatar with its glow ring and the search badge */}
+        {/* Ring (160) holding a centred 128 avatar disc; the search badge hangs off its lower right. */}
         <View style={styles.avatarWrap}>
           <View style={styles.glowOuter}>
-            <View style={styles.glowInner}>
-              <UserAvatar
-                uri={profile?.avatarUrl}
-                avatarId={avatarId}
-                size={128}
-              />
+            <View style={styles.avatarDisc}>
+              {/* The illustration sits left of centre in its own artwork, so it is nudged right. */}
+              <View style={{ transform: [{ translateX: 8 }] }}>
+                <UserAvatar
+                  uri={profile?.avatarUrl}
+                  avatarId={avatarId}
+                  size={128}
+                />
+              </View>
             </View>
           </View>
 
@@ -127,8 +130,8 @@ const styles = StyleSheet.create({
     marginTop: 6,
     textAlign: 'center',
   },
-  /* Figma "Pulse Animation" container: 256x256, ring centred inside it. */
-  avatarWrap: { width: 256, height: 256, alignItems: 'center', justifyContent: 'center', marginTop: 100, marginBottom: 96 },
+  /* The ring is the layout box; the Figma 256 container only adds space around it. */
+  avatarWrap: { width: 160, height: 160, marginTop: 148, marginBottom: 144 },
   /* Figma ring: 160x160, 1px #E3F2FD at 30%, fill #E3F2FD at 20%. */
   glowOuter: {
     width: 160,
@@ -140,20 +143,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  glowInner: {
+  /* Pale disc so the illustration is always visible and centred in the ring. */
+  avatarDisc: {
     width: 128,
     height: 128,
     borderRadius: 64,
-    backgroundColor: 'rgba(227,242,253,0.1)',
+    backgroundColor: '#E3F2FD',
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden',
   },
   /* Sits just below the ring's lower right, as in the design. */
   searchBadge: {
     position: 'absolute',
-    left: 159,
-    top: 217,
+    left: 111,
+    top: 169,
     width: 48,
     height: 48,
     borderRadius: 24,

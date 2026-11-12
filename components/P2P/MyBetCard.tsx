@@ -202,17 +202,17 @@ const MyBetCard = ({ bet, meId, onCancel, onPress, onSimulate, busy }: Props) =>
         <>
           <View style={{ gap: 12 }}>
             <Row label="Prediction">
-              <Text style={{ color: "#E59A0B", fontFamily: F.bold, fontSize: 14, lineHeight: 20 }}>
+              <Text numberOfLines={1} style={{ flexShrink: 1, textAlign: "right", color: "#E59A0B", fontFamily: F.bold, fontSize: 14, lineHeight: 20 }}>
                 {predictionTitle(bet)}
               </Text>
             </Row>
             <Row label="Your Stake">
-              <Text style={{ color: "#F1F5F9", fontFamily: F.extra, fontSize: 14, lineHeight: 20 }}>
+              <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6} style={{ flexShrink: 1, color: "#F1F5F9", fontFamily: F.extra, fontSize: 14, lineHeight: 20 }}>
                 {formatCurrency(stake, currency)}
               </Text>
             </Row>
             <Row label="Potential Win">
-              <Text style={{ color: "#E2E8F0", fontFamily: F.bold, fontSize: 14, lineHeight: 20 }}>
+              <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.6} style={{ flexShrink: 1, color: "#E2E8F0", fontFamily: F.bold, fontSize: 14, lineHeight: 20 }}>
                 {formatCurrency(win, currency)}
               </Text>
             </Row>
