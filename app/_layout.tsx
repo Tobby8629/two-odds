@@ -5,7 +5,10 @@ import {
 } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
+import { Lexend_400Regular } from "@expo-google-fonts/lexend/400Regular";
 import { Lexend_500Medium } from "@expo-google-fonts/lexend/500Medium";
+import { Lexend_600SemiBold } from "@expo-google-fonts/lexend/600SemiBold";
+import { Lexend_700Bold } from "@expo-google-fonts/lexend/700Bold";
 import { Manrope_400Regular } from "@expo-google-fonts/manrope/400Regular";
 import { Manrope_500Medium } from "@expo-google-fonts/manrope/500Medium";
 import { Manrope_600SemiBold } from "@expo-google-fonts/manrope/600SemiBold";
@@ -49,7 +52,10 @@ export default function RootLayout() {
   );
 
   const [fontsLoaded] = useFonts({
+    Lexend_400Regular,
     Lexend_500Medium,
+    Lexend_600SemiBold,
+    Lexend_700Bold,
     Manrope_400Regular,
     Manrope_500Medium,
     Manrope_600SemiBold,

@@ -45,9 +45,21 @@ export interface Bet {
    * Side identity is undocumented. These are the plausible field names; the
    * helpers below treat all of them as optional so a missing one is not a bug.
    */
+  /** Fixture the bet is on. Undocumented; the mock fills it, the real shape is unconfirmed. */
+  match?: BetMatch;
   creatorId?: string;
   takerId?: string;
   userId?: string;
+}
+
+export interface BetMatch {
+  homeTeam: string;
+  awayTeam: string;
+  league?: string;
+  startTime?: string;
+  status?: string;
+  homeScore?: number | null;
+  awayScore?: number | null;
 }
 
 export interface Pagination {

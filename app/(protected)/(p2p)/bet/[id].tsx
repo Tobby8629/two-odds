@@ -25,6 +25,8 @@ import {
   potentialReturn,
 } from "@/constants/functions";
 import { DEMO_MODE } from "@/constants/demo";
+import BetJoined from "@/components/P2P/BetJoined";
+import { betRef, matchTitle, predictionLabel } from "@/components/P2P/betLabels";
 
 /** Turns a prediction object into a readable line. */
 const describe = (prediction?: Record<string, unknown>) => {
@@ -191,67 +193,25 @@ export default function BetDetailsScreen() {
       </Layout>
 
       {/* Joined */}
-      <Modal visible={joined} transparent animationType="fade">
-        <View style={styles.backdrop}>
-          <View style={styles.sheet}>
-            <View style={styles.tick}>
-              <Ionicons name="checkmark" size={34} color="#0A3A5C" />
-            </View>
-
-            <Text style={styles.joinedTitle}>Bet Joined Successfully!</Text>
-            <Text style={styles.joinedBody}>
-              Your P2P match has been confirmed and is now active.
-            </Text>
-
-            <View style={styles.summary}>
-              <View style={styles.matchedChip}>
-                <Text style={styles.matchedChipText}>MATCH MATCHED</Text>
-              </View>
-
-              <Text style={styles.summaryPrediction}>
-                Prediction: {describe(bet?.prediction)}
-              </Text>
-
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>
-                  {creator?.username ? `@${creator.username}` : "Opponent"}
-                </Text>
-
-                <View>
-                  <Text style={styles.summaryLabel}>TOTAL POT</Text>
-                  <Text style={styles.summaryValue}>
-                    {formatCurrency(stake * 2, currency)}
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <Text style={styles.deducted}>
-              {formatCurrency(stake, currency)} deducted from wallet balance
-            </Text>
-
-            <Pressable
-              onPress={() => {
-                setJoined(false);
-                router.replace("/(p2p)/my-bets");
-              }}
-              style={styles.primary}
-            >
-              <Text style={styles.primaryText}>View My Bets</Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => {
-                setJoined(false);
-                router.back();
-              }}
-              style={styles.secondary}
-            >
-              <Text style={styles.secondaryText}>Back to P2P Market</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+      <BetJoined
+        visible={joined}
+        title={matchTitle(bet)}
+        prediction={predictionLabel(bet)}
+        betRef={betRef(bet?.id)}
+        opponent={creator?.username ? `@${creator.username}` : "Opponent"}
+        opponentKey={creatorId ?? bet?.id ?? "opponent"}
+        avatarUri={creator?.avatarUrl}
+        totalPot={formatCurrency(stake * 2, currency)}
+        deducted={`${formatCurrency(stake, currency)} deducted from wallet balance`}
+        onViewBets={() => {
+          setJoined(false);
+          router.replace("/(p2p)/my-bets");
+        }}
+        onBack={() => {
+          setJoined(false);
+          router.back();
+        }}
+      />
     </View>
   );
 }
