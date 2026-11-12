@@ -32,12 +32,18 @@ export default function P2PSearching() {
   const { data: market } = useOpenBets({ category: 'CUSTOM' });
   const candidate = (market?.bets ?? []).find((b) => b.creatorId !== me);
 
+  const [found, setFound] = React.useState(false);
+
   React.useEffect(() => {
     if (!SIMULATE.p2p || !candidate) return;
-    const t = setTimeout(() => {
+    const showFound = setTimeout(() => setFound(true), 3000);
+    const open = setTimeout(() => {
       router.push({ pathname: '/(p2p)/bet/[id]', params: { id: candidate.id } } as never);
-    }, 3500);
-    return () => clearTimeout(t);
+    }, 4500);
+    return () => {
+      clearTimeout(showFound);
+      clearTimeout(open);
+    };
   }, [candidate?.id]);
 
   return (
@@ -53,7 +59,7 @@ export default function P2PSearching() {
         <Text style={styles.title}>Finding Opponent</Text>
 
         <Text style={styles.subtitle}>
-          Waiting for a player to accept your stake...
+          {found ? 'Opponent found. Opening the bet...' : 'Waiting for a player to accept your stake...'}
         </Text>
 
         {/* Avatar with its glow ring and the search badge */}
