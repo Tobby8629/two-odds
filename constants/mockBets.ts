@@ -145,6 +145,14 @@ export const mockBetsService = {
     bet.takerId = me();
   },
 
+  /** Dev-only: no endpoint settles a bet yet, so this lets the result flow be tested. */
+  async settleBet(id: string, win: boolean): Promise<void> {
+    await wait(500);
+    const bet = bets().find((b) => b.id === id);
+    if (!bet || bet.status !== "MATCHED") throw new Error("Only a matched bet can be settled.");
+    bet.status = (win ? "SETTLED_WIN" : "SETTLED_LOSS") as BetStatus;
+  },
+
   async cancelBet(id: string): Promise<void> {
     await wait(500);
     const bet = bets().find((b) => b.id === id);

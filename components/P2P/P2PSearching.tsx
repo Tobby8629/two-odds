@@ -8,6 +8,9 @@ import UserAvatar from '@/components/Reuseables/UserAvatar';
 import { useP2PStore } from '@/store/useP2PStore';
 import { useProfileStore } from '@/store/useProfileStore';
 import { useProfile } from '@/hooks/useProfile';
+import { useOpenBets } from '@/hooks/useBets';
+import { useAuthStore } from '@/store/useAuthStore';
+import { SIMULATE } from '@/constants/demo';
 
 /**
  * The backend has no matchmaking: a bet is posted open and sits in the market
@@ -19,6 +22,23 @@ export default function P2PSearching() {
   const { setScreen } = useP2PStore();
   const avatarId = useProfileStore((state) => state.avatarId);
   const { data: profile } = useProfile();
+
+  /*
+   * Stand-in for opponent matching: after a short wait the first open bet that
+   * is not the player's own is opened on its details screen, where they can
+   * join. Replace with the real matching call once that endpoint exists.
+   */
+  const me = useAuthStore((state) => state.user?.id);
+  const { data: market } = useOpenBets({ category: 'CUSTOM' });
+  const candidate = (market?.bets ?? []).find((b) => b.creatorId !== me);
+
+  React.useEffect(() => {
+    if (!SIMULATE.p2p || !candidate) return;
+    const t = setTimeout(() => {
+      router.push({ pathname: '/(p2p)/bet/[id]', params: { id: candidate.id } } as never);
+    }, 3500);
+    return () => clearTimeout(t);
+  }, [candidate?.id]);
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 8 }]}>

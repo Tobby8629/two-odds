@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React from "react";
 import {
   Pressable,
@@ -109,7 +110,7 @@ const P2PBetsList = () => {
                 <P2PBetCard
                   key={bet.id}
                   bet={bet}
-                  onTake={isOwn ? undefined : handleTake}
+                  onTake={isOwn ? undefined : (b) => router.push({ pathname: '/(p2p)/bet/[id]', params: { id: b.id } } as never)}
                   isBusy={isTaking && busyId === bet.id}
                 />
               );

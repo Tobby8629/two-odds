@@ -137,3 +137,14 @@ export const useCancelBet = () => {
     onSuccess: () => void invalidate(),
   });
 };
+
+/** Dev-only (SIMULATE.p2p): settles a matched bet so the You Won flow can be tested. */
+export const useSimulateSettle = () => {
+  const invalidate = useInvalidateBets();
+
+  return useMutation({
+    mutationFn: ({ id, win }: { id: string; win: boolean }) =>
+      mockBetsService.settleBet(id, win),
+    onSuccess: () => void invalidate(),
+  });
+};

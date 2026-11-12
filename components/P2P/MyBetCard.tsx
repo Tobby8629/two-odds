@@ -41,6 +41,8 @@ interface Props {
   meId?: string;
   onCancel?: (bet: Bet) => void;
   onPress?: (bet: Bet) => void;
+  /** Dev-only: settle a matched bet as a win or a loss. */
+  onSimulate?: (bet: Bet, win: boolean) => void;
   busy?: boolean;
 }
 
@@ -52,7 +54,7 @@ const RESULT: Record<string, { label: string; colour: string }> = {
   CASHED_OUT: { label: "Cashed out", colour: "#10B981" },
 };
 
-const MyBetCard = ({ bet, meId, onCancel, onPress, busy }: Props) => {
+const MyBetCard = ({ bet, meId, onCancel, onPress, onSimulate, busy }: Props) => {
   const currency = (bet.currency as "NGN" | "USDT") ?? "NGN";
   const stake = Number(bet.stake ?? 0);
   const win = potentialReturn(stake, bet.odds) ?? 0;
@@ -174,6 +176,27 @@ const MyBetCard = ({ bet, meId, onCancel, onPress, busy }: Props) => {
               Win {formatCurrency(win, currency)}
             </Text>
           </View>
+
+          {onSimulate ? (
+            <View style={{ flexDirection: "row", gap: 8 }}>
+              <Pressable
+                onPress={() => onSimulate(bet, true)}
+                style={{ flex: 1, height: 34, borderRadius: 8, borderWidth: 1, borderColor: "rgba(16,185,129,0.4)", alignItems: "center", justifyContent: "center" }}
+              >
+                <Text style={{ color: "#10B981", fontFamily: F.bold, fontSize: 12, lineHeight: 16 }}>
+                  Test: settle as win
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={() => onSimulate(bet, false)}
+                style={{ flex: 1, height: 34, borderRadius: 8, borderWidth: 1, borderColor: "rgba(239,68,68,0.4)", alignItems: "center", justifyContent: "center" }}
+              >
+                <Text style={{ color: "#EF4444", fontFamily: F.bold, fontSize: 12, lineHeight: 16 }}>
+                  Test: settle as loss
+                </Text>
+              </Pressable>
+            </View>
+          ) : null}
         </>
       ) : (
         <>

@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MyBetCard from "@/components/P2P/MyBetCard";
 import AlertBanner from "@/components/Reuseables/AlertBanner";
 import Loading from "@/components/Reuseables/Loading";
-import { useCancelBet, useMyBetHistory, useMyBets } from "@/hooks/useBets";
+import { useCancelBet, useMyBetHistory, useMyBets, useSimulateSettle } from "@/hooks/useBets";
+import { SIMULATE } from "@/constants/demo";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Bet } from "@/types/bets.types";
 
@@ -40,6 +41,19 @@ export default function MyP2PBetsScreen() {
   const history = useMyBetHistory();
 
   const { mutateAsync: cancelBet, isPending: isCancelling } = useCancelBet();
+  const { mutateAsync: settle } = useSimulateSettle();
+
+  /* Dev only: no endpoint settles a bet yet, so a matched bet can be settled by hand. */
+  const handleSimulate = async (bet: Bet, win: boolean) => {
+    setActionError(null);
+    try {
+      await settle({ id: bet.id, win });
+      if (win) router.push({ pathname: "/(p2p)/result/[id]", params: { id: bet.id } } as never);
+      else setActiveTab("history");
+    } catch (e) {
+      setActionError(e instanceof Error ? e.message : "Could not settle this bet.");
+    }
+  };
 
   /* Each tab maps to its own source, so only the active one is read. */
   const active =
@@ -267,6 +281,12 @@ export default function MyP2PBetsScreen() {
                 /* Only an open bet can be withdrawn from the market. */
                 onCancel={activeTab === "open" ? handleCancel : undefined}
                 busy={isCancelling && busyId === bet.id}
+                onSimulate={SIMULATE.p2p && activeTab === "matched" ? handleSimulate : undefined}
+                onPress={
+                  bet.status === "SETTLED_WIN"
+                    ? (b) => router.push({ pathname: "/(p2p)/result/[id]", params: { id: b.id } } as never)
+                    : undefined
+                }
               />
             ))
           )}

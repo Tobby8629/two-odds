@@ -72,6 +72,8 @@ export default function RootLayout() {
     
     PoppinsBold: require("../assets/fonts/Poppins/Poppins-Bold.ttf"),
 
+    PoppinsExtraBold: require("../assets/fonts/Poppins/Poppins-ExtraBold.ttf"),
+
     SansitaOneBoldItalic: require(
       "../assets/fonts/Sansita/Sansita-BoldItalic.ttf"
     ),
