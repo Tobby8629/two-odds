@@ -6,7 +6,7 @@ import { MatchProps, Nav, validateInput, validateOutput, verifyInt } from "@/int
 import Home from "@/assets/SVGs/Home";
 import Menu from "@/assets/SVGs/Menu";
 import Betslip from "@/assets/SVGs/Betslip";
-import Bell from "@/assets/SVGs/Bell";
+import Bets from "@/assets/SVGs/Bets";
 import Profile from "@/assets/SVGs/profile";
 import Football from "@/assets/SVGs/sport/football";
 import Basketball from "@/assets/SVGs/sport/Basketball";
@@ -190,9 +190,9 @@ export const nav:Nav[] = [
   },
 
   {
-    name: "notifications",
-    link: "/(tabs)/notifications",
-    icon: Bell,
+    name: "bets",
+    link: "/(tabs)/bets",
+    icon: Bets,
   },
   {
     name: "profile",
