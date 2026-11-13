@@ -140,12 +140,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  /* Pale disc so the illustration is always visible and centred in the ring. */
+  /* The avatar draws its own circle; no extra disc behind it. */
   avatarDisc: {
     width: 128,
     height: 128,
     borderRadius: 64,
-    backgroundColor: '#E3F2FD',
     overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
