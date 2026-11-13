@@ -4,6 +4,7 @@ import { useBetHistory } from '@/store/useStore';
 import { FontAwesome } from '@expo/vector-icons';
 import ViewBet from './ViewBet';
 import Header from './Header';
+import { router } from 'expo-router';
 
 /*
  * Figma "Open Bets" accumulator card. Read from the design: card 347 wide,
@@ -55,14 +56,17 @@ const EachBet = () => {
               </View>
             )}
 
-            <View style={{ gap: 10 }}>
+            <Pressable
+              style={{ gap: 10 }}
+              onPress={() => router.push({ pathname: '/(bet-history)/betslip/[id]', params: { id: String(bet.id) } } as never)}
+            >
               <Text style={styles.line}>
                 Potential Winning: <Text style={styles.amber}>${bet.potentialWin}</Text>
               </Text>
               <Text style={styles.line}>
                 Stake: <Text style={styles.amber}>${bet.stake}</Text>
               </Text>
-            </View>
+            </Pressable>
 
             <Pressable
               disabled={bet.cashout <= 0}
