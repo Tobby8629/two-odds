@@ -43,7 +43,7 @@ interface stakeboxProps {
     <View>
       <View className={`${flexNoJustify} gap-3`}>
         <View className={`${flexNoJustify} gap-3`}>
-          {/* Figma: "-" / "+" 14 amber #FFA500 on a #D9D9D9 30% square. */}
+          {/* Figma: "-" / "+" 14 amber #FFA500 on an 18x18 radius 3 #D9D9D9 30% square; stake text 14 amber. */}
           <Pressable onPress={reduceStake} style={styles.step}>
             <Text style={styles.stepText}>-</Text>
           </Pressable>
@@ -71,7 +71,7 @@ interface stakeboxProps {
 export default StakeBox
 
 const styles = StyleSheet.create({
-  step: { width: 18, height: 18, borderRadius: 2, backgroundColor: 'rgba(217,217,217,0.3)', alignItems: 'center', justifyContent: 'center' },
+  step: { width: 18, height: 18, borderRadius: 3, backgroundColor: 'rgba(217,217,217,0.3)', alignItems: 'center', justifyContent: 'center' },
   stepText: { color: '#FFA500', fontSize: 14, lineHeight: 16 },
-  input: { width: 115, height: 45, borderRadius: 4, backgroundColor: '#E6E8EA', color: '#FFA500', fontSize: 18, textAlign: 'center', padding: 0 },
+  input: { width: 115, height: 45, borderRadius: 4, backgroundColor: '#E6E8EA', color: '#FFA500', fontSize: 14, textAlign: 'center', padding: 0 },
 })

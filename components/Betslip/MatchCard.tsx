@@ -19,11 +19,11 @@ const MatchCard = () => {
   /*
    * Figma leg row: X icon box 26 at the left, market text 20 white, fixture 18
    * and date 12, odds 20 white at the right (25 from the edge); rows about 102
-   * apart. The first row's market reads 21 in the file, the others 20.
+   * apart. Market reads 21 in the first row and 20 in the rest, as in the file.
    */
   return (
     <ScrollView contentContainerStyle={{ paddingTop: 8, paddingBottom: 24 }}>
-      {selectedGames.map((e) => (
+      {selectedGames.map((e, i) => (
         <View
           key={e.id}
           style={{ flexDirection: 'row', alignItems: 'center', minHeight: 102, paddingRight: 25 }}
@@ -35,7 +35,7 @@ const MatchCard = () => {
           <View style={{ flex: 1, gap: 4 }}>
             <View className={`${flexNoJustify} gap-2`}>
               <Ball />
-              <Text style={{ color: '#FFFFFF', fontSize: 20, textTransform: 'capitalize' }}>
+              <Text style={{ color: '#FFFFFF', fontSize: i === 0 ? 21 : 20, textTransform: 'capitalize' }}>
                 {betSlipOptionSwitches(e.option)}
               </Text>
             </View>
