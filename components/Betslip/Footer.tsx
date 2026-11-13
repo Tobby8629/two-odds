@@ -6,7 +6,7 @@ import { Animated } from 'react-native'
 import { ThemedText } from '../ThemedText'
 import StakeBox from './StakeBox'
 import Button from '../Reuseables/Button'
-import RadioButton from '../Reuseables/Input/RadioBtn'
+import OddsSwitch from './OddsSwitch'
 import { useSport } from '@/store/useStore'
 interface footerProps {
   handleSubmit: (stake: number | null, baseStake: number) => void
@@ -31,7 +31,7 @@ const Footer = ({handleSubmit}: footerProps) => {
       </View>
       <View className='flex-row justify-end items-center gap-3 my-3'>
         <Text style={{ color: '#FFFFFF', fontSize: 12 }}>Accepts odds change</Text>     
-        <RadioButton value={check} onToggle={()=>setCheck(!check)}/>
+        <OddsSwitch value={check} onToggle={()=>setCheck(!check)}/>
       </View>
       <View className={flex}>
         <Text style={{ color: '#FFFFFF', fontSize: 16 }}>Total Stakes:</Text>
