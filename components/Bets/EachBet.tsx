@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
-import { bets } from '@/constants/data';
+import { useBetHistory } from '@/store/useStore';
 import { FontAwesome } from '@expo/vector-icons';
 import ViewBet from './ViewBet';
 import Header from './Header';
@@ -17,6 +17,7 @@ import Header from './Header';
 const AMBER = '#FFA500';
 
 const EachBet = () => {
+  const { bets } = useBetHistory();
   const [cashoutChanges, setCashoutChanges] = useState<{ [key: number]: boolean }>({});
   /* Cards open expanded, as in the design; the chevron collapses one. */
   const [collapsed, setCollapsed] = useState<{ [key: number]: boolean }>({});

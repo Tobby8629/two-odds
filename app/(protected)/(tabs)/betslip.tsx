@@ -11,7 +11,10 @@ import MatchCard from '@/components/Betslip/MatchCard';
 import Footer from '@/components/Betslip/Footer';
 import PopupD from '@/components/Betslip/PopupD';
 import Error from '@/components/Reuseables/Error';
-import { useSport } from '@/store/useStore';
+import { useSport, useBetHistory } from '@/store/useStore';
+import { useQueryClient } from '@tanstack/react-query';
+import { router } from 'expo-router';
+import { betSlipOptionSwitches } from '@/services/caseSwitches';
 
 
 export default function TabTwoScreen() {
@@ -31,10 +34,43 @@ export default function TabTwoScreen() {
   const [selected, setSelected] = useState<ItemProp<"bet_Accumulator" | "single" | "system">>(options[0]) 
   const {selectedGames, clearBetslip } = useSport()
   const { height } = Dimensions.get("window");
+  const { placeBet } = useBetHistory()
+  const queryClient = useQueryClient()
   const handleSubmit = (stake: number | null, baseStake: number) => {
     if(stake && stake < baseStake || !stake) {
       setErr({status: true, message: "insufficient Balance"})
+      return
     }
+    /*
+     * Mock placement: builds the ticket locally and shows it in Open Bets.
+     * Replace the body below with the place-bet request when the endpoint exists.
+     */
+    const totalOdds = selectedGames.reduce((acc, g) => acc * g.odd, 1)
+    const now = new Date()
+    const games = selectedGames.map((g, i) => {
+      const m = (queryClient.getQueryData(["matchDetails", g.matchId]) as any)?.data
+      const home = m?.homeTeam ?? "Home"
+      const away = m?.awayTeam ?? "Away"
+      return {
+        id: i + 1, home, away, homeOdds: "", awayOdds: "", drawOdds: "",
+        match: `${home} - ${away}`,
+        selected: betSlipOptionSwitches(g.option) as any,
+        odds: g.odd.toFixed(2), result: "", status: "pending", live: false,
+        time: m?.startTime ? new Date(m.startTime).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "",
+      }
+    })
+    placeBet({
+      id: Date.now(),
+      betType: selectedGames.length > 1 ? "accumulator" : "single",
+      games,
+      potentialWin: Math.round(stake * totalOdds * 100) / 100,
+      stake,
+      status: "pending",
+      cashout: 0,
+      date: `${now.toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric" })} ${now.toTimeString().slice(0, 5)}`,
+    } as any)
+    clearBetslip()
+    router.push("/(tabs)/bets" as never)
   }
   const clearBetslipFnc  = () => {
     clearBetslip()
