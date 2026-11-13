@@ -169,13 +169,9 @@ const BetJoined = ({
                       overflow: "hidden",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: "#E3F2FD",
                     }}
                   >
-                    {/* The illustration sits left of centre in its own artwork (lobby offset scaled to 38px); a real photo is not nudged. */}
-                    <View style={avatarUri && !avatarUri.startsWith("local:") ? undefined : { transform: [{ translateX: -3 }, { translateY: -6 }] }}>
-                      <UserAvatar uri={avatarUri} size={38} fallbackKey={opponentKey} />
-                    </View>
+                    <UserAvatar uri={avatarUri} size={38} fallbackKey={opponentKey} />
                   </View>
                   <View style={{ marginLeft: 12 }}>
                     <Text

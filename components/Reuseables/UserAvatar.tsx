@@ -39,7 +39,8 @@ const UserAvatar = ({
 
   return (
     <View style={{ width: size, height: size }}>
-      <Fallback width={size} height={size} />
+      {/* The avatar SVGs are drawn on a 75x75 canvas and carry no viewBox, so one is set here or only the top-left corner shows at small sizes. */}
+      <Fallback width={size} height={size} viewBox="0 0 75 75" />
     </View>
   );
 };

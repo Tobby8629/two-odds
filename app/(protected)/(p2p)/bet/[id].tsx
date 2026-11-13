@@ -469,14 +469,10 @@ export default function BetDetailsScreen() {
                       overflow: "hidden",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: "#E3F2FD",
                       marginLeft: i === 0 ? 0 : -8,
                     }}
                   >
-                    {/* The illustration sits left of centre in its own artwork (same offset as the lobby avatar, scaled to 28px). */}
-                    <View style={{ transform: [{ translateX: 1 }, { translateY: -4 }] }}>
-                      <UserAvatar fallbackKey={`${bet.id}-viewer-${i}`} size={28} />
-                    </View>
+                    <UserAvatar fallbackKey={`${bet.id}-viewer-${i}`} size={28} />
                   </View>
                 ))}
                 <View
