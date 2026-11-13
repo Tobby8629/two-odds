@@ -16,33 +16,33 @@ const MatchCard = () => {
   const { selectedGames, removeMatch } = useSport();
   console.log(selectedGames)
 
+  /*
+   * Figma leg row: X icon box 26 at the left, market text 20 white, fixture 18
+   * and date 12, odds 20 white at the right (25 from the edge); rows about 102
+   * apart. The first row's market reads 21 in the file, the others 20.
+   */
   return (
-    <ScrollView className="p-7">
+    <ScrollView contentContainerStyle={{ paddingTop: 8, paddingBottom: 24 }}>
       {selectedGames.map((e) => (
-        <View key={e.id} className={`${flex} mb-5`}>
-          <View className={`${flexNoJustify} gap-3 min-w-[80%]`}>
-            
-            <Pressable onPress={() => removeMatch(e.id)}>
-              <GoldX />
-            </Pressable>
+        <View
+          key={e.id}
+          style={{ flexDirection: 'row', alignItems: 'center', minHeight: 102, paddingRight: 25 }}
+        >
+          <Pressable onPress={() => removeMatch(e.id)} hitSlop={8} style={{ alignSelf: 'flex-start', marginTop: 4 }}>
+            <GoldX />
+          </Pressable>
 
-            <View className="gap-2">
-              
-              {/* OPTION */}
-              <View className={`${flexNoJustify} gap-2`}>
-                <Ball />
-
-                <ThemedText className="!text-white capitalize" style={{ fontSize: 21 }}>
-                  {betSlipOptionSwitches(e.option)}
-                </ThemedText>
-              </View>
-
-              {/* MATCH */}
-              <MatchTeams matchId={e.matchId} />
-              <ThemedText className='!text-white'>{e.odd.toFixed(2)}</ThemedText>
-              
+          <View style={{ flex: 1, gap: 4 }}>
+            <View className={`${flexNoJustify} gap-2`}>
+              <Ball />
+              <Text style={{ color: '#FFFFFF', fontSize: 20, textTransform: 'capitalize' }}>
+                {betSlipOptionSwitches(e.option)}
+              </Text>
             </View>
+            <MatchTeams matchId={e.matchId} />
           </View>
+
+          <Text style={{ color: '#FFFFFF', fontSize: 20 }}>{e.odd.toFixed(2)}</Text>
         </View>
       ))}
     </ScrollView>
