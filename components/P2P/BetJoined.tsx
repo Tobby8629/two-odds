@@ -173,7 +173,7 @@ const BetJoined = ({
                     }}
                   >
                     {/* The illustration sits left of centre in its own artwork (lobby offset scaled to 38px); a real photo is not nudged. */}
-                    <View style={avatarUri && !avatarUri.startsWith("local:") ? undefined : { transform: [{ translateX: 9 }, { translateY: 8 }] }}>
+                    <View style={avatarUri && !avatarUri.startsWith("local:") ? undefined : { transform: [{ translateX: 9 }, { translateY: 0 }] }}>
                       <UserAvatar uri={avatarUri} size={38} fallbackKey={opponentKey} />
                     </View>
                   </View>
