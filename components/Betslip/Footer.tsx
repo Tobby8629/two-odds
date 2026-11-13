@@ -30,16 +30,16 @@ const Footer = ({handleSubmit}: footerProps) => {
         <ThemedText className='text-xl font-semibold'>{totalOdd.toFixed(2)}</ThemedText>
       </View>
       <View className='flex-row justify-end items-center gap-3 my-3'>
-        <ThemedText>Accepts odds change</ThemedText>     
+        <Text style={{ color: '#FFFFFF', fontSize: 12 }}>Accepts odds change</Text>     
         <RadioButton value={check} onToggle={()=>setCheck(!check)}/>
       </View>
       <View className={flex}>
-        <ThemedText>Total Stakes: </ThemedText>
+        <Text style={{ color: '#FFFFFF', fontSize: 16 }}>Total Stakes:</Text>
         <StakeBox setStake={setStake} stake={stake} baseStake={baseStake}/>
       </View>
       <View className={flex}>
-        <ThemedText>total stakes: ${stake}</ThemedText> 
-        {stake && stake >= baseStake ? <ThemedText>Potential winning: ${stake ? stake*3 : 0*3} </ThemedText> : null }
+        <Text style={{ color: '#FFFFFF', fontSize: 10 }}>Total Stakes: ${stake ?? 0}</Text> 
+        <Text style={{ color: '#FFFFFF', fontSize: 14, textAlign: 'right' }}>Potential Winning: ${((stake ?? 0) * totalOdd).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
       </View>
       <View className={`${flex} my-3`}>
         {/* Figma: Book A Bet 132x48 radius 8 #D9D9D9 at 30%; Place Bet 196x48 radius 8 #FFA500; labels 18 white. */}

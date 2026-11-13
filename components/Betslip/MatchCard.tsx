@@ -32,7 +32,7 @@ const MatchCard = () => {
               <View className={`${flexNoJustify} gap-2`}>
                 <Ball />
 
-                <ThemedText className="font-semibold !text-white text-2xl capitalize">
+                <ThemedText className="!text-white capitalize" style={{ fontSize: 21 }}>
                   {betSlipOptionSwitches(e.option)}
                 </ThemedText>
               </View>
