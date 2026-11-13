@@ -25,8 +25,9 @@ interface flxCont {
  * #003C6F; rows 16 white; "Total Stake:" / "Total Winning:" Sansita One 16
  * #E3F2FD at 90% (the app's registered Sansita is the bold italic), losing winnings Sansita One 18 #FF1414; legs card 353 wide,
  * radius 10, #012747; leg market 16, fixture 12 white; score 14 #FFA500; odds
- * 14 white. Not read: the Status colour for a win, the stake value's style and
- * the leg date size.
+ * 14 white. Status text 14, "Won" #FFC107 (read), lost red #FF1414 (seen, not
+ * read). Not read: the winning total for a win, the stake value's style and the
+ * leg date size.
  */
 const Main = ({bet}: mainProps) => {
   if (!bet) return <Text>No bet found</Text>;
@@ -94,7 +95,7 @@ export const FlexContent = ({rh, lh, text1, text2, className, small}: flxCont) =
     <View className={`${flex} ${className} mb-3`}>
       <ThemedText className={`${text1} ${sz}`}>{lh}</ThemedText>
       {lh === "Status" ?
-      <ThemedText className={`${status ? "!text-sec" : rh === "pending" ? "" : "!text-[#FF1414]"} capitalize ${sz}`}>{rh}</ThemedText>:
+      <Text style={{ color: status ? '#FFC107' : rh === "pending" ? '#FFFFFF' : '#FF1414', fontSize: small ? 14 : 18, textTransform: 'capitalize' }}>{rh}</Text>:
       <ThemedText className={`${text2} capitalize ${sz}`}>{rh}</ThemedText>
       }
     </View>
