@@ -13,7 +13,7 @@ import { router } from 'expo-router';
  * font is used); "Potential Winning:" / "Stake:" 14 white with amber #FFA500
  * values; Cash Out 327x45, radius 5, padding 10, #ABB2FA; "Accept cash out
  * changes" 10 white; Cash Out label 18; checkbox 12x12 radius 3 #FFA500 with a
- * white tick; Live badge text 8 white. Not read: the badge's exact fill (red).
+ * white tick; Live badge text 8 white. Live badge: 33x14, radius 3, #FF1414.
  */
 const AMBER = '#FFA500';
 

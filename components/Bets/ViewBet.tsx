@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   market: { color: '#FFFFFF', fontSize: 16 },
   fixture: { color: '#FFFFFF', fontSize: 12 },
   liveBlock: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  liveBadge: { color: '#FFFFFF', fontSize: 8, backgroundColor: '#F00000', borderRadius: 4, paddingHorizontal: 4, paddingVertical: 2 },
+  liveBadge: { minWidth: 33, height: 14, color: '#FFFFFF', fontSize: 8, lineHeight: 14, textAlign: 'center', backgroundColor: '#FF1414', borderRadius: 3, overflow: 'hidden' },
   score: { color: '#FFFFFF', fontSize: 10, textAlign: 'center' },
   half: { color: '#FFFFFF', fontSize: 8, textAlign: 'center' },
   time: { color: '#FFFFFF', fontSize: 12, textTransform: 'capitalize' },

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingBottom: 8 },
   title: { color: '#FFFFFF', fontSize: 14 },
   end: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  live: { color: '#FFFFFF', fontSize: 8, backgroundColor: '#F00000', borderRadius: 4, paddingHorizontal: 4, paddingVertical: 2 },
+  /* Figma: badge 33x14, radius 3, #FF1414, text 8 white. */
+  live: { color: '#FFFFFF', fontSize: 8, backgroundColor: '#FF1414', borderRadius: 3, paddingHorizontal: 4, paddingVertical: 2, overflow: 'hidden' },
   rule: { height: 1, backgroundColor: '#DFDFDF' },
 })
