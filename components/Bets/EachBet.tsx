@@ -12,8 +12,8 @@ import { router } from 'expo-router';
  * body text white (Microsoft Sans Serif in the file, so the phone's system
  * font is used); "Potential Winning:" / "Stake:" 14 white with amber #FFA500
  * values; Cash Out 327x45, radius 5, padding 10, #ABB2FA; "Accept cash out
- * changes" 10 white. Not read: the Cash Out label size (20 used), the live
- * badge fill (red) and the checkbox's checked colour (amber).
+ * changes" 10 white; Cash Out label 18; checkbox 12x12 radius 3 #FFA500 with a
+ * white tick; Live badge text 8 white. Not read: the badge's exact fill (red).
  */
 const AMBER = '#FFA500';
 
@@ -83,7 +83,7 @@ const EachBet = () => {
                   cashoutChanges[bet.id] ? { backgroundColor: AMBER, borderColor: AMBER } : null,
                 ]}
               >
-                {cashoutChanges[bet.id] ? <FontAwesome name="check" size={10} color="#012747" /> : null}
+                {cashoutChanges[bet.id] ? <FontAwesome name="check" size={8} color="#FFFFFF" /> : null}
               </View>
               <Text style={styles.checkText}>Accept cash out changes</Text>
             </Pressable>
@@ -118,12 +118,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cashoutText: { color: '#000000', fontSize: 20 },
+  cashoutText: { color: '#000000', fontSize: 18 },
   checkRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: -12 },
   box: {
-    width: 17,
-    height: 17,
-    borderRadius: 2,
+    width: 12,
+    height: 12,
+    borderRadius: 3,
     borderWidth: 1,
     borderColor: '#FFFFFF',
     alignItems: 'center',
