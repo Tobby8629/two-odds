@@ -5,9 +5,10 @@ import EmptyState from '@/components/Reuseables/EmptyState'
 import { ThemedText } from '@/components/ThemedText'
 import { flex, flexNoJustify } from '@/constants/style'
 import EachBet from '@/components/Bets/EachBet'
-import {bets as matchBets} from '@/constants/data'
+import { useBetHistory } from '@/store/useStore'
 
 const bets = () => {
+  const { bets: matchBets } = useBetHistory()
   const insets = useSafeAreaInsets();
   const {height} = Dimensions.get("window")
   return (

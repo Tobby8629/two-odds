@@ -1,9 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { betProps, MatchProps } from '@/interface'
-import { flex, flexNoJustify } from '@/constants/style'
 import Ball from '@/assets/SVGs/sport/ball'
-import { ThemedText } from '../ThemedText'
 import Won from '@/assets/SVGs/bets/Won'
 import Lost from '@/assets/SVGs/bets/Lost'
 import OddsChange from '@/assets/SVGs/bets/OddsChange'
@@ -14,51 +12,64 @@ interface Open {
   bet: betProps
 }
 
-const ViewBet = ({e,i,bet}: Open) => {
+/*
+ * One leg of an open bet. Figma: market 16 white, fixture 12 white, "Live 85'"
+ * 8 white on red, legs separated by a 1px #DFDFDF rule.
+ */
+const ViewBet = ({e, i, bet}: Open) => {
+  const last = i + 1 === bet.games.length
+
   return (
-    <>
-      <View className={` ${flex} py-5 px-3 ${i+1 === bet.games.length ? "" : "border-b-[.5px] border-gray-400"} `}>
-        <View>
-        <View className={`${flexNoJustify} gap-1`}>
+    <View style={[styles.leg, last ? null : styles.rule]}>
+      <View style={{ flex: 1 }}>
+        <View style={styles.titleRow}>
           <Ball />
-          <ThemedText className='!text-black text-xl font-medium'>{e.selected}</ThemedText>
+          <Text style={styles.market}>{e.selected as unknown as string}</Text>
         </View>
-        <ThemedText className='!text-black text-lg font-medium mb-1'>{e.match}</ThemedText>
-        </View>
-        { 
-          e.live ? 
-          <View className={`${flexNoJustify} gap-[5px]`}>
-            <ThemedText className='!bg-red-500 text-xs p-1 rounded-[4px] '>Live 30`</ThemedText>
-            <View>
-              <ThemedText className='text-center !text-sec'>0 - 0</ThemedText>
-              <ThemedText className='text-center !text-black'> 1st Half</ThemedText>
-            </View>
-          </View> :
-          <ThemedText className='!text-black capitalize'>{e.time}</ThemedText>
-        }
-        <View className={`${flexNoJustify} gap-2 items-center`}>
-          <View className={`${flexNoJustify} gap-1 items-center`}>
-            <ThemedText className='!text-black text-lg font-medium mb-1'>
-              {e.odds}
-            </ThemedText>
-            {e.live ? <OddsChange className='ml-3' /> : null}
-          </View>
-          <>
-            {
-              e.status === "pending" ? 
-              <View className='w-[13px] h-[13px] rounded-full border-[1px] border-black bg-transparent'></View> :
-              e.status === "won" ? 
-               <Won /> :
-               <Lost />
-            }
-          </>
-        </View>
+        <Text style={styles.fixture}>{e.match}</Text>
       </View>
-      
-    </>
+
+      {e.live ? (
+        <View style={styles.liveBlock}>
+          <Text style={styles.liveBadge}>Live 30'</Text>
+          <View>
+            <Text style={styles.score}>0 - 0</Text>
+            <Text style={styles.half}>1st Half</Text>
+          </View>
+        </View>
+      ) : (
+        <Text style={styles.time}>{e.time}</Text>
+      )}
+
+      <View style={styles.oddsRow}>
+        <Text style={styles.odds}>{e.odds}</Text>
+        {e.live ? <OddsChange className='ml-3' /> : null}
+        {e.status === 'pending' ? (
+          <View style={styles.pending} />
+        ) : e.status === 'won' ? (
+          <Won />
+        ) : (
+          <Lost />
+        )}
+      </View>
+    </View>
   )
 }
 
 export default ViewBet
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  leg: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 16, gap: 8 },
+  rule: { borderBottomWidth: 1, borderBottomColor: '#DFDFDF' },
+  titleRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 4 },
+  market: { color: '#FFFFFF', fontSize: 16 },
+  fixture: { color: '#FFFFFF', fontSize: 12 },
+  liveBlock: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  liveBadge: { minWidth: 33, height: 14, color: '#FFFFFF', fontSize: 8, lineHeight: 14, textAlign: 'center', backgroundColor: '#FF1414', borderRadius: 3, overflow: 'hidden' },
+  score: { color: '#FFFFFF', fontSize: 10, textAlign: 'center' },
+  half: { color: '#FFFFFF', fontSize: 8, textAlign: 'center' },
+  time: { color: '#FFFFFF', fontSize: 12, textTransform: 'capitalize' },
+  oddsRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  odds: { color: '#FFFFFF', fontSize: 14 },
+  pending: { width: 13, height: 13, borderRadius: 7, borderWidth: 1, borderColor: '#FFFFFF' },
+})

@@ -1,71 +1,95 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
-import { bets } from '@/constants/data';
-import { ThemedText } from '../ThemedText';
-import CheckBox from '../Reuseables/Input/CheckBox';
+import { useBetHistory } from '@/store/useStore';
 import { FontAwesome } from '@expo/vector-icons';
-import Button from '../Reuseables/Button';
 import ViewBet from './ViewBet';
 import Header from './Header';
+import { router } from 'expo-router';
 
+/*
+ * Figma "Open Bets" accumulator card. Read from the design: card 347 wide,
+ * radius 10, fill #012747; inner width 327 (padding 10); dividers 1px #DFDFDF;
+ * body text white (Microsoft Sans Serif in the file, so the phone's system
+ * font is used); "Potential Winning:" / "Stake:" 14 white with amber #FFA500
+ * values; Cash Out 327x45, radius 5, padding 10, #ABB2FA; "Accept cash out
+ * changes" 10 white; Cash Out label 18; checkbox 12x12 radius 3 #FFA500 with a
+ * white tick; Live badge text 8 white. Live badge: 33x14, radius 3, #FF1414.
+ */
+const AMBER = '#FFA500';
 
 const EachBet = () => {
+  const { bets } = useBetHistory();
   const [cashoutChanges, setCashoutChanges] = useState<{ [key: number]: boolean }>({});
-  const [selected, setselected] = useState<number | null>(null);
+  /* Cards open expanded, as in the design; the chevron collapses one. */
+  const [collapsed, setCollapsed] = useState<{ [key: number]: boolean }>({});
 
-  const toggleCashout = (id: number) => {
-    setCashoutChanges((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+  const toggleCashout = (id: number) =>
+    setCashoutChanges((prev) => ({ ...prev, [id]: !prev[id] }));
 
-  const select = (id: number) => {
-    selected === id ? setselected(null) : setselected(id);
-  };
+  const toggleCollapsed = (id: number) =>
+    setCollapsed((prev) => ({ ...prev, [id]: !prev[id] }));
 
   return (
     <View style={styles.container}>
-      {bets.map((bet) => (
-        <View key={bet.id} style={styles.card} >
-          <Header select={select} selected={selected} bet={bet}/> 
-          {selected === bet.id ? 
-            <View>
-                {bet.games.map((e, i)=>(
-                  <ViewBet e={e} i={i} bet={bet} key={i}/>
-              ))}
-            </View> : 
-            <View className='my-2'>
-              {bet.games.slice(0,2).map((e)=>(
-                <ThemedText key={e.id} className='!text-black text-lg font-medium mb-1'>{e.match}</ThemedText>
-              ))}
-            </View>
-          }
+      {bets.map((bet) => {
+        const isCollapsed = !!collapsed[bet.id];
 
-          <View className='mt-3'>
-            <ThemedText className='!text-black my-1 !text-xl'>Potential Winning: <ThemedText className='font-medium !text-black'>${bet.potentialWin}</ThemedText></ThemedText>
-            <ThemedText className='!text-black my-1 !text-xl'>Stake: <ThemedText className='font-medium !text-black'>${bet.stake} </ThemedText></ThemedText> 
-          </View>
-          <Button 
-            text={`Cashout $${bet.cashout}`}
-            disable={bet.cashout <= 0}
-            className='w-full mt-2'
-            onPress={()=>console.log("cashout loading")}
-          />
-          <View style={styles.checkboxContainer} >
-            <CheckBox
-              value={!!cashoutChanges[bet.id]}
-              onPress={() => toggleCashout(bet.id)}
-              textStyle="!mb-0"
-              boxStyle={` !rounded-[2px] !w-[17px] !h-[17px] justify-center items-center ${cashoutChanges[bet.id] ? "bg-sec !border-sec" : "bg-white"}`}
-              icon = {cashoutChanges[bet.id] ? <FontAwesome name="check" color={"white"}/> : null}
-              className=' !items-center'
+        return (
+          <View key={bet.id} style={styles.card}>
+            <Header
+              select={toggleCollapsed}
+              selected={isCollapsed ? null : bet.id}
+              bet={bet}
+            />
+
+            {isCollapsed ? (
+              <View style={{ gap: 4 }}>
+                {bet.games.slice(0, 2).map((e) => (
+                  <Text key={e.id} style={styles.fixture}>{e.match}</Text>
+                ))}
+              </View>
+            ) : (
+              <View>
+                {bet.games.map((e, i) => (
+                  <ViewBet e={e} i={i} bet={bet} key={i} />
+                ))}
+              </View>
+            )}
+
+            <Pressable
+              style={{ gap: 10 }}
+              onPress={() => router.push({ pathname: '/(bet-history)/betslip/[id]', params: { id: String(bet.id) } } as never)}
             >
-              <ThemedText className='!text-black'>Accept cashout changes</ThemedText>
-            </CheckBox>
+              <Text style={styles.line}>
+                Potential Winning: <Text style={styles.amber}>${bet.potentialWin}</Text>
+              </Text>
+              <Text style={styles.line}>
+                Stake: <Text style={styles.amber}>${bet.stake}</Text>
+              </Text>
+            </Pressable>
+
+            <Pressable
+              disabled={bet.cashout <= 0}
+              onPress={() => console.log('cashout loading')}
+              style={styles.cashout}
+            >
+              <Text style={styles.cashoutText}>Cash Out ${bet.cashout}</Text>
+            </Pressable>
+
+            <Pressable onPress={() => toggleCashout(bet.id)} style={styles.checkRow}>
+              <View
+                style={[
+                  styles.box,
+                  cashoutChanges[bet.id] ? { backgroundColor: AMBER, borderColor: AMBER } : null,
+                ]}
+              >
+                {cashoutChanges[bet.id] ? <FontAwesome name="check" size={8} color="#FFFFFF" /> : null}
+              </View>
+              <Text style={styles.checkText}>Accept cash out changes</Text>
+            </Pressable>
           </View>
-        </View>
-      ))}
+        );
+      })}
     </View>
   );
 };
@@ -73,16 +97,37 @@ const EachBet = () => {
 export default EachBet;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
+  container: { padding: 10, alignItems: 'center' },
   card: {
+    width: '100%',
+    maxWidth: 347,
     marginBottom: 15,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: "#E3F2FD", // adjust to theme
+    backgroundColor: '#012747',
+    gap: 24,
   },
-  checkboxContainer: {
-    marginTop: 10,
+  fixture: { color: '#FFFFFF', fontSize: 12 },
+  line: { color: '#FFFFFF', fontSize: 14 },
+  amber: { color: AMBER, fontSize: 14 },
+  cashout: {
+    height: 45,
+    borderRadius: 5,
+    padding: 10,
+    backgroundColor: '#ABB2FA',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  cashoutText: { color: '#000000', fontSize: 18 },
+  checkRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: -12 },
+  box: {
+    width: 12,
+    height: 12,
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkText: { color: '#FFFFFF', fontSize: 10 },
 });

@@ -4,7 +4,9 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { betsService } from "@/services/betsService";
+import { betsService as liveBetsService } from "@/services/betsService";
+import { mockBetsService } from "@/constants/mockBets";
+import { SIMULATE } from "@/constants/demo";
 import { useAuthStore } from "@/store/useAuthStore";
 import {
   Bet,
@@ -13,6 +15,9 @@ import {
   MyBetsFilters,
   OpenBetsFilters,
 } from "@/types/bets.types";
+
+/* Flip SIMULATE.p2p off in constants/demo.ts to use the real endpoints. */
+const betsService = SIMULATE.p2p ? mockBetsService : liveBetsService;
 
 export const betKeys = {
   open: (filters?: OpenBetsFilters) =>
@@ -129,6 +134,17 @@ export const useCancelBet = () => {
 
   return useMutation({
     mutationFn: (id: string) => betsService.cancelBet(id),
+    onSuccess: () => void invalidate(),
+  });
+};
+
+/** Dev-only (SIMULATE.p2p): settles a matched bet so the You Won flow can be tested. */
+export const useSimulateSettle = () => {
+  const invalidate = useInvalidateBets();
+
+  return useMutation({
+    mutationFn: ({ id, win }: { id: string; win: boolean }) =>
+      mockBetsService.settleBet(id, win),
     onSuccess: () => void invalidate(),
   });
 };

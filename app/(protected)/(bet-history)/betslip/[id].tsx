@@ -10,11 +10,12 @@ import AnimatedPopup from '@/components/Reuseables/Animations/Popup'
 import PopupD from '@/components/Betslip/PopupD'
 import { useBetHistory } from '@/store/useStore'
 import { useLocalSearchParams } from "expo-router";
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Main from './Main'
 
 
 const betslip = () => {
-  const {height} = Dimensions.get("window")
+  const insets = useSafeAreaInsets()
   const [visible, setVisible] = useState(false)
   const onOpen = () => setVisible(true)
   const onClose = () => setVisible(false)
@@ -28,26 +29,18 @@ const betslip = () => {
   const bet = bets.find((b)=> b.id === Number(id))
   
   return (
-     <View className=' bg-[#003c6f] h-screen'>
+     <View className='h-screen' style={{ backgroundColor: '#003C6F' }}>
         {/************* Header section *************/}
-        <BetHeader
-          left={
-            <Pressable onPress={()=> router.back()}>
-              <FontAwesome6 name="angle-left" size={24} color="white" />
-            </Pressable>
-          }
-          middle={
-            <ThemedText>Bet Details</ThemedText>
-          }
-          Right ={
-            <View className={`${flexNoJustify} gap-4`}>
-              <ThemedText className={`!text-[#cbc9c9] text-lg`}>$20.00</ThemedText>
-              <Pressable onPress={onOpen}>
-                <FontAwesome5 name={"trash"} color={"#cbc9c9"} size={20}/>
-              </Pressable>
-            </View>
-          }
-        />
+        {/* Figma: header #1F5079, back arrow, "Ticket Details" 18 white, trash on the right. */}
+        <View style={{ backgroundColor: '#1F5079', paddingTop: insets.top + 8, paddingBottom: 20, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Pressable onPress={()=> router.back()}>
+            <FontAwesome6 name="angle-left" size={24} color="white" />
+          </Pressable>
+          <Text style={{ color: '#FFFFFF', fontSize: 18 }}>Ticket Details</Text>
+          <Pressable onPress={onOpen}>
+            <FontAwesome5 name={"trash"} color={"#FFFFFF"} size={20}/>
+          </Pressable>
+        </View>
        {bet && <Main bet={bet}/> }
         {/************* Popup section *************/}
         <AnimatedPopup
