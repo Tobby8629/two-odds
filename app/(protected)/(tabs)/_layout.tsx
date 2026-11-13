@@ -57,7 +57,7 @@ export default function TabLayout() {
             headerTitleStyle: { display: 'none' },
             tabBarIcon: ({ focused }) => (
               <item.icon
-                bets={item.name === 'bets' ? (bets ? bets : null) : false}
+                bets={false}
                 game={item.name === 'betslip' ? (game ? true : false) : false}
                 color={focused ? "#ffa500" : "#000000"}
               />
@@ -103,6 +103,8 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       /> */}
+      {/* Open Bets isn't in the Figma tab bar; still reachable by route. */}
+      <Tabs.Screen name="bets" options={{ href: null }} />
     </Tabs>
   );
 }
