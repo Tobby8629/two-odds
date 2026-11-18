@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { Dispatch, RefObject, SetStateAction, useRef, useState } from 'react'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { flexNoJustify } from '@/constants/style'
@@ -43,21 +43,23 @@ interface stakeboxProps {
     <View>
       <View className={`${flexNoJustify} gap-3`}>
         <View className={`${flexNoJustify} gap-3`}>
-          <Pressable className='bg-[#d9d9d94d] p-1' onPress={reduceStake}>
-            <FontAwesome5 name={"minus"} size={10} color={"gold"} />
+          {/* Figma: "-" / "+" 14 amber #FFA500 on an 18x18 radius 3 #D9D9D9 30% square; stake text 14 amber. */}
+          <Pressable onPress={reduceStake} style={styles.step}>
+            <Text style={styles.stepText}>-</Text>
           </Pressable>
-          <Pressable className='bg-[#d9d9d94d] p-1' onPress={addStake}>
-            <FontAwesome5 name={"plus"} size={10} color={"gold"} />
+          <Pressable onPress={addStake} style={styles.step}>
+            <Text style={styles.stepText}>+</Text>
           </Pressable>
         </View>
         <View>
-          <Textinput 
-          id="stake"
-          keyboardType="numeric"
-          value={stake || ""}
-          onChangeText={handleChange}
-          placeholder='Enter Stake'
-          className='!w-[120px] !rounded-md ' inputStyle='!w-full placeholder:text-sec placeholder:text-base'
+          {/* Figma: 115x45, radius 4, fill #E6E8EA. */}
+          <TextInput
+            keyboardType="numeric"
+            value={stake ? String(stake) : ""}
+            onChangeText={(v) => handleChange("stake", v)}
+            placeholder="Enter Stake"
+            placeholderTextColor="#FFA500"
+            style={styles.input}
           />
           {stakeErr ? <ThemedText className='!text-red-500'>{stakeErr}</ThemedText> : null}
         </View>
@@ -68,4 +70,8 @@ interface stakeboxProps {
 
 export default StakeBox
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  step: { width: 18, height: 18, borderRadius: 3, backgroundColor: 'rgba(217,217,217,0.3)', alignItems: 'center', justifyContent: 'center' },
+  stepText: { color: '#FFA500', fontSize: 14, lineHeight: 16 },
+  input: { width: 115, height: 45, borderRadius: 4, backgroundColor: '#E6E8EA', color: '#FFA500', fontSize: 14, textAlign: 'center', padding: 0 },
+})

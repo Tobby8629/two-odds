@@ -88,7 +88,7 @@ const P2PBetCard: React.FC<P2PBetCardProps> = ({
       {/* Header: avatar, prediction, status */}
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center flex-1 mr-2">
-          <Avatar width={40} height={40} />
+          <Avatar width={40} height={40} viewBox="0 0 75 75" />
 
           <View className="ml-2 flex-1">
             <Text

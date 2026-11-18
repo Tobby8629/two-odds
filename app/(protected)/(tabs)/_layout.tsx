@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HapticTab } from '@/components/HapticTab';
-import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Nav } from '@/interface';
@@ -14,6 +14,7 @@ import SolidRoundSpinner from '@/components/Reuseables/SolidSpinner';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
   const game = true; // This should be determined based on your app's logic
   const bets = 14;
 
@@ -34,14 +35,17 @@ export default function TabLayout() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
+        // Figma tab bar: 393x46, fill #E3F2FD, 0.3px black border.
+        tabBarStyle: {
+          backgroundColor: '#E3F2FD',
+          height: 46 + insets.bottom,
+          paddingBottom: insets.bottom,
+          paddingTop: 0,
+          borderTopWidth: 0.3,
+          borderTopColor: '#000000',
+          elevation: 0,
+        },
+        tabBarItemStyle: { justifyContent: 'center' },
       }}
     >
       {nav.map((item: Nav) => (
@@ -55,7 +59,7 @@ export default function TabLayout() {
               <item.icon
                 bets={item.name === 'bets' ? (bets ? bets : null) : false}
                 game={item.name === 'betslip' ? (game ? true : false) : false}
-                color={focused ? "#ffa500" : colorScheme === 'dark' ? "white" : "black"}
+                color={focused ? "#ffa500" : "#000000"}
               />
             ),
             // Added Home button reset logic using resetToHome

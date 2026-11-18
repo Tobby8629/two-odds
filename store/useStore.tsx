@@ -67,6 +67,9 @@ interface BetHistoryStore {
   bets: betProps[];
 
   deleteBetSlip: (id: string) => void;
+
+  /** Adds a placed bet at the top of Open Bets (mock until the place-bet endpoint exists). */
+  placeBet: (bet: betProps) => void;
 }
 
 
@@ -285,6 +288,8 @@ export const useSport = create<UseSportProps>()(
 export const useBetHistory =
   create<BetHistoryStore>((set) => ({
     bets,
+
+    placeBet: (bet) => set((state) => ({ bets: [bet, ...state.bets] })),
 
     deleteBetSlip: (id) => {
       set((state) => ({

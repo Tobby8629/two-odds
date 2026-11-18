@@ -21,4 +21,8 @@ export const SIMULATE = {
   depositConfirmation: __DEV__,
   /** Deposit request bodies are unconfirmed (the real call returns 422), so dev builds fake the response. */
   depositRequest: __DEV__,
+  /** No analytics endpoint exists yet (stats, lineups, timeline), so dev builds show fixtures. */
+  matchAnalytics: __DEV__,
+  /** The P2P flow runs on an in-memory bets service (constants/mockBets.ts) until the bets endpoints are wired. */
+  p2p: __DEV__,
 };

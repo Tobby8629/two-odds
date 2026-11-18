@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -39,6 +39,7 @@ export default function ReviewBetScreen() {
   const { mutateAsync: createBet, isPending } = useCreateCustomBet();
 
   const insets = useSafeAreaInsets();
+  const betId = useMemo(() => `#B-${Math.floor(1000 + Math.random() * 9000)}-01`, []);
   const [created, setCreated] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -96,97 +97,265 @@ export default function ReviewBetScreen() {
     <View style={styles.screen}>
       <Head compact />
 
-      <Layout header="Review Bet" topInset={false}>
-
-      {error ? <AlertBanner message={error} /> : null}
-
       <ScrollView
-        contentContainerStyle={[
-          styles.page,
-          { paddingBottom: 48 + insets.bottom },
-        ]}
+        contentContainerStyle={{ paddingTop: 12, paddingBottom: 40 + insets.bottom }}
         showsVerticalScrollIndicator={false}
       >
-        {/* Match banner */}
-        <View style={styles.banner}>
-          <Text style={styles.league}>
-            {match.league?.name?.toUpperCase() ?? ""}
+        {/*
+         * Figma "Review Bet" frame (393 wide, #003C6F). Read from the design:
+         * title Inter Bold 18/22.5 ls -0.27 white; ID Lexend SemiBold 14/20
+         * #F1F5F9; league Lexend Bold 10/15 ls 0.5 uppercase #83BDC7; fixture
+         * Lexend Bold 20/28 white; banner gradient black 80/20/0%; "Match
+         * Prediction" Lexend Medium 14/20 #94A3B8; chip padding 4/12 radius
+         * full #E59A0B with Lexend Bold 12/16 #0F2316; TO WIN box radius 24
+         * padding 20 gap 4 #012645 with a 1px black border; labels Lexend
+         * Medium 12/16 ls 0.3 uppercase white; amounts Lexend Bold 24/32;
+         * fee card radius 24 padding 20 gap 12 #003460 with a 1px white 5%
+         * border; fee label Regular 14/20 #94A3B8, values Medium 14/20 white;
+         * divider 300x1 white 10%; net row Bold 14/20 (white / #E59A0B);
+         * notice Lexend Regular 12/19.5 #BFDBFE 80%; post button radius 24
+         * padding 16 gap 8 #E59A0B with a #06F957 30% glow (blur 20), label
+         * Lexend Bold 18/28 #000000; edit link Lexend Medium 14/20 #94A3B8.
+         * Not read: the banner card's own radius / fill, the stake box's fill,
+         * the section label colour and the notice box's frame.
+         */}
+        <View style={{ alignItems: "center", paddingHorizontal: 24 }}>
+          <Text style={{ color: "#FFFFFF", fontFamily: "Inter_700Bold", fontSize: 18, lineHeight: 22.5, letterSpacing: -0.27 }}>
+            Review Bet
           </Text>
-          <Text style={styles.fixture}>
-            {match.homeTeam} vs {match.awayTeam}
-          </Text>
-        </View>
-
-        <View style={[styles.card, styles.row]}>
-          <View style={styles.rowStart}>
-            <Ionicons name="football" size={16} color="#FFA500" />
-            <Text style={styles.cardLabel}>Match Prediction</Text>
-          </View>
-
-          <View style={styles.chip}>
-            <Text style={styles.chipText}>{outcomeLabel}</Text>
-          </View>
-        </View>
-
-        <View style={styles.figuresRow}>
-          <View style={[styles.card, styles.figure]}>
-            <Text style={styles.figureLabel}>YOUR STAKE</Text>
-            <Text style={styles.figureValue}>{formatCurrency(stake)}</Text>
-          </View>
-
-          <View style={[styles.card, styles.figure]}>
-            <Text style={styles.figureLabel}>TO WIN</Text>
-            <Text style={styles.figureValue}>{formatCurrency(toWin)}</Text>
-          </View>
-        </View>
-
-        <Text style={styles.sectionLabel}>FEE BREAKDOWN</Text>
-
-        <View style={styles.card}>
-          <View style={[styles.row, styles.feeRow]}>
-            <Text style={styles.feeLabel}>P2P Platform Fee (5%)</Text>
-            <Text style={styles.feeValue}>- {formatCurrency(fee)}</Text>
-          </View>
-
-          <View style={[styles.row, styles.feeRow]}>
-            <Text style={styles.feeLabel}>Network Processing</Text>
-            <Text style={styles.feeFree}>FREE</Text>
-          </View>
-
-          <View style={styles.divider} />
-
-          <View style={[styles.row, styles.feeRow]}>
-            <Text style={styles.netLabel}>Net Post Amount</Text>
-            <Text style={styles.netValue}>{formatCurrency(net)}</Text>
-          </View>
-        </View>
-
-        <View style={[styles.card, styles.rowStart, styles.notice]}>
-          <Ionicons name="information-circle" size={16} color="#6FA8DC" />
-          <Text style={styles.noticeText}>
-            Your bet will be listed on the P2P market. It will be active once
-            another player accepts the counter-bet.
+          <Text style={{ color: "#F1F5F9", fontFamily: "Lexend_600SemiBold", fontSize: 14, lineHeight: 20, marginTop: 4 }}>
+            ID: {betId}
           </Text>
         </View>
 
+        {error ? <AlertBanner message={error} /> : null}
+
+        {/* Fixture and call */}
+        <View
+          style={{
+            marginTop: 16,
+            marginHorizontal: 24,
+            borderRadius: 24,
+            overflow: "hidden",
+            backgroundColor: "rgba(0,52,96,0.7)",
+          }}
+        >
+          <View style={{ height: 160, justifyContent: "flex-end", backgroundColor: "#0B2A4A", padding: 20 }}>
+            <View
+              pointerEvents="none"
+              style={{ position: "absolute", left: 0, right: 0, bottom: 0, top: 0, backgroundColor: "rgba(0,0,0,0.5)" }}
+            />
+            <Text
+              style={{
+                color: "#83BDC7",
+                fontFamily: "Lexend_700Bold",
+                fontSize: 10,
+                lineHeight: 15,
+                letterSpacing: 0.5,
+                textTransform: "uppercase",
+              }}
+            >
+              {match.league?.name ?? ""}
+            </Text>
+            <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 20, lineHeight: 28 }}>
+              {match.homeTeam} vs {match.awayTeam}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: 16,
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+              <Ionicons name="football" size={18} color="#E59A0B" />
+              <Text style={{ color: "#94A3B8", fontFamily: "Lexend_500Medium", fontSize: 14, lineHeight: 20, marginLeft: 8 }}>
+                Match Prediction
+              </Text>
+            </View>
+
+            <View style={{ paddingVertical: 4, paddingHorizontal: 12, borderRadius: 999, backgroundColor: "#E59A0B", maxWidth: "55%" }}>
+              <Text numberOfLines={1} style={{ color: "#0F2316", fontFamily: "Lexend_700Bold", fontSize: 12, lineHeight: 16 }}>
+                {outcomeLabel}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Stake and payout */}
+        <View style={{ flexDirection: "row", gap: 16, marginTop: 16, marginHorizontal: 24 }}>
+          <View
+            style={{
+              flex: 1,
+              minWidth: 0,
+              borderRadius: 24,
+              borderWidth: 1,
+              borderColor: "rgba(255,255,255,0.1)",
+              backgroundColor: "rgba(255,255,255,0.05)",
+              padding: 20,
+              gap: 4,
+            }}
+          >
+            <Text style={{ color: "#94A3B8", fontFamily: "Lexend_500Medium", fontSize: 12, lineHeight: 16, letterSpacing: 0.3, textTransform: "uppercase" }}>
+              Your Stake
+            </Text>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.5}
+              style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 24, lineHeight: 32 }}
+            >
+              {formatCurrency(stake)}
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              minWidth: 0,
+              borderRadius: 24,
+              borderWidth: 1,
+              borderColor: "#000000",
+              backgroundColor: "#012645",
+              padding: 20,
+              gap: 4,
+            }}
+          >
+            <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_500Medium", fontSize: 12, lineHeight: 16, letterSpacing: 0.3, textTransform: "uppercase" }}>
+              To Win
+            </Text>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={0.5}
+              style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 24, lineHeight: 32 }}
+            >
+              {formatCurrency(toWin)}
+            </Text>
+          </View>
+        </View>
+
+        {/* Fees */}
+        <Text
+          style={{
+            color: "#94A3B8",
+            fontFamily: "Lexend_700Bold",
+            fontSize: 12,
+            lineHeight: 16,
+            letterSpacing: 1.2,
+            textTransform: "uppercase",
+            marginTop: 24,
+            marginHorizontal: 24,
+          }}
+        >
+          Fee Breakdown
+        </Text>
+
+        <View
+          style={{
+            marginTop: 12,
+            marginHorizontal: 24,
+            borderRadius: 24,
+            borderWidth: 1,
+            borderColor: "rgba(255,255,255,0.05)",
+            backgroundColor: "#003460",
+            padding: 20,
+            gap: 12,
+          }}
+        >
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <Text numberOfLines={1} style={{ flexShrink: 1, marginRight: 8, color: "#94A3B8", fontFamily: "Lexend_400Regular", fontSize: 14, lineHeight: 20 }}>
+              P2P Platform Fee ({Math.round(PLATFORM_FEE_RATE * 100)}%)
+            </Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={{ flexShrink: 0, color: "#FFFFFF", fontFamily: "Lexend_500Medium", fontSize: 14, lineHeight: 20 }}>
+              - {formatCurrency(fee)}
+            </Text>
+          </View>
+
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <Text numberOfLines={1} style={{ flexShrink: 1, marginRight: 8, color: "#94A3B8", fontFamily: "Lexend_400Regular", fontSize: 14, lineHeight: 20 }}>
+              Network Processing
+            </Text>
+            <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_500Medium", fontSize: 14, lineHeight: 20 }}>FREE</Text>
+          </View>
+
+          <View style={{ height: 1, backgroundColor: "rgba(255,255,255,0.1)" }} />
+
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <Text style={{ color: "#FFFFFF", fontFamily: "Lexend_700Bold", fontSize: 14, lineHeight: 20 }}>
+              Net Post Amount
+            </Text>
+            <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7} style={{ flexShrink: 0, color: "#E59A0B", fontFamily: "Lexend_700Bold", fontSize: 14, lineHeight: 20 }}>
+              {formatCurrency(net)}
+            </Text>
+          </View>
+        </View>
+
+        {/* Notice */}
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 12,
+            marginTop: 16,
+            marginHorizontal: 24,
+            borderRadius: 24,
+            borderWidth: 1,
+            borderColor: "rgba(191,219,254,0.2)",
+            backgroundColor: "rgba(59,130,246,0.1)",
+            padding: 16,
+          }}
+        >
+          <Ionicons name="information-circle-outline" size={18} color="#BFDBFE" />
+          <Text style={{ flex: 1, color: "rgba(191,219,254,0.8)", fontFamily: "Lexend_400Regular", fontSize: 12, lineHeight: 19.5 }}>
+            Your bet will be listed on the P2P market. It will be active once another player accepts the counter-bet.
+          </Text>
+        </View>
+
+        {/* Actions */}
         <Pressable
           onPress={handlePost}
           disabled={isPending}
-          style={[styles.action, isPending ? styles.actionBusy : null]}
+          style={{
+            marginTop: 32,
+            marginHorizontal: 24,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            paddingVertical: 16,
+            borderRadius: 24,
+            backgroundColor: "#E59A0B",
+            shadowColor: "#06F957",
+            shadowOpacity: 0.3,
+            shadowRadius: 20,
+            shadowOffset: { width: 0, height: 0 },
+            elevation: 8,
+            opacity: isPending ? 0.7 : 1,
+          }}
         >
           {isPending ? (
-            <Loading inline size={24} />
+            <Loading inline size={28} />
           ) : (
-            <View style={styles.rowStart}>
-              <Text style={styles.actionText}>Post Bet to P2P Market</Text>
-              <Rocket width={17} height={17} color="#FFFFFF" style={{ marginLeft: 8 }} />
-            </View>
+            <>
+              <Text style={{ color: "#000000", fontFamily: "Lexend_700Bold", fontSize: 18, lineHeight: 28 }}>
+                Post Bet to P2P Market
+              </Text>
+              <Rocket width={22} height={22} />
+            </>
           )}
         </Pressable>
 
-        <Pressable onPress={() => router.back()} style={styles.editLink}>
-          <Ionicons name="pencil" size={12} color="#FFFFFF" />
-          <Text style={styles.editText}>Go Back &amp; Edit</Text>
+        <Pressable
+          onPress={() => router.back()}
+          style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 20 }}
+        >
+          <Ionicons name="pencil" size={14} color="#94A3B8" />
+          <Text style={{ color: "#94A3B8", fontFamily: "Lexend_500Medium", fontSize: 14, lineHeight: 20 }}>
+            Go Back & Edit
+          </Text>
         </Pressable>
       </ScrollView>
 
@@ -228,7 +397,6 @@ export default function ReviewBetScreen() {
           </View>
         </View>
       </Modal>
-      </Layout>
     </View>
   );
 }

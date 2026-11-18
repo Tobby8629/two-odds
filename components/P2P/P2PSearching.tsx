@@ -8,6 +8,9 @@ import UserAvatar from '@/components/Reuseables/UserAvatar';
 import { useP2PStore } from '@/store/useP2PStore';
 import { useProfileStore } from '@/store/useProfileStore';
 import { useProfile } from '@/hooks/useProfile';
+import { useOpenBets } from '@/hooks/useBets';
+import { useAuthStore } from '@/store/useAuthStore';
+import { SIMULATE } from '@/constants/demo';
 
 /**
  * The backend has no matchmaking: a bet is posted open and sits in the market
@@ -19,6 +22,29 @@ export default function P2PSearching() {
   const { setScreen } = useP2PStore();
   const avatarId = useProfileStore((state) => state.avatarId);
   const { data: profile } = useProfile();
+
+  /*
+   * Stand-in for opponent matching: after a short wait the first open bet that
+   * is not the player's own is opened on its details screen, where they can
+   * join. Replace with the real matching call once that endpoint exists.
+   */
+  const me = useAuthStore((state) => state.user?.id);
+  const { data: market } = useOpenBets({ category: 'CUSTOM' });
+  const candidate = (market?.bets ?? []).find((b) => b.creatorId !== me);
+
+  const [found, setFound] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!SIMULATE.p2p || !candidate) return;
+    const showFound = setTimeout(() => setFound(true), 3000);
+    const open = setTimeout(() => {
+      router.push({ pathname: '/(p2p)/bet/[id]', params: { id: candidate.id } } as never);
+    }, 4500);
+    return () => {
+      clearTimeout(showFound);
+      clearTimeout(open);
+    };
+  }, [candidate?.id]);
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 8 }]}>
@@ -33,23 +59,23 @@ export default function P2PSearching() {
         <Text style={styles.title}>Finding Opponent</Text>
 
         <Text style={styles.subtitle}>
-          Waiting for a player to accept your stake...
+          {found ? 'Opponent found. Opening the bet...' : 'Waiting for a player to accept your stake...'}
         </Text>
 
-        {/* Avatar with its glow ring and the search badge */}
+        {/* Ring (160) holding a centred 128 avatar disc; the search badge hangs off its lower right. */}
         <View style={styles.avatarWrap}>
           <View style={styles.glowOuter}>
-            <View style={styles.glowInner}>
+            <View style={styles.avatarDisc}>
               <UserAvatar
                 uri={profile?.avatarUrl}
                 avatarId={avatarId}
-                size={120}
+                size={128}
               />
             </View>
           </View>
 
           <View style={styles.searchBadge}>
-            <Ionicons name="search" size={18} color="#0A3A5C" />
+            <Ionicons name="search" size={17.48} color="#0A0A1A" />
           </View>
         </View>
 
@@ -70,59 +96,67 @@ export default function P2PSearching() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#123456' },
+  screen: { flex: 1, backgroundColor: '#003C6F' },
   body: {
     flexGrow: 1,
     alignItems: 'center',
-    paddingTop: 28,
+    paddingTop: 25,
     paddingBottom: 48,
     paddingHorizontal: 24,
   },
   kicker: {
     color: '#FFFFFF',
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: 12,
-    letterSpacing: 1,
+    fontFamily: 'PoppinsBold',
+    fontSize: 18,
+    lineHeight: 28,
+    letterSpacing: -0.45,
   },
   title: {
     color: '#FFFFFF',
     fontFamily: 'PoppinsBold',
-    fontSize: 22,
+    fontSize: 24,
+    lineHeight: 32,
     marginTop: 10,
+    textAlign: 'center',
   },
   subtitle: {
-    color: '#B9CBD9',
+    color: '#94A3B8',
     fontFamily: 'Poppins',
-    fontSize: 12,
-    lineHeight: 19.5,
+    fontSize: 14,
+    lineHeight: 20,
     marginTop: 6,
     textAlign: 'center',
   },
-  avatarWrap: { marginTop: 48, marginBottom: 48 },
+  /* The ring is the layout box; the Figma 256 container only adds space around it. */
+  avatarWrap: { width: 160, height: 160, marginTop: 148, marginBottom: 144 },
+  /* Figma ring: 160x160, 1px #E3F2FD at 30%, fill #E3F2FD at 20%. */
   glowOuter: {
-    width: 168,
-    height: 168,
-    borderRadius: 84,
-    backgroundColor: '#1B4C74',
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    borderWidth: 1,
+    borderColor: 'rgba(227,242,253,0.3)',
+    backgroundColor: 'rgba(227,242,253,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  glowInner: {
-    width: 136,
-    height: 136,
-    borderRadius: 68,
-    backgroundColor: '#2E6F9E',
-    alignItems: 'center',
-    justifyContent: 'center',
+  /* The avatar draws its own circle; no extra disc behind it. */
+  avatarDisc: {
+    width: 128,
+    height: 128,
+    borderRadius: 64,
     overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  /* Sits just below the ring's lower right, as in the design. */
   searchBadge: {
     position: 'absolute',
-    right: 6,
-    bottom: 0,
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    left: 111,
+    top: 169,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -130,9 +164,11 @@ const styles = StyleSheet.create({
   createPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 16,
-    backgroundColor: '#0C3A63',
-    paddingHorizontal: 14,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(227,242,253,0.2)',
+    backgroundColor: 'rgba(227,242,253,0.1)',
+    paddingHorizontal: 16,
     paddingVertical: 8,
   },
   pillDot: {
@@ -143,23 +179,26 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   pillText: {
-    color: '#FFFFFF',
-    fontFamily: 'PoppinsSemiBold',
-    fontSize: 10,
-    letterSpacing: 0.5,
+    color: '#E3F2FD',
+    fontFamily: 'Poppins',
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
   },
   cancel: {
-    width: 110,
-    height: 34,
-    borderRadius: 8,
-    backgroundColor: '#FFC107',
+    width: 100,
+    height: 30,
+    borderRadius: 9,
+    backgroundColor: '#E59A0B',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 28,
+    marginTop: 46,
   },
   cancelText: {
-    color: '#000000',
-    fontFamily: 'PoppinsSemiBold',
+    color: '#111818',
+    fontFamily: 'Lexend_500Medium',
     fontSize: 14,
+    lineHeight: 21,
   },
 });

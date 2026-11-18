@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { flex, flexNoJustify } from '@/constants/style'
 import GoldX from '@/assets/SVGs/icons/GoldX'
@@ -16,33 +16,33 @@ const MatchCard = () => {
   const { selectedGames, removeMatch } = useSport();
   console.log(selectedGames)
 
+  /*
+   * Figma leg row: X icon box 26 at the left, market text 20 white, fixture 18
+   * and date 12, odds 20 white at the right (25 from the edge); rows about 102
+   * apart. Market reads 21 in the first row and 20 in the rest, as in the file.
+   */
   return (
-    <ScrollView className="p-7">
-      {selectedGames.map((e) => (
-        <View key={e.id} className={`${flex} mb-5`}>
-          <View className={`${flexNoJustify} gap-3 min-w-[80%]`}>
-            
-            <Pressable onPress={() => removeMatch(e.id)}>
-              <GoldX />
-            </Pressable>
+    <ScrollView contentContainerStyle={{ paddingTop: 8, paddingBottom: 24 }}>
+      {selectedGames.map((e, i) => (
+        <View
+          key={e.id}
+          style={{ flexDirection: 'row', alignItems: 'center', minHeight: 102, paddingRight: 25 }}
+        >
+          <Pressable onPress={() => removeMatch(e.id)} hitSlop={8} style={{ alignSelf: 'flex-start', marginTop: 4 }}>
+            <GoldX />
+          </Pressable>
 
-            <View className="gap-2">
-              
-              {/* OPTION */}
-              <View className={`${flexNoJustify} gap-2`}>
-                <Ball />
-
-                <ThemedText className="font-semibold !text-white text-2xl capitalize">
-                  {betSlipOptionSwitches(e.option)}
-                </ThemedText>
-              </View>
-
-              {/* MATCH */}
-              <MatchTeams matchId={e.matchId} />
-              <ThemedText className='!text-white'>{e.odd.toFixed(2)}</ThemedText>
-              
+          <View style={{ flex: 1, gap: 4 }}>
+            <View className={`${flexNoJustify} gap-2`}>
+              <Ball />
+              <Text style={{ color: '#FFFFFF', fontSize: i === 0 ? 21 : 20, textTransform: 'capitalize' }}>
+                {betSlipOptionSwitches(e.option)}
+              </Text>
             </View>
+            <MatchTeams matchId={e.matchId} />
           </View>
+
+          <Text style={{ color: '#FFFFFF', fontSize: 20 }}>{e.odd.toFixed(2)}</Text>
         </View>
       ))}
     </ScrollView>
@@ -66,7 +66,15 @@ const MatchTeams = ({ matchId }: { matchId: string }) => {
 
   const match = data?.data;
 
+  /* Figma: "20 June 2025 (12:30)", 12 white, under the teams. */
+  const kickoff = match?.startTime ? new Date(match.startTime) : null;
+  const dateLine =
+    kickoff && !Number.isNaN(kickoff.getTime())
+      ? `${kickoff.getDate()} ${kickoff.toLocaleString('en-GB', { month: 'long' })} ${kickoff.getFullYear()} (${kickoff.toTimeString().slice(0, 5)})`
+      : '';
+
   return (
+    <View>
     <View className={`${flexNoJustify} gap-1 w-full`}>
       <ThemedText className="font-base text-lg">
         {match?.homeTeam}
@@ -79,6 +87,8 @@ const MatchTeams = ({ matchId }: { matchId: string }) => {
       <ThemedText className="font-base text-lg">
         {match?.awayTeam}
       </ThemedText>
+    </View>
+    {dateLine ? <Text style={{ color: '#FFFFFF', fontSize: 12, marginTop: 2 }}>{dateLine}</Text> : null}
     </View>
   );
 };

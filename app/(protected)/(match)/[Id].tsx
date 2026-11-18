@@ -1,18 +1,15 @@
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { use, useState } from 'react'
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native'
+import React from 'react'
 import { FontAwesome6 } from '@expo/vector-icons'
 import MatchMore from '@/assets/SVGs/match/MatchMore'
 import { ThemedText } from '@/components/ThemedText'
 import Button from '@/components/Reuseables/Button'
 import { sports } from '@/interface'
 import Template from '@/components/Match/reuseables/Template'
-import { router, useLocalSearchParams } from 'expo-router'
+import { RelativePathString, router, useLocalSearchParams } from 'expo-router'
 import TeamFeatures from '@/components/Match/reuseables/TeamFeatures'
-import { Animated, Dimensions } from "react-native";
-import { useEffect, useRef } from "react";
-import Statistics from '@/components/Match/Football/Statistics'
-import Bar from '@/assets/SVGs/Bar'
+import { useEffect } from "react";
 import { useSport } from '@/store/useStore'
 import { useMatchDetails } from '@/hooks'
 
@@ -50,20 +47,6 @@ const EachMatch = () => {
   const id = useLocalSearchParams().Id as string
   const { data, isLoading, refetch } = useMatchDetails(id)
   const match = data?.data
-  const [statistics, setStatistics] = useState(false)
-  const screenHeight = Dimensions.get("window").height;
-  const slideAnim = useRef(new Animated.Value(screenHeight)).current;
-
-  useEffect(() => {
-    if (statistics) {
-      Animated.timing(slideAnim, {
-        toValue: screenHeight * 0.15,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [statistics]);
-
   useEffect(() => { 
     refetch()
   }, [id]);
@@ -85,29 +68,8 @@ const EachMatch = () => {
 
 
       {/***********  Match INFO  ***********/ }
-      <TeamFeatures match={match!} setStatistics={setStatistics} />
+      <TeamFeatures match={match!} setStatistics={() => router.push({ pathname: '/(match)/analytics' as RelativePathString, params: { id } })} />
 
-      <Modal visible={statistics} transparent>
-        <View
-          className="flex-1 bg-black/30"
-        >
-          
-          <Animated.View
-            style={{ transform: [{ translateY: slideAnim }] }}
-            className="absolute h-full w-[90%] left-6 bg-white rounded-t-2xl p-4 pt-2"
-          >
-            <Pressable
-            onPress={() => setStatistics(false)}
-            className=' items-center w-1/2 mx-auto'
-          >
-          
-            <Bar color={"red"} height={20}/>
-            
-          </Pressable>
-            <Statistics />
-          </Animated.View>
-        </View>
-      </Modal>
       {/***********  Betting Markets  ***********/ }
       <View className='flex-1 mt-4 relative'>
         {marketSwitch(selectedsport as sports)}
