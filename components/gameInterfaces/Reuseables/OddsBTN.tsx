@@ -34,7 +34,9 @@ const OddsButton = ({ match, type, selectGame, className }: Props) => {
   );
 
   const matchWinner = match.markets.find((e)=> e.betType === "MATCH_WINNER")
-  
+
+  console.log("matchMarket", match.markets)
+  match.markets.forEach((m)=>console.log("OUTCOME", m.outcomes))
   // Get the odds value based on type
   const oddsValue =
     type === "homeTeam"

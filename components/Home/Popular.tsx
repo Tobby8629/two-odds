@@ -1,6 +1,5 @@
 
 import { Match } from '@/hooks/matchInterface/matchInterface';
-import { MatchProps, MatchPropsBetslip } from '@/interface'
 import { useSport } from '@/store/useStore';
 import { router } from 'expo-router';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'

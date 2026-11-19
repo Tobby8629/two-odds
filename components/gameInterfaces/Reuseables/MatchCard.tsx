@@ -20,6 +20,7 @@ const MatchCard = ({ selectedMarket, match, generalGoal }: Props) => {
   const navigateDetails = () => {
     router.push({ pathname: `/(match)/${match.id}` as RelativePathString })
   } 
+
   
   return (
     <View className={`${flex} my-3 px-3 py-3 bg-light-blue mb-3 mx-6 rounded-xl`}>
@@ -38,8 +39,8 @@ const MatchCard = ({ selectedMarket, match, generalGoal }: Props) => {
         ) : 
         menuSelectedsport === "tennis" || menuSelectedsport === "basketball" ?  
         <View className="flex-row justify-between">
-          <OddsButton className="w-[47%]" match={match} type="homeTeam" selectGame={selectGame} />
-          <OddsButton className="w-[47%]" match={match} type="awayTeam" selectGame={selectGame} />
+          <OddsButton className="w-[47%]" match={match} type="home" selectGame={selectGame} />
+          <OddsButton className="w-[47%]" match={match} type="away" selectGame={selectGame} />
         </View>
         :
         (

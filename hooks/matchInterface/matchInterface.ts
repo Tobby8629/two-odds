@@ -67,7 +67,6 @@ export interface League {
 
 export interface MatchWinnerOutcome {
   price: number;
-
   prediction: {
     winner: Winner;
   };
@@ -244,6 +243,8 @@ export interface Match {
   bets: Bet[];
 
   markets: Market[];
+
+  outcomes: MatchWinnerOutcome| null;
 }
 
 
